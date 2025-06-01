@@ -1,0 +1,9 @@
+{
+  "welcome": "¡Bienvenido!",
+  "login": {
+    "title": "Iniciar sesión",
+    "email": "Correo",
+    "password": "Contraseña",
+    "submit": "Ingresar"
+  }
+}
