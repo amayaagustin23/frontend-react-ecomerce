@@ -52,7 +52,7 @@ const OrderDetailPage = () => {
         {dayjs(order.createdAt).format('D [de] MMMM YYYY')}
         <br />
         <Text strong>{t('orderDetail.status')}:</Text>{' '}
-        <Tag color={statusColor[order.status]}>{order.status}</Tag>
+        <Tag color={statusColor[order.status]}>{t(`orderStatus.${order.status}`)}</Tag>
         <br />
         <Text strong>{t('orderDetail.total')}:</Text> $
         {order.total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}
@@ -69,34 +69,35 @@ const OrderDetailPage = () => {
               <Card>
                 <div className={styles.productItem}>
                   <Image
-                    width={100}
+                    width={150}
                     src={product.images?.[0]?.url}
                     alt={product.name}
                     fallback="https://via.placeholder.com/100x100.png?text=Imagen"
                   />
                   <div className={styles.productInfo}>
-                    <Title level={5}>{product.name}</Title>
+                    <Title level={4}>{product.name}</Title>
                     <Text>
                       {t('orderDetail.category')}: {product.category.name}
                     </Text>
-                    <br />
                     <Text>
                       {t('orderDetail.brand')}: {product.brand.name}
                     </Text>
-                    <br />
                     <Text>
                       {t('orderDetail.color')}: {variant.color} | {t('orderDetail.size')}:{' '}
                       {variant.size}
                     </Text>
-                    <br />
                     <Text>
                       {t('orderDetail.quantity')}: {quantity}
                     </Text>
-                    <br />
-                    <Text strong>{t('orderDetail.subtotal')}:</Text> $
-                    {(finalPrice * quantity).toLocaleString('es-AR', {
-                      minimumFractionDigits: 2,
-                    })}
+                  </div>
+                  <div className={styles.productPrice}>
+                    <Text strong>{t('orderDetail.subtotal')}:</Text>
+                    <Text>
+                      $
+                      {(finalPrice * quantity).toLocaleString('es-AR', {
+                        minimumFractionDigits: 2,
+                      })}
+                    </Text>
                   </div>
                 </div>
               </Card>
