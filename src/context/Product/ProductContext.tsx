@@ -1,7 +1,7 @@
-import { getAllProducts } from '@/services/calls/product.service';
+import { getAllProducts, getAllBrands, getAllVariants } from '@/services/calls/product.service';
+import { Brand } from '@/types/Brand';
 import { Product } from '@/types/Product';
-import { createContext, useContext, useEffect, useState } from 'react';
-
+import { createContext, useContext, useState, useEffect } from 'react';
 
 type Pagination = {
   page: number;
@@ -9,17 +9,38 @@ type Pagination = {
   total: number;
 };
 
+export type FetchProductsParams = {
+  page?: number;
+  size?: number;
+  search?: string;
+  categoryIds?: string;
+  category?: string;
+  brandIds?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  variantsName?: string;
+  orderBy?: string;
+};
+
 type ProductContextType = {
   products: Product[];
+  productsFiltered: Product[];
   loading: boolean;
   pagination: Pagination;
-  fetchProducts: (params: { page: number; size: number }) => Promise<void>;
+  brands: Brand[];
+  variants: string[];
+  fetchProducts: (params?: FetchProductsParams) => Promise<void>;
+  fetchFilteredProducts: (params?: FetchProductsParams) => Promise<void>;
+  loadBrandsAndVariants: () => Promise<void>;
 };
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [variants, setVariants] = useState<string[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     size: 10,
@@ -27,10 +48,10 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
   });
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchProducts = async (params = { page: 1, size: 10 }) => {
+  const fetchProducts: ProductContextType['fetchProducts'] = async (params = {}) => {
     setLoading(true);
     try {
-      const response = await getAllProducts(params); // asegúrate que reciba { page, size }
+      const response = await getAllProducts(params);
       setProducts(response.data.data);
       setPagination({
         page: response.data.page,
@@ -44,17 +65,50 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const fetchFilteredProducts: ProductContextType['fetchFilteredProducts'] = async (
+    params = {}
+  ) => {
+    const paramKeys = Object.keys(params).filter(
+      (key) => params[key as keyof typeof params] !== undefined
+    );
+
+    const shouldSetLoading = paramKeys.length <= 2;
+    if (shouldSetLoading) setLoading(true);
+
+    try {
+      const response = await getAllProducts(params);
+      setProductsFiltered(response.data.data);
+    } catch {
+      setProductsFiltered([]);
+    } finally {
+      if (shouldSetLoading) setLoading(false);
+    }
+  };
+
+  const loadBrandsAndVariants = async () => {
+    try {
+      const [brandsRes, variantsRes] = await Promise.all([getAllBrands(), getAllVariants()]);
+
+      setBrands(brandsRes.data);
+      setVariants(variantsRes.data);
+    } catch {
+      setBrands([]);
+      setVariants([]);
+    }
+  };
 
   return (
     <ProductContext.Provider
       value={{
         products,
+        productsFiltered,
         loading,
         pagination,
+        brands,
+        variants,
         fetchProducts,
+        fetchFilteredProducts,
+        loadBrandsAndVariants,
       }}
     >
       {children}

@@ -1,10 +1,12 @@
+import { FetchProductsParams } from '@/context/Product/ProductContext';
 import { api } from '../api';
 import { PRODUCT_ENDPOINTS } from '../endpoints';
 
-export const getAllProducts = (params: { page: number; size: number }) =>
-  api.get('/products', { params });
+export const getAllProducts = (params: FetchProductsParams) =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL, { params });
 
-export const getProductById = (id: string) => api.get(PRODUCT_ENDPOINTS.GET_BY_ID(id));
+export const getProductById = (id: string) =>
+  api.get(PRODUCT_ENDPOINTS.GET_BY_ID(id));
 
 export const createProduct = (data: any, files: File[] = []) => {
   const formData = new FormData();
@@ -41,3 +43,10 @@ export const updateProduct = (id: string, data: any, files: File[] = []) => {
     },
   });
 };
+
+// ✅ Nuevas llamadas
+export const getAllBrands = () =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL_BRANDS);
+
+export const getAllVariants = () =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL_VARIANTS);

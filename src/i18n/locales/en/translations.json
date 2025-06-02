@@ -1,9 +1,104 @@
 {
   "welcome": "Welcome!",
-  "login": {
-    "title": "Log in",
+  "auth": {
+    "login": {
+      "title": "Welcome 👋",
+      "subtitle": "Log in to continue",
+      "email": "Email",
+      "emailPlaceholder": "example@mail.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Forgot your password?",
+      "button": "Log in",
+      "noAccount": "Don't have an account?",
+      "register": "Register",
+      "success": "Logged in successfully",
+      "error": "Login failed"
+    }
+  },
+  "layout": {
+    "search": {
+      "placeholder": "Search products"
+    },
+    "menu": {
+      "title": "Menu",
+      "home": "Home",
+      "products": "Products",
+      "contact": "Contact",
+      "account": "Account",
+      "myProfile": "My Profile",
+      "logout": "Log out",
+      "login": "Log in"
+    },
+    "footer": {
+      "text": "My Store ©{{year}} - All rights reserved"
+    }
+  },
+  "productDetail": {
+    "selectSize": "Select your size:",
+    "addToCart": "Add to cart",
+    "brand": "Brand",
+    "quantity": "Quantity",
+    "errorLoading": "Error loading product"
+  },
+  "products": {
+    "search": "Search",
+    "searchPlaceholder": "Search by name...",
+    "price": "Price",
+    "categories": "Categories",
+    "brands": "Brands",
+    "variants": "Variants",
+    "empty": "No products found",
+    "title": "Products",
+    "orderBy": "Sort by",
+    "itemsPerPage": "Show",
+    "sort": {
+      "newest": "Newest",
+      "lowToHigh": "Price: Low to High",
+      "highToLow": "Price: High to Low",
+      "nameAsc": "Name: A-Z",
+      "nameDesc": "Name: Z-A"
+    }
+  },
+  "categories": {
+    "messages": {
+      "fetchError": "Error loading categories",
+      "getOneError": "Failed to retrieve category",
+      "createSuccess": "Category created successfully",
+      "createError": "Error creating category",
+      "updateSuccess": "Category updated successfully",
+      "updateError": "Error updating category",
+      "deleteSuccess": "Category deleted successfully",
+      "deleteError": "Error deleting category"
+    }
+  },
+  "home": {
+    "banner1": {
+      "alt": "Banner of electronic products and services",
+      "products": "View products",
+      "services": "View services"
+    },
+    "banner2": {
+      "message": "Buy in interest-free installments with free shipping nationwide 🚚"
+    }
+  },
+  "contact": {
+    "title": "Agustín Amaya",
+    "subtitle": "Full Stack Developer",
+    "intro": "Developer with 4 years of experience in frontend and backend, specialized in NestJS and ReactJS. Passionate about creating efficient and scalable solutions, focused on best practices, adaptability, and teamwork. I've led technical training as a Backend instructor, integrating platforms such as AWS, Firebase, Mercado Pago, and WhatsApp.",
     "email": "Email",
-    "password": "Password",
-    "submit": "Enter"
+    "phone": "Phone",
+    "location": "Location",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "Download CV (PDF)",
+    "contactMe": "Contact me"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "remove": "Remove",
+    "total": "Total",
+    "checkout": "Checkout"
   }
 }

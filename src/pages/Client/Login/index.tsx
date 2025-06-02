@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { login } from '@/services/calls/auth.service';
 import { useAuth } from '@/context/Auth/AuthContext';
+import { useTranslation } from 'react-i18next';
+import styles from './LoginPage.module.scss';
 
 const { Title, Text, Link } = Typography;
 
@@ -13,6 +15,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setIsLogin } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,64 +25,64 @@ const LoginPage = () => {
       const response = await login({ email, password });
       const { token, user } = response.data;
 
-      Cookies.set('access_token', token, { path: '/' });
+      Cookies.set('access_token', token, { path: '/', secure: true, sameSite: 'strict' });
       setUser(user);
       setIsLogin(true);
-      message.success('Sesión iniciada con éxito');
-      navigate('/');
+      message.success(t('auth.login.success'));
+
+      navigate('/', { replace: true });
     } catch (error: any) {
-      message.error(error?.response?.data?.message || 'Error al iniciar sesión');
+      message.error(error?.response?.data?.message || t('auth.login.error'));
     } finally {
       setLoading(false);
     }
   };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md" style={{ margin: '10rem 30rem' }}>
+    <div className={styles.loginContainer}>
+      <Card className={styles.card}>
         <div className="text-center mb-6">
-          <Title level={2} className="!mb-1">
-            Bienvenido 👋
+          <Title level={2} className={styles.title}>
+            {t('auth.login.title')}
           </Title>
-          <Text type="secondary">Iniciá sesión para continuar</Text>
+          <Text type="secondary">{t('auth.login.subtitle')}</Text>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className={styles.form}>
           <div>
-            <Text strong>Email</Text>
+            <Text strong>{t('auth.login.email')}</Text>
             <Input
               size="large"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ejemplo@correo.com"
+              placeholder={t('auth.login.emailPlaceholder')}
               required
             />
           </div>
 
           <div>
-            <Text strong>Contraseña</Text>
+            <Text strong>{t('auth.login.password')}</Text>
             <Input.Password
               size="large"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder={t('auth.login.passwordPlaceholder')}
               required
             />
           </div>
 
-          <div className="text-right">
-            <Link href="/recuperar">¿Olvidaste tu contraseña?</Link>
+          <div className={styles.textRight}>
+            <Link href="/recuperar">{t('auth.login.forgotPassword')}</Link>
           </div>
 
           <Button type="primary" htmlType="submit" size="large" block loading={loading}>
-            Iniciar sesión
+            {t('auth.login.button')}
           </Button>
         </form>
 
-        <div className="text-center mt-6">
+        <div className={styles.footerText}>
           <Text>
-            ¿No tenés cuenta? <Link href="/register">Registrate</Link>
+            {t('auth.login.noAccount')} <Link href="/register">{t('auth.login.register')}</Link>
           </Text>
         </div>
       </Card>

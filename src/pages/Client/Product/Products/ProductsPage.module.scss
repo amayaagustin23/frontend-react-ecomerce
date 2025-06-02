@@ -1,0 +1,35 @@
+.controlBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 140px;
+
+  :global(.ant-select),
+  :global(.ant-input-search) {
+    width: 100%;
+  }
+}
+
+// 👇 Ajustes responsive (mejor visual para mobile)
+@media (max-width: 768px) {
+  .controlBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .controlGroup {
+    flex: 1 1 48%;
+    min-width: 0;
+  }
+}

@@ -1,9 +1,148 @@
 {
   "welcome": "¡Bienvenido!",
-  "login": {
-    "title": "Iniciar sesión",
-    "email": "Correo",
-    "password": "Contraseña",
-    "submit": "Ingresar"
+  "auth": {
+    "login": {
+      "title": "Bienvenido 👋",
+      "subtitle": "Iniciá sesión para continuar",
+      "email": "Email",
+      "emailPlaceholder": "ejemplo@correo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "button": "Iniciar sesión",
+      "noAccount": "¿No tenés cuenta?",
+      "register": "Registrate",
+      "success": "Sesión iniciada con éxito",
+      "error": "Error al iniciar sesión"
+    }
+  },
+  "layout": {
+    "search": {
+      "placeholder": "Buscar productos"
+    },
+    "menu": {
+      "title": "Menú",
+      "home": "Inicio",
+      "products": "Productos",
+      "contact": "Contacto",
+      "account": "Cuenta",
+      "myProfile": "Mi perfil",
+      "logout": "Cerrar sesión",
+      "login": "Iniciar sesión"
+    },
+    "footer": {
+      "text": "Mi Tienda ©{{year}} - Todos los derechos reservados"
+    }
+  },
+  "productDetail": {
+    "selectSize": "Seleccioná tu talle:",
+    "addToCart": "Agregar al carrito",
+    "brand": "Marca",
+    "quantity": "Cantidad",
+    "errorLoading": "Error al cargar el producto"
+  },
+  "products": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre...",
+    "price": "Precio",
+    "categories": "Categorías",
+    "brands": "Marcas",
+    "variants": "Variantes",
+    "empty": "No se encontraron productos",
+    "title": "Productos",
+    "orderBy": "Ordenar por",
+    "itemsPerPage": "Mostrar",
+    "filter": "Filtros",
+    "sort": {
+      "newest": "Más recientes",
+      "lowToHigh": "Precio: Menor a mayor",
+      "highToLow": "Precio: Mayor a menor",
+      "nameAsc": "Nombre: A-Z",
+      "nameDesc": "Nombre: Z-A"
+    }
+  },
+  "categories": {
+    "messages": {
+      "fetchError": "Error al cargar las categorías",
+      "getOneError": "No se pudo obtener la categoría",
+      "createSuccess": "Categoría creada con éxito",
+      "createError": "Error al crear la categoría",
+      "updateSuccess": "Categoría actualizada con éxito",
+      "updateError": "Error al actualizar la categoría",
+      "deleteSuccess": "Categoría eliminada con éxito",
+      "deleteError": "Error al eliminar la categoría"
+    }
+  },
+  "home": {
+    "banner1": {
+      "alt": "Banner de productos electrónicos y servicios",
+      "products": "Ver productos",
+      "services": "Ver servicios"
+    },
+    "banner2": {
+      "message": "Comprá en cuotas sin interés y con envíos gratis a todo el país 🚚"
+    }
+  },
+  "contact": {
+    "title": "Agustín Amaya",
+    "subtitle": "Desarrollador Full Stack",
+    "intro": "Desarrollador con 4 años de experiencia en frontend y backend, especializado en NestJS y ReactJS. Me apasiona crear soluciones eficientes y escalables, con foco en buenas prácticas, adaptación al cambio y trabajo colaborativo. He liderado formación técnica como instructor de Backend, integrando plataformas como AWS, Firebase, Mercado Pago y WhatsApp.",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "location": "Ubicación",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "Descargar CV (PDF)",
+    "contactMe": "Contactame"
+  },
+  "cart": {
+    "title": "Tu carrito",
+    "empty": "Tu carrito está vacío",
+    "remove": "Eliminar",
+    "total": "Total",
+    "checkout": "Finalizar compra"
+  },
+  "tabs": {
+    "coupons": "Cupones",
+    "orders": "Pedidos",
+    "profile": "Mi Perfil"
+  },
+  "coupons": {
+    "title": "Canjeá tus puntos por cupones"
+  },
+  "orders": {
+    "title": "Historial de pedidos",
+    "orderNumber": "Número de pedido"
+  },
+  "profile": {
+    "title": "Información personal",
+    "description": "Modificá tus datos personales a continuación para que tu cuenta esté actualizada.",
+    "name": "Nombre",
+    "birthDate": "Fecha de nacimiento",
+    "gender": "Género",
+    "phone": "Telefono",
+    "dni": "DNI",
+    "male": "Hombre",
+    "female": "Mujer",
+    "email": "Correo electrónico",
+    "password": "Contraseña"
+  },
+  "orderDetail": {
+    "title": "Detalle de la orden",
+    "orderId": "Orden #{{id}}",
+    "date": "Fecha",
+    "status": "Estado",
+    "total": "Total",
+    "shipping": "Costo de envío",
+    "products": "Productos",
+    "category": "Categoría",
+    "brand": "Marca",
+    "color": "Color",
+    "size": "Talle",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal"
+  },
+  "common": {
+    "back": "Volver"
   }
 }

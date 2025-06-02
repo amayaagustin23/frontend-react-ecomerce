@@ -2,7 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '@/services/calls/product.service';
 import { Product, Variant } from '@/types/Product';
-import { Spin, Typography, Tag, Row, Col, Image, message, Button, Carousel } from 'antd';
+import {
+  Spin,
+  Typography,
+  Tag,
+  Row,
+  Col,
+  Image,
+  message,
+  Button,
+  Carousel,
+  InputNumber,
+  Grid,
+} from 'antd';
+import { useTranslation } from 'react-i18next';
+import styles from './ProductDetailPage.module.scss';
+import { useCart } from '@/context/Cart/CartContext';
+
+const { useBreakpoint } = Grid;
 
 const SizeButton = ({
   size,
@@ -18,8 +35,9 @@ const SizeButton = ({
   <button
     onClick={onClick}
     disabled={disabled}
-    className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors duration-150
-      ${disabled ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : selected ? 'bg-black text-white' : 'bg-white hover:bg-gray-100'}`}
+    className={`${styles.sizeButton} ${
+      disabled ? styles.disabled : selected ? styles.selected : styles.default
+    }`}
   >
     {size}
   </button>
@@ -28,8 +46,13 @@ const SizeButton = ({
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
+  const { addToCart } = useCart();
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedVariant, setSelectedVariant] = useState<Variant>();
+  const [quantity, setQuantity] = useState<number>(1);
+  const { t } = useTranslation();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
 
   useEffect(() => {
     if (!id) return;
@@ -38,17 +61,17 @@ const ProductDetailPage: React.FC = () => {
         const { data } = await getProductById(id);
         setProduct(data);
       } catch (error) {
-        message.error('No se pudo cargar el producto');
+        message.error(t('productDetail.errorLoading'));
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, t]);
 
   if (loading || !product) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className={styles.spinner}>
         <Spin size="large" />
       </div>
     );
@@ -56,19 +79,29 @@ const ProductDetailPage: React.FC = () => {
 
   const sortedImages = [...product.images].sort((a, b) => a.order - b.order);
 
+  const parsedCartAdd = () => {
+    if (!selectedVariant || !product) return;
+
+    addToCart({
+      id: crypto.randomUUID(),
+      productId: product.id,
+      variantId: selectedVariant.id,
+      quantity,
+      unitPrice: product.price,
+      discount: 0,
+      finalPrice: product.price,
+      product,
+      variant: selectedVariant,
+    });
+  };
+
   return (
-    <div className="p-6">
+    <div className={styles.container}>
       <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
-          <Carousel
-            dots
-            swipeToSlide
-            draggable
-            className="rounded-lg overflow-hidden"
-            style={{ backgroundColor: '#f9f9f9' }}
-          >
+          <Carousel dots swipeToSlide draggable vertical={isMobile} className={styles.carousel}>
             {sortedImages.map((img) => (
-              <div key={img.id} className="w-full h-[480px] flex justify-center items-center">
+              <div key={img.id} className={styles.imageWrapper}>
                 <Image
                   src={img.url}
                   alt={product.name}
@@ -81,11 +114,11 @@ const ProductDetailPage: React.FC = () => {
         </Col>
 
         <Col xs={24} md={12}>
-          <div className="space-y-2">
+          <div className={styles.info}>
             <Tag color="blue">{product.category?.name}</Tag>
             <Typography.Title level={3}>{product.name}</Typography.Title>
 
-            <Typography.Title level={4} className="text-green-600">
+            <Typography.Title level={4} className={styles.price}>
               {product.price.toLocaleString('es-AR', {
                 style: 'currency',
                 currency: 'ARS',
@@ -93,40 +126,48 @@ const ProductDetailPage: React.FC = () => {
               })}
             </Typography.Title>
 
-            <p className="text-gray-500">
-              Marca: <strong>{product.brand?.name}</strong>
+            <p className={styles.brand}>
+              {t('productDetail.brand')}: <strong>{product.brand?.name}</strong>
             </p>
 
             <div>
-              <p className="font-medium mb-1 mt-4">Seleccioná tu talle:</p>
-              <div className="flex flex-wrap gap-2">
-                {product.variants.map((variant: Variant) => (
+              <p className={styles.label}>{t('productDetail.selectSize')}</p>
+              <div className={styles.sizes}>
+                {product.variants.map((variant) => (
                   <SizeButton
                     key={variant.id}
                     size={variant.size}
                     disabled={variant.stock === 0}
-                    selected={selectedVariant === variant}
+                    selected={selectedVariant?.id === variant.id}
                     onClick={() => setSelectedVariant(variant)}
                   />
                 ))}
               </div>
             </div>
 
+            <div style={{ margin: '1rem 0' }}>
+              <p className={styles.label}>{t('productDetail.quantity')}</p>
+              <InputNumber
+                min={1}
+                max={selectedVariant?.stock || 1}
+                value={quantity}
+                onChange={(value) => setQuantity(value || 1)}
+              />
+            </div>
+
             <Button
+              onClick={parsedCartAdd}
               type="primary"
-              className="mt-4"
-              disabled={
-                !selectedVariant ||
-                product.variants.find((v) => v.size === selectedVariant.size)?.stock === 0
-              }
+              className={styles.addToCart}
+              disabled={!selectedVariant || selectedVariant.stock === 0}
             >
-              Agregar al carrito
+              {t('productDetail.addToCart')}
             </Button>
           </div>
         </Col>
       </Row>
 
-      <Typography.Paragraph className="mt-6 text-sm text-gray-700">
+      <Typography.Paragraph className={styles.description}>
         {product.description}
       </Typography.Paragraph>
     </div>

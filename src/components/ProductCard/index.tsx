@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import { Product } from '@/types/Product';
+import styles from './ProductCard.module.scss';
 
 type Props = {
   product: Product;
@@ -15,33 +16,22 @@ const ProductCard: React.FC<Props> = ({ product, onClick }) => {
     <Card
       hoverable
       onClick={onClick}
-      className="rounded-2xl shadow-md transition-transform duration-200 hover:scale-[1.02]"
-      cover={
-        <img
-          alt={product.name}
-          src={mainImage}
-          className="w-full h-[220px] object-cover border-b block"
-        />
-      }
+      className={styles.productCard}
+      bodyStyle={{ padding: 0 }}
+      cover={<img alt={product.name} src={mainImage} className={styles.productImage} />}
     >
-      <Card.Meta
-        title={
-          <h3 className="text-sm font-semibold text-gray-800 leading-tight">{product.name}</h3>
-        }
-        description={
-          <div className="text-xs text-gray-700 leading-tight space-y-[2px]">
-            <p className="text-sm text-black font-bold leading-none">
-              {product.price.toLocaleString('es-AR', {
-                style: 'currency',
-                currency: 'ARS',
-                minimumFractionDigits: 0,
-              })}
-            </p>
-            <p className="text-[11px] text-gray-500 leading-none">{product.brand?.name}</p>
-            <p className="text-[11px] text-gray-500 leading-none">{colorCount} colores</p>
-          </div>
-        }
-      />
+      <div className={styles.productInfo}>
+        <h3 className={styles.productName}>{product.name}</h3>
+        <p className={styles.price}>
+          {product.price.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 0,
+          })}
+        </p>
+        <p className={styles.brand}>{product.brand?.name}</p>
+        <p className={styles.colors}>{colorCount} colores</p>
+      </div>
     </Card>
   );
 };
