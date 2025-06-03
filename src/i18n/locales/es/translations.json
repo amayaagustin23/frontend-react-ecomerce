@@ -96,11 +96,28 @@
     "contactMe": "Contactame"
   },
   "cart": {
+    "greeting": "Hola, Agustín!",
     "title": "Tu carrito",
+    "totalProducts": "TOTAL ({{count}} productos)",
+    "notReserved": "Los artículos en tu carrito no están reservados. Terminá el proceso de compra ahora para hacerte con ellos.",
+    "alertTitle": "TUS ARTÍCULOS DEL CARRITO NO ESTÁN RESERVADOS",
+    "alertDescription": "Asegurá tus artículos antes que se agoten. Además, obtené cuotas sin interés.",
     "empty": "Tu carrito está vacío",
+    "size": "Tamaño",
+    "color": "Color",
     "remove": "Eliminar",
+    "summary": "Resumen del pedido",
+    "productCount": "{{count}} productos",
+    "delivery": "Entrega",
+    "free": "Gratis",
     "total": "Total",
-    "checkout": "Finalizar compra"
+    "discount": "Descuento ({{code}})",
+    "enterCoupon": "Ingresá un código promocional",
+    "usePromoCode": "Usá un código promocional",
+    "checkout": "Ir a pagar",
+    "invalidCoupon": "Cupón inválido",
+    "couponApplied": "Cupón aplicado",
+    "withDiscount": "Total con descuento del {{percent}}%"
   },
   "tabs": {
     "coupons": "Cupones",
@@ -108,7 +125,14 @@
     "profile": "Mi Perfil"
   },
   "coupons": {
-    "title": "Canjeá tus puntos por cupones"
+    "title": "Tus cupones",
+    "available": "Canjeá puntos por cupones",
+    "yours": "Cupones canjeados",
+    "redeem": "Canjear",
+    "expiration": "Válido hasta",
+    "success": "🎉 ¡Cupón canjeado con éxito!",
+    "error": "❌ No se pudo canjear el cupón",
+    "notEnoughPoints": "No tenés suficientes puntos"
   },
   "orders": {
     "title": "Historial de pedidos",
@@ -150,5 +174,23 @@
     "PAID": "Pagado",
     "CANCELLED": "Cancelado",
     "DELIVERED": "Entregado"
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
+    "toggle": "Cambiar tema"
+  },
+  "messages": {
+    "success": {
+      "couponCart": "Cupón aplicado correctamente al carrito",
+      "addToCart": "Producto agregado al carrito"
+    },
+    "error": {
+      "couponCart": "No se pudo aplicar el cupón",
+      "fetchCart": "No se pudo obtener el carrito",
+      "addToCart": "No se pudo agregar el producto al carrito",
+      "updateQuantity": "No se pudo actualizar la cantidad",
+      "removeItem": "No se pudo eliminar el producto del carrito"
+    }
   }
 }

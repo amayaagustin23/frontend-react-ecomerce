@@ -17,7 +17,6 @@ const ProductCard: React.FC<Props> = ({ product, onClick }) => {
       hoverable
       onClick={onClick}
       className={styles.productCard}
-      bodyStyle={{ padding: 0 }}
       cover={<img alt={product.name} src={mainImage} className={styles.productImage} />}
     >
       <div className={styles.productInfo}>

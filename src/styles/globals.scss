@@ -1,7 +1,83 @@
 @use './variables' as *;
 
+html,
 body {
+  background-color: $color-white;
+  font-family: $font-family-main;
+  color: $color-primary;
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
+}
+
+.ant-layout-header {
+  background-color: $color-bg-header !important;
+  color: $color-primary;
+  border-bottom: 1px solid $color-primary;
+}
+
+.ant-layout-footer {
+  background-color: $color-bg-footer !important;
+  color: $color-footer-text;
+  text-align: center;
+}
+
+.ant-menu {
+  background-color: $color-bg-header !important;
+  border-bottom: none;
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    color: $color-primary !important;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $color-white !important;
+      background-color: transparent !important;
+    }
+
+    &.ant-menu-item-selected {
+      font-weight: 500;
+      color: $color-white !important;
+    }
+  }
+
+  .ant-menu-submenu-arrow {
+    color: $color-primary !important;
+  }
+
+  .ant-menu-title-content {
+    color: inherit !important;
+  }
+
+  .anticon {
+    color: $color-primary !important;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $color-white !important;
+    }
+  }
+}
+
+.ant-slider {
+  .ant-slider-rail {
+    background-color: $color-slider-rail !important;
+  }
+
+  .ant-slider-track {
+    background-color: $color-primary !important;
+  }
+
+  .ant-slider-handle {
+    border-color: $color-primary !important;
+    background-color: $color-white !important;
+
+    &:hover {
+      border-color: $color-primary-dark !important;
+    }
+  }
+
+  .ant-slider-mark-text {
+    color: $color-dark-text !important;
+    font-weight: 500;
+  }
 }

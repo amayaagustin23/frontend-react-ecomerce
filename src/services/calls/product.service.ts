@@ -44,9 +44,16 @@ export const updateProduct = (id: string, data: any, files: File[] = []) => {
   });
 };
 
-// ✅ Nuevas llamadas
 export const getAllBrands = () =>
   api.get(PRODUCT_ENDPOINTS.GET_ALL_BRANDS);
 
-export const getAllVariants = () =>
-  api.get(PRODUCT_ENDPOINTS.GET_ALL_VARIANTS);
+export const getAllVariantColors = () =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL_COLORS);
+
+
+export const getAllVariantSizes = () =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL_SIZES);
+
+
+export const getAllVariantGenders = () =>
+  api.get(PRODUCT_ENDPOINTS.GET_ALL_GENDERS);

@@ -16,6 +16,7 @@ export type Coupon = {
   id: string;
   code: string;
   discount: number;
+  value: number;
 };
 
 export type Cart = {
@@ -52,4 +53,5 @@ export type UpdateCartDto = {
   }[];
   itemsToAdd?: CreateItems[];
   itemsToDelete?: string[];
+  couponCode?: string;
 };

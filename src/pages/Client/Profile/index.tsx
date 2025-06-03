@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Tabs, Typography, List, Card } from 'antd';
+import { Tabs, Typography, List, Card, Button, Space } from 'antd';
 import styles from './UserProfilePage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/Auth/AuthContext';
@@ -8,7 +8,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { useNavigate } from 'react-router-dom';
 import { ORDER_ROUTES } from '@/router/paths';
-import { Order } from '@/types/Order';
+import { Coupon } from '@/types/Coupon';
+import { useCoupon } from '@/context/Coupon/CouponContext';
+import NumberFlow, { continuous } from '@number-flow/react';
 
 dayjs.locale('es');
 
@@ -16,20 +18,18 @@ const { Title, Paragraph } = Typography;
 
 const UserProfilePage = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, fetchUser } = useAuth();
   const { orders, fetchOrders } = useOrder();
+  const { generalCoupons, userCoupons, exchangeCouponCode, fetchGeneralCoupons, fetchUserCoupons } =
+    useCoupon();
+
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
+    fetchGeneralCoupons();
+    fetchUserCoupons();
   }, []);
-
-  const coupons = [
-    { discount: '-15%', points: 1000 },
-    { discount: '-20%', points: 2500 },
-    { discount: '-25%', points: 6000 },
-    { discount: '-30%', points: 8000 },
-  ];
 
   const redirect = (id: string) => {
     navigate(ORDER_ROUTES.getDetailPath(id));
@@ -42,14 +42,44 @@ const UserProfilePage = () => {
       children: (
         <>
           <Title level={4}>{t('coupons.title')}</Title>
+
+          <Title level={5}>{t('coupons.available')}</Title>
           <List
             grid={{ gutter: 16, column: 4 }}
-            dataSource={coupons}
-            renderItem={(item) => (
+            dataSource={generalCoupons}
+            renderItem={(item: Coupon) => (
               <List.Item>
                 <Card className={styles.couponCard}>
-                  <div className={styles.discount}>{item.discount}</div>
-                  <div>{item.points} pts</div>
+                  <div className={styles.discount}>-{item.value}%</div>
+                  <div>{item.price} pts</div>
+                  <Button
+                    type="primary"
+                    block
+                    onClick={() => {
+                      exchangeCouponCode(item.code);
+                      fetchUser();
+                    }}
+                    disabled={user ? user?.points < item.price : true}
+                  >
+                    {t('coupons.redeem')}
+                  </Button>
+                </Card>
+              </List.Item>
+            )}
+          />
+
+          <Title level={5}>{t('coupons.yours')}</Title>
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={userCoupons}
+            renderItem={(item: Coupon) => (
+              <List.Item>
+                <Card className={styles.userCouponCard}>
+                  <div className={styles.discount}>-{item.value}%</div>
+                  <div>{item.code}</div>
+                  <div>
+                    {t('coupons.expiration')}: {dayjs(item.expiresAt).format('DD/MM/YYYY')}
+                  </div>
                 </Card>
               </List.Item>
             )}
@@ -124,6 +154,10 @@ const UserProfilePage = () => {
 
   return (
     <div className={styles.userProfilePage}>
+      <Title>Hola {user?.name}</Title>
+      <Title level={4}>
+        Puntos: <NumberFlow plugins={[continuous]} value={user?.points} />{' '}
+      </Title>
       <Tabs defaultActiveKey="1" items={items} centered />
     </div>
   );

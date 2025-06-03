@@ -24,6 +24,7 @@ import {
 } from '@/router/paths';
 import { useTranslation } from 'react-i18next';
 import styles from './LayoutContainer.module.scss';
+import ThemeToggle from '../ThemeToggle';
 
 const { Header, Content, Footer } = Layout;
 
@@ -34,11 +35,11 @@ const LayoutContainer: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const { cart } = useCart();
+  const { getQuantityTotal } = useCart();
 
   const { user, isLogin, logout } = useAuth();
   const { fetchFilteredProducts, productsFiltered } = useProduct();
-  const itemCount = cart?.items?.length || 0;
+  const itemCount = getQuantityTotal();
   const [searchValue, setSearchValue] = useState('');
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -123,6 +124,7 @@ const LayoutContainer: React.FC = () => {
           <>
             <div className={styles.mobileHeader}>
               <Button icon={<MenuOutlined />} type="text" onClick={toggleMobileMenu} />
+              <ThemeToggle />
             </div>
 
             <Drawer
@@ -181,7 +183,9 @@ const LayoutContainer: React.FC = () => {
                 />
               </AutoComplete>
             </div>
-
+            <div>
+              <ThemeToggle />
+            </div>
             <Menu
               mode="horizontal"
               selectedKeys={[location.pathname]}

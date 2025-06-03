@@ -5,4 +5,5 @@ export type User = {
   phone: string;
   cuitOrDni: string;
   role: 'CLIENT' | 'ADMIN' | 'SELLER';
+  points: number;
 };

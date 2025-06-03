@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Cart, CartItem } from '@/types/Cart';
 import { getCart, updateCart, createCart } from '@/services/calls/cart.service';
+import { useTranslation } from 'react-i18next';
+import { useMessageApi } from '../Message/MessageContext';
 
 type CartContextType = {
   cart: Cart | null;
@@ -9,24 +11,41 @@ type CartContextType = {
   addToCart: (item: CartItem) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   removeItem: (itemId: string) => void;
+  addCouponCode: (id: string, body: { couponCode: string }) => void;
   clearCart: () => void;
+  fetchCart: () => void;
   getTotal: () => number;
+  getTotalFinalPrice: () => number;
+  getQuantityTotal: () => number;
+
   coupon: Cart['coupon'] | null;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+  const { t } = useTranslation();
   const [cart, setCart] = useState<Cart | null>(null);
   const cartItems = cart?.items || [];
   const coupon = cart?.coupon || null;
+  const message = useMessageApi();
 
   const fetchCart = async () => {
     try {
       const response = await getCart();
       setCart(response.data);
     } catch (error) {
-      console.error('❌ Error al obtener el carrito:', error);
+      console.error('❌', t('messages.error.fetchCart'), error);
+    }
+  };
+
+  const addCouponCode = async (id: string, dto: { couponCode: string }) => {
+    try {
+      await updateCart(id, dto);
+      await fetchCart();
+      message.success(t('messages.success.couponCart'));
+    } catch (error) {
+      message.error(t('messages.error.couponCart'));
     }
   };
 
@@ -36,6 +55,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setCartItems = (items: CartItem[]) => {
     setCart((prev) => (prev ? { ...prev, items } : null));
+  };
+
+  const getQuantityTotal = () => {
+    return (cart && cart?.items.reduce((acc, item) => acc + item.quantity, 0)) || 0;
   };
 
   const addToCart = async (item: CartItem) => {
@@ -55,34 +78,36 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         cartId = response.data.id;
         setCart(response.data);
         return;
-      }
-
-      await updateCart(cartId, {
-        itemsToAdd: [
-          {
-            productId: item.productId,
-            variantId: item.variantId,
-            quantity: item.quantity,
-          },
-        ],
-      });
-
-      setCart((prev) => {
-        if (!prev) return null;
-        const exists = prev.items.find(
-          (i) => i.productId === item.productId && i.variantId === item.variantId
+      } else {
+        const productVariantExist = await cart?.items.find(
+          ({ product, variant }) => item.productId === product.id && item.variantId === variant.id
         );
-        const newItems = exists
-          ? prev.items.map((i) =>
-              i.productId === item.productId && i.variantId === item.variantId
-                ? { ...i, quantity: i.quantity + item.quantity }
-                : i
-            )
-          : [...prev.items, item];
-        return { ...prev, items: newItems };
-      });
+        if (productVariantExist) {
+          await updateCart(cartId, {
+            itemsToUpdate: [
+              {
+                id: productVariantExist.id,
+                quantity: productVariantExist.quantity + item.quantity,
+              },
+            ],
+          });
+        } else {
+          await updateCart(cartId, {
+            itemsToAdd: [
+              {
+                productId: item.productId,
+                variantId: item.variantId,
+                quantity: item.quantity,
+              },
+            ],
+          });
+        }
+      }
+      fetchCart();
+      message.success(t('messages.success.addToCart'));
     } catch (error) {
-      console.error('Error al agregar item', error);
+      console.error('❌', t('messages.error.addToCart'), error);
+      message.error(t('messages.error.addToCart'));
     }
   };
 
@@ -101,7 +126,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           : null
       );
     } catch (error) {
-      console.error('Error al actualizar cantidad', error);
+      console.error('❌', t('messages.error.updateQuantity'), error);
+      message.error(t('messages.error.updateQuantity'));
     }
   };
 
@@ -120,13 +146,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           : null
       );
     } catch (error) {
-      console.error('Error al eliminar item', error);
+      console.error('❌', t('messages.error.removeItem'), error);
+      message.error(t('messages.error.removeItem'));
     }
   };
 
   const clearCart = () => setCart(null);
 
   const getTotal = () => {
+    return cartItems.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
+  };
+  const getTotalFinalPrice = () => {
     return cartItems.reduce((acc, item) => acc + item.finalPrice * item.quantity, 0);
   };
 
@@ -134,14 +164,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     <CartContext.Provider
       value={{
         cart,
+        fetchCart,
         cartItems,
         setCartItems,
+        addCouponCode,
         addToCart,
         updateQuantity,
         removeItem,
         clearCart,
         getTotal,
         coupon,
+        getQuantityTotal,
+        getTotalFinalPrice,
       }}
     >
       {children}

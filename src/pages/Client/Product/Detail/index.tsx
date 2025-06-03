@@ -99,15 +99,10 @@ const ProductDetailPage: React.FC = () => {
     <div className={styles.container}>
       <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
-          <Carousel dots swipeToSlide draggable vertical={isMobile} className={styles.carousel}>
+          <Carousel dots swipeToSlide draggable className={styles.carousel}>
             {sortedImages.map((img) => (
               <div key={img.id} className={styles.imageWrapper}>
-                <Image
-                  src={img.url}
-                  alt={product.name}
-                  style={{ maxHeight: 460, objectFit: 'contain' }}
-                  className="max-w-full"
-                />
+                <Image src={img.url} alt={product.name} className={styles.productImage} />
               </div>
             ))}
           </Carousel>

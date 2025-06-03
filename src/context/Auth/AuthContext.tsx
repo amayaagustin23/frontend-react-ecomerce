@@ -8,6 +8,7 @@ type AuthContextType = {
   setUser: (user: User | null) => void;
   setIsLogin: (value: boolean) => void;
   logout: () => void;
+  fetchUser: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,18 +17,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
+  const fetchUser = async () => {
+    try {
+      const response = await getMe();
+      setUser(response.data);
+      setIsLogin(true);
+    } catch {
+      setUser(null);
+      setIsLogin(false);
+    }
+  };
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await getMe();
-        setUser(response.data);
-        setIsLogin(true);
-      } catch {
-        setUser(null);
-        setIsLogin(false);
-      }
-    };
-
     fetchUser();
   }, []);
 
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLogin, setUser, setIsLogin, logout }}>
+    <AuthContext.Provider value={{ user, fetchUser, isLogin, setUser, setIsLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

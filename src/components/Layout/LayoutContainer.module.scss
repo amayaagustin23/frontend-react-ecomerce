@@ -6,7 +6,6 @@
   .header {
     display: flex;
     justify-content: space-between !important;
-    background: #fff;
   }
 
   .leftMenu {
@@ -41,7 +40,6 @@
         height: 48px;
         object-fit: cover;
         border-radius: 6px;
-        background-color: #f0f0f0;
         flex-shrink: 0;
       }
 
@@ -52,11 +50,9 @@
         .name {
           font-weight: 500;
           font-size: 0.95rem;
-          color: #000;
         }
 
         .price {
-          color: #888;
           font-size: 0.875rem;
         }
       }
@@ -80,7 +76,6 @@
 
   .footer {
     text-align: center;
-    background: #fff;
   }
 }
 
@@ -99,4 +94,10 @@
       min-height: 280px;
     }
   }
+}
+
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

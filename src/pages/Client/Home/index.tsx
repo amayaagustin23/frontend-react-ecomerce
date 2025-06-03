@@ -4,13 +4,13 @@ import ProductCard from '@/components/ProductCard';
 import { Col, Row, Spin, Card, Typography } from 'antd';
 import { SkinOutlined, LaptopOutlined, HomeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { PRODUCT_ROUTES } from '@/router/paths';
+import { PATH_ROUTE_PRODUCTS, PRODUCT_ROUTES } from '@/router/paths';
 import styles from './HomePage.module.scss';
 import { useCategory } from '@/context/Category/CategoryContext';
 import BannerCarousel from '@/components/BannerCarousel';
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  Moda: <SkinOutlined />,
+  Deportes: <SkinOutlined />,
   Tecnologia: <LaptopOutlined />,
   Hogar: <HomeOutlined />,
 };
@@ -36,6 +36,9 @@ const HomePage = () => {
       </div>
     );
   }
+  const goToProductsByCategory = (name: string) => {
+    navigate(`${PATH_ROUTE_PRODUCTS}?category=${name}`);
+  };
 
   return (
     <div className={styles.container}>
@@ -48,7 +51,7 @@ const HomePage = () => {
                 key={category.id}
                 className={styles.categoryCard}
                 hoverable
-                onClick={() => console.log('Seleccionar categoría:', category.name)}
+                onClick={() => goToProductsByCategory(category.name)}
               >
                 <div className={styles.icon}>
                   {categoryIcons[category.name] || <AppstoreOutlined />}

@@ -1,7 +1,7 @@
 export const AUTH_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
-  LOGOUT: '/auth/logout', // si lo tenés
+  LOGOUT: '/auth/logout',
   RECOVER_PASSWORD: '/auth/recover-password',
   RESET_PASSWORD: '/auth/reset-password',
   ME: '/auth/me',
@@ -12,7 +12,7 @@ export const USER_ENDPOINTS = {
   GET_BY_ID: (id: string) => `/users/${id}`,
   UPDATE: (id: string) => `/users/${id}`,
   DELETE: (id: string) => `/users/${id}`,
-  EXCHANGE_COUPON: (code: string) => `/users/exchange-coupon/${code}`,
+  EXCHANGE_COUPON: (code: string) => `/users/exchange-coupon-points/${code}`,
   ADDRESS_DEFAULT_UPDATE: (id: string) => `/users/address-default/${id}`,
 };
 
@@ -22,7 +22,9 @@ export const PRODUCT_ENDPOINTS = {
   CREATE: '/products',
   UPDATE: (id: string) => `/products/${id}`,
   GET_ALL_BRANDS: '/products/all/brands',
-  GET_ALL_VARIANTS: '/products/all/variants',
+  GET_ALL_COLORS: '/products/variants/colors',
+  GET_ALL_SIZES: '/products/variants/sizes',
+  GET_ALL_GENDERS: '/products/variants/genders',
 };
 
 export const CATEGORY_ENDPOINTS = {
@@ -44,4 +46,12 @@ export const ORDER_ENDPOINTS = {
   CREATE_FROM_CART: (cartId: string) => `/orders/cart/${cartId}`,
   GET_ALL: '/orders',
   GET_BY_ID: (id: string) => `/orders/${id}`,
+};
+
+export const COUPON_ENDPOINTS = {
+  GET_ALL: '/coupons',
+  GET_BY_ID: (id: string) => `/coupons/${id}`,
+  GET_EXCHANGE: '/coupons/general/exchange',
+  GET_PROMOTION: '/coupons/general/promotion',
+  GET_MY_COUPONS: '/coupons/my/coupons',
 };

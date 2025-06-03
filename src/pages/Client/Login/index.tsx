@@ -6,6 +6,8 @@ import { login } from '@/services/calls/auth.service';
 import { useAuth } from '@/context/Auth/AuthContext';
 import { useTranslation } from 'react-i18next';
 import styles from './LoginPage.module.scss';
+import { useCart } from '@/context/Cart/CartContext';
+import { PATH_ROUTE_HOME } from '@/router/paths';
 
 const { Title, Text, Link } = Typography;
 
@@ -15,6 +17,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setIsLogin } = useAuth();
+  const { fetchCart } = useCart();
   const { t } = useTranslation();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -28,9 +31,10 @@ const LoginPage = () => {
       Cookies.set('access_token', token, { path: '/', secure: true, sameSite: 'strict' });
       setUser(user);
       setIsLogin(true);
+      fetchCart();
       message.success(t('auth.login.success'));
 
-      navigate('/', { replace: true });
+      navigate(PATH_ROUTE_HOME, { replace: true });
     } catch (error: any) {
       message.error(error?.response?.data?.message || t('auth.login.error'));
     } finally {

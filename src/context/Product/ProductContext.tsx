@@ -1,4 +1,10 @@
-import { getAllProducts, getAllBrands, getAllVariants } from '@/services/calls/product.service';
+import {
+  getAllProducts,
+  getAllBrands,
+  getAllVariantColors,
+  getAllVariantSizes,
+  getAllVariantGenders,
+} from '@/services/calls/product.service';
 import { Brand } from '@/types/Brand';
 import { Product } from '@/types/Product';
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -28,7 +34,9 @@ type ProductContextType = {
   loading: boolean;
   pagination: Pagination;
   brands: Brand[];
-  variants: string[];
+  variantColors: string[];
+  variantSizes: string[];
+  variantGenders: string[];
   fetchProducts: (params?: FetchProductsParams) => Promise<void>;
   fetchFilteredProducts: (params?: FetchProductsParams) => Promise<void>;
   loadBrandsAndVariants: () => Promise<void>;
@@ -40,7 +48,9 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
   const [products, setProducts] = useState<Product[]>([]);
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [variants, setVariants] = useState<string[]>([]);
+  const [variantColors, setVariantColors] = useState<string[]>([]);
+  const [variantSizes, setVariantSizes] = useState<string[]>([]);
+  const [variantGenders, setVariantGenders] = useState<string[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     size: 10,
@@ -87,13 +97,22 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
   const loadBrandsAndVariants = async () => {
     try {
-      const [brandsRes, variantsRes] = await Promise.all([getAllBrands(), getAllVariants()]);
+      const [brandsRes, variantsColorRes, variantSizes, variantGenders] = await Promise.all([
+        getAllBrands(),
+        getAllVariantColors(),
+        getAllVariantSizes(),
+        getAllVariantGenders(),
+      ]);
 
       setBrands(brandsRes.data);
-      setVariants(variantsRes.data);
+      setVariantColors(variantsColorRes.data);
+      setVariantSizes(variantSizes.data);
+      setVariantGenders(variantGenders.data);
     } catch {
       setBrands([]);
-      setVariants([]);
+      setVariantColors([]);
+      setVariantSizes([]);
+      setVariantGenders([]);
     }
   };
 
@@ -105,7 +124,9 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         loading,
         pagination,
         brands,
-        variants,
+        variantColors,
+        variantSizes,
+        variantGenders,
         fetchProducts,
         fetchFilteredProducts,
         loadBrandsAndVariants,

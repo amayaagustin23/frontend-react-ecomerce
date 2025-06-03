@@ -12,12 +12,11 @@ import {
   Empty,
   Typography,
   Checkbox,
-  Slider,
-  Divider,
   Select,
   Drawer,
   Button,
   Grid,
+  Collapse,
 } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -26,8 +25,17 @@ import styles from './ProductsPage.module.scss';
 const { useBreakpoint } = Grid;
 
 const ProductsPage: React.FC = () => {
-  const { products, loading, pagination, fetchProducts, loadBrandsAndVariants, variants, brands } =
-    useProduct();
+  const {
+    products,
+    loading,
+    pagination,
+    fetchProducts,
+    loadBrandsAndVariants,
+    variantColors,
+    variantSizes,
+    variantGenders,
+    brands,
+  } = useProduct();
   const { categories } = useCategory();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -40,7 +48,7 @@ const ProductsPage: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategoryId ? [initialCategoryId] : []
   );
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 999]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState<string>('createdAt_desc');
@@ -56,6 +64,12 @@ const ProductsPage: React.FC = () => {
       checked
         ? [...new Set([...prev, ...idsToToggle])]
         : prev.filter((catId) => !idsToToggle.includes(catId))
+    );
+  };
+
+  const handleVariantToggle = (value: string) => {
+    setSelectedVariants((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   };
 
@@ -91,115 +105,130 @@ const ProductsPage: React.FC = () => {
 
   const FilterContent = (
     <div className={styles.sidebar}>
-      {isMobile && (
-        <>
-          <div className={styles.controlGroup}>
-            <Typography.Text strong>{t('products.orderBy')}</Typography.Text>
-            <Select
-              value={orderBy}
-              onChange={(value) => setOrderBy(value)}
-              style={{ width: '100%' }}
-              options={[
-                { value: 'createdAt_desc', label: t('products.sort.newest') },
-                { value: 'price_asc', label: t('products.sort.lowToHigh') },
-                { value: 'price_desc', label: t('products.sort.highToLow') },
-                { value: 'name_asc', label: t('products.sort.nameAsc') },
-                { value: 'name_desc', label: t('products.sort.nameDesc') },
-              ]}
-            />
-          </div>
-          <div className={styles.controlGroup}>
-            <Typography.Text strong>{t('products.itemsPerPage')}</Typography.Text>
-            <Select
-              value={pageSize}
-              onChange={(value) => setPageSize(value)}
-              style={{ width: '100%' }}
-              options={[
-                { value: 12, label: '12' },
-                { value: 24, label: '24' },
-                { value: 36, label: '36' },
-              ]}
-            />
-          </div>
-          <Divider />
-        </>
-      )}
-
-      <Typography.Title level={3}>{t('products.search')}</Typography.Title>
-      <Typography.Title level={4}>{t('products.price')}</Typography.Title>
-      <Slider
-        range
-        min={0}
-        max={999}
-        step={100}
-        marks={{ 0: '$0', 999: '$999' }}
-        value={priceRange}
-        onChange={(value) => setPriceRange(value as [number, number])}
-        tooltip={{ formatter: (val) => `$${val?.toLocaleString('es-AR')}` }}
-      />
-      <Divider />
-      <Typography.Title level={4}>{t('products.categories')}</Typography.Title>
-      {categories.map((cat) => {
-        const subIds = cat.subcategories?.map((sub) => sub.id) || [];
-        const allSelected = [cat.id, ...subIds].every((id) => selectedCategories.includes(id));
-        return (
-          <div key={cat.id} style={{ marginBottom: '0.75rem' }}>
-            <Checkbox
-              checked={allSelected}
-              onChange={(e) => handleCategoryChange(e.target.checked, cat.id, subIds)}
-            >
-              {cat.name}
-            </Checkbox>
-            {cat.subcategories?.length > 0 && (
-              <div style={{ paddingLeft: '1.5rem', marginTop: '0.25rem' }}>
-                {cat.subcategories.map((sub) => (
-                  <div key={sub.id}>
+      <Collapse
+        defaultActiveKey={[]}
+        expandIconPosition="end"
+        items={[
+          {
+            key: 'categories',
+            label: t('products.categories'),
+            children: (
+              <>
+                {categories.map((cat) => {
+                  const subIds = cat.subcategories?.map((sub) => sub.id) || [];
+                  const allSelected = [cat.id, ...subIds].every((id) =>
+                    selectedCategories.includes(id)
+                  );
+                  return (
+                    <div key={cat.id} style={{ marginBottom: '0.75rem' }}>
+                      <Checkbox
+                        checked={allSelected}
+                        onChange={(e) => handleCategoryChange(e.target.checked, cat.id, subIds)}
+                      >
+                        {cat.name}
+                      </Checkbox>
+                      {cat.subcategories?.length > 0 && (
+                        <div style={{ paddingLeft: '1.5rem', marginTop: '0.25rem' }}>
+                          {cat.subcategories.map((sub) => (
+                            <div key={sub.id}>
+                              <Checkbox
+                                checked={selectedCategories.includes(sub.id)}
+                                onChange={(e) => handleCategoryChange(e.target.checked, sub.id)}
+                              >
+                                {sub.name}
+                              </Checkbox>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </>
+            ),
+          },
+          {
+            key: 'brands',
+            label: t('products.brands'),
+            children: (
+              <>
+                {brands.map((brand) => (
+                  <div key={brand.id}>
                     <Checkbox
-                      checked={selectedCategories.includes(sub.id)}
-                      onChange={(e) => handleCategoryChange(e.target.checked, sub.id)}
+                      checked={selectedBrands.includes(brand.id)}
+                      onChange={(e) =>
+                        setSelectedBrands((prev) =>
+                          e.target.checked
+                            ? [...prev, brand.id]
+                            : prev.filter((id) => id !== brand.id)
+                        )
+                      }
                     >
-                      {sub.name}
+                      {brand.name}
                     </Checkbox>
                   </div>
                 ))}
+              </>
+            ),
+          },
+          {
+            key: 'colors',
+            label: t('products.colors'),
+            children: (
+              <div className={styles.colorGrid}>
+                {variantColors.map((color) => {
+                  const isSelected = selectedVariants.includes(color);
+                  return (
+                    <div
+                      key={color}
+                      className={`${styles.colorCircle} ${isSelected ? styles.selected : ''}`}
+                      style={{ backgroundColor: color }}
+                      onClick={() => handleVariantToggle(color)}
+                      title={color}
+                    />
+                  );
+                })}
               </div>
-            )}
-          </div>
-        );
-      })}
-      <Divider />
-      <Typography.Title level={4}>{t('products.brands')}</Typography.Title>
-      {brands.map((brand) => (
-        <div key={brand.id}>
-          <Checkbox
-            checked={selectedBrands.includes(brand.id)}
-            onChange={(e) => {
-              setSelectedBrands((prev) =>
-                e.target.checked ? [...prev, brand.id] : prev.filter((id) => id !== brand.id)
-              );
-            }}
-          >
-            {brand.name}
-          </Checkbox>
-        </div>
-      ))}
-      <Divider />
-      <Typography.Title level={4}>{t('products.variants')}</Typography.Title>
-      {variants.map((variant) => (
-        <div key={variant}>
-          <Checkbox
-            checked={selectedVariants.includes(variant)}
-            onChange={(e) => {
-              setSelectedVariants((prev) =>
-                e.target.checked ? [...prev, variant] : prev.filter((val) => val !== variant)
-              );
-            }}
-          >
-            {variant}
-          </Checkbox>
-        </div>
-      ))}
-      <Divider />
+            ),
+          },
+          {
+            key: 'sizes',
+            label: t('products.sizes'),
+            children: (
+              <>
+                {variantSizes.map((size) => (
+                  <div key={size}>
+                    <Checkbox
+                      checked={selectedVariants.includes(size)}
+                      onChange={() => handleVariantToggle(size)}
+                    >
+                      {size}
+                    </Checkbox>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+          {
+            key: 'genders',
+            label: t('products.genders'),
+            children: (
+              <>
+                {variantGenders.map((gender) => (
+                  <div key={gender}>
+                    <Checkbox
+                      checked={selectedVariants.includes(gender)}
+                      onChange={() => handleVariantToggle(gender)}
+                    >
+                      {gender}
+                    </Checkbox>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 

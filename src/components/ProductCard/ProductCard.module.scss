@@ -28,7 +28,6 @@
     .productName {
       font-size: 0.8rem;
       font-weight: 600;
-      color: #333;
       margin-bottom: 0.25rem;
       line-height: 1.2;
       display: -webkit-box;
@@ -40,14 +39,12 @@
     .price {
       font-size: 0.9rem;
       font-weight: bold;
-      color: #000;
       margin: 0;
     }
 
     .brand,
     .colors {
       font-size: 0.65rem;
-      color: #888;
       margin: 0;
     }
   }
