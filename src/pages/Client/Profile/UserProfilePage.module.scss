@@ -24,6 +24,7 @@
   margin-top: 1rem;
   padding: 1rem;
 }
+
 .ordersContainer {
   display: flex;
   flex-direction: column;
@@ -47,4 +48,35 @@
   height: 64px;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.addressCard {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  width: 100% !important;
+
+  .ant-radio-wrapper {
+    display: block;
+    font-weight: 500;
+  }
+
+  .defaultTag {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: #52c41a;
+    font-weight: 500;
+  }
+}
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.userCouponCardExchange {
+  text-align: center;
+  width: 22rem !important;
 }

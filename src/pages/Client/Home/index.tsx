@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useProduct } from '@/context/Product/ProductContext';
 import ProductCard from '@/components/ProductCard';
-import { Col, Row, Spin, Card, Typography } from 'antd';
+import { Col, Row, Spin, Card, Typography, Divider } from 'antd';
 import { SkinOutlined, LaptopOutlined, HomeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { PATH_ROUTE_PRODUCTS, PRODUCT_ROUTES } from '@/router/paths';
@@ -16,13 +16,13 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 const HomePage = () => {
-  const { products, loading, fetchProducts } = useProduct();
+  const { favoriteProducts, fetchFavoriteProducts, loading } = useProduct();
   const { categories } = useCategory();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts({ page: 1, size: 4 });
+    fetchFavoriteProducts();
   }, []);
 
   const redirect = (id: string) => {
@@ -62,8 +62,10 @@ const HomePage = () => {
           </div>
         )}
       </div>
+      <Divider />
+      <Typography.Title level={3}>Favoritos</Typography.Title>
       <Row gutter={[16, 16]}>
-        {products.map((product) => (
+        {favoriteProducts.map((product) => (
           <Col key={product.id} xs={24} sm={12} md={6} lg={6}>
             <ProductCard product={product} onClick={() => redirect(product.id)} />
           </Col>

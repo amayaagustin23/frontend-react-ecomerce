@@ -3,6 +3,8 @@ import { Cart, CartItem } from '@/types/Cart';
 import { getCart, updateCart, createCart } from '@/services/calls/cart.service';
 import { useTranslation } from 'react-i18next';
 import { useMessageApi } from '../Message/MessageContext';
+import Cookies from 'js-cookie';
+import { useAuth } from '../Auth/AuthContext';
 
 type CartContextType = {
   cart: Cart | null;
@@ -58,7 +60,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getQuantityTotal = () => {
-    return (cart && cart?.items.reduce((acc, item) => acc + item.quantity, 0)) || 0;
+    return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
   };
 
   const addToCart = async (item: CartItem) => {

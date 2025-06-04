@@ -13,6 +13,7 @@ export type Product = {
   isService: boolean;
   isActive: boolean;
   hasDelivery: boolean;
+  isFavorite?: boolean;
   category: {
     id: string;
     name: string;

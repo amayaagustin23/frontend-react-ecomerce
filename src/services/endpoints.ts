@@ -2,9 +2,9 @@ export const AUTH_ENDPOINTS = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
+  ME: '/auth/me',
   RECOVER_PASSWORD: '/auth/recover-password',
   RESET_PASSWORD: '/auth/reset-password',
-  ME: '/auth/me',
 };
 
 export const USER_ENDPOINTS = {
@@ -14,6 +14,12 @@ export const USER_ENDPOINTS = {
   DELETE: (id: string) => `/users/${id}`,
   EXCHANGE_COUPON: (code: string) => `/users/exchange-coupon-points/${code}`,
   ADDRESS_DEFAULT_UPDATE: (id: string) => `/users/address-default/${id}`,
+  ADD_FAVORITE_PRODUCT: '/users/add/product',
+  DELETE_FAVORITE_PRODUCT: '/users/delete/product',
+  ADD_ADDRESS: '/users/address/create',
+  DELETE_ADDRESS: (id: string) => `/users/address/delete/${id}`,
+  UPDATE_ADDRESS: (id: string) => `/users/address/update/${id}`,
+  DEFAULT_CHANGE_ADDRESS: (id: string) => `/users/address/default/${id}`,
 };
 
 export const PRODUCT_ENDPOINTS = {
@@ -25,6 +31,7 @@ export const PRODUCT_ENDPOINTS = {
   GET_ALL_COLORS: '/products/variants/colors',
   GET_ALL_SIZES: '/products/variants/sizes',
   GET_ALL_GENDERS: '/products/variants/genders',
+  GET_ALL_FAVORITES: '/products/favortes/user',
 };
 
 export const CATEGORY_ENDPOINTS = {
@@ -54,4 +61,9 @@ export const COUPON_ENDPOINTS = {
   GET_EXCHANGE: '/coupons/general/exchange',
   GET_PROMOTION: '/coupons/general/promotion',
   GET_MY_COUPONS: '/coupons/my/coupons',
+};
+
+export const GOOGLE_PLACES_ENDPOINTS = {
+  GET_AUTOCOMPLETE: '/google-places/autocomplete',
+  GET_DETAIL: '/google-places/details',
 };

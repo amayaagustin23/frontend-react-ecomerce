@@ -18,17 +18,18 @@ import {
   PATH_ROUTE_CART,
   PATH_ROUTE_CONTACT,
   PATH_ROUTE_HOME,
+  PATH_ROUTE_LOGIN,
   PATH_ROUTE_PRODUCTS,
   PATH_ROUTE_PROFILE,
   PRODUCT_ROUTES,
 } from '@/router/paths';
 import { useTranslation } from 'react-i18next';
-import styles from './LayoutContainer.module.scss';
-import ThemeToggle from '../ThemeToggle';
+import styles from './LayoutContainerClient.module.scss';
+import ThemeToggle from '../../ThemeToggle';
 
 const { Header, Content, Footer } = Layout;
 
-const LayoutContainer: React.FC = () => {
+const LayoutContainerClient: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -72,7 +73,7 @@ const LayoutContainer: React.FC = () => {
       key: PATH_ROUTE_CONTACT,
       icon: <NotificationOutlined />,
       label: t('layout.menu.contact'),
-      onClick: () => navigate('/contacto'),
+      onClick: () => navigate(PATH_ROUTE_CONTACT),
     },
   ];
 
@@ -107,7 +108,7 @@ const LayoutContainer: React.FC = () => {
             {
               key: 'login',
               label: t('layout.menu.login'),
-              onClick: () => navigate('/login'),
+              onClick: () => navigate(PATH_ROUTE_LOGIN),
             },
           ],
     },
@@ -214,4 +215,4 @@ const LayoutContainer: React.FC = () => {
   );
 };
 
-export default LayoutContainer;
+export default LayoutContainerClient;

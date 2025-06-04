@@ -1,6 +1,7 @@
-import { useEffect, useState, type JSX } from "react";
-import { Navigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState, type JSX } from 'react';
+import { Navigate } from 'react-router-dom';
+import { getMe } from '@/services/calls/auth.service';
+import { PATH_ROUTE_LOGIN } from './paths';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get("/api/v1/auth/me", { withCredentials: true });
+        await getMe();
         setAuthorized(true);
       } catch {
         setAuthorized(false);
@@ -21,9 +22,9 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     checkAuth();
   }, []);
 
-  if (loading) return null; // o un spinner
+  if (loading) return null;
 
-  return authorized ? children : <Navigate to="/login" />;
+  return authorized ? children : <Navigate to={PATH_ROUTE_LOGIN} />;
 };
 
 export default ProtectedRoute;

@@ -1,13 +1,16 @@
+import React, { createContext, useContext, useState, useRef } from 'react';
 import {
   getAllProducts,
   getAllBrands,
   getAllVariantColors,
   getAllVariantSizes,
   getAllVariantGenders,
+  getAllFavorites,
 } from '@/services/calls/product.service';
 import { Brand } from '@/types/Brand';
 import { Product } from '@/types/Product';
-import { createContext, useContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useAuth } from '../Auth/AuthContext';
 
 type Pagination = {
   page: number;
@@ -31,6 +34,7 @@ export type FetchProductsParams = {
 type ProductContextType = {
   products: Product[];
   productsFiltered: Product[];
+  favoriteProducts: Product[];
   loading: boolean;
   pagination: Pagination;
   brands: Brand[];
@@ -39,6 +43,7 @@ type ProductContextType = {
   variantGenders: string[];
   fetchProducts: (params?: FetchProductsParams) => Promise<void>;
   fetchFilteredProducts: (params?: FetchProductsParams) => Promise<void>;
+  fetchFavoriteProducts: () => Promise<void>;
   loadBrandsAndVariants: () => Promise<void>;
 };
 
@@ -47,6 +52,7 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined);
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [variantColors, setVariantColors] = useState<string[]>([]);
   const [variantSizes, setVariantSizes] = useState<string[]>([]);
@@ -95,9 +101,21 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
+  const fetchFavoriteProducts = async () => {
+    try {
+      setLoading(true);
+      const res = await getAllFavorites();
+      setFavoriteProducts(res.data);
+    } catch {
+      setFavoriteProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const loadBrandsAndVariants = async () => {
     try {
-      const [brandsRes, variantsColorRes, variantSizes, variantGenders] = await Promise.all([
+      const [brandsRes, variantsColorRes, variantSizesRes, variantGendersRes] = await Promise.all([
         getAllBrands(),
         getAllVariantColors(),
         getAllVariantSizes(),
@@ -106,8 +124,8 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
       setBrands(brandsRes.data);
       setVariantColors(variantsColorRes.data);
-      setVariantSizes(variantSizes.data);
-      setVariantGenders(variantGenders.data);
+      setVariantSizes(variantSizesRes.data);
+      setVariantGenders(variantGendersRes.data);
     } catch {
       setBrands([]);
       setVariantColors([]);
@@ -121,6 +139,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       value={{
         products,
         productsFiltered,
+        favoriteProducts,
         loading,
         pagination,
         brands,
@@ -129,6 +148,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         variantGenders,
         fetchProducts,
         fetchFilteredProducts,
+        fetchFavoriteProducts,
         loadBrandsAndVariants,
       }}
     >

@@ -7,7 +7,12 @@ import { useAuth } from '@/context/Auth/AuthContext';
 import { useTranslation } from 'react-i18next';
 import styles from './LoginPage.module.scss';
 import { useCart } from '@/context/Cart/CartContext';
-import { PATH_ROUTE_HOME } from '@/router/paths';
+import {
+  PATH_ROUTE_DASHBOARD,
+  PATH_ROUTE_HOME,
+  PATH_ROUTE_RECOVERY_PASSWORD,
+  PATH_ROUTE_REGISTER,
+} from '@/router/paths';
 
 const { Title, Text, Link } = Typography;
 
@@ -28,19 +33,28 @@ const LoginPage = () => {
       const response = await login({ email, password });
       const { token, user } = response.data;
 
-      Cookies.set('access_token', token, { path: '/', secure: true, sameSite: 'strict' });
+      Cookies.set('access_token', token, {
+        path: PATH_ROUTE_HOME,
+        secure: true,
+        sameSite: 'strict',
+      });
+
       setUser(user);
       setIsLogin(true);
-      fetchCart();
       message.success(t('auth.login.success'));
-
-      navigate(PATH_ROUTE_HOME, { replace: true });
+      if (user.role === 'ADMIN') {
+        navigate(PATH_ROUTE_DASHBOARD, { replace: true });
+      } else {
+        fetchCart();
+        navigate(PATH_ROUTE_HOME, { replace: true });
+      }
     } catch (error: any) {
       message.error(error?.response?.data?.message || t('auth.login.error'));
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className={styles.loginContainer}>
       <Card className={styles.card}>
@@ -76,17 +90,28 @@ const LoginPage = () => {
           </div>
 
           <div className={styles.textRight}>
-            <Link href="/recuperar">{t('auth.login.forgotPassword')}</Link>
+            <Link href={PATH_ROUTE_RECOVERY_PASSWORD}>{t('auth.login.forgotPassword')}</Link>
           </div>
 
           <Button type="primary" htmlType="submit" size="large" block loading={loading}>
             {t('auth.login.button')}
           </Button>
+
+          <Button
+            type="default"
+            size="large"
+            block
+            onClick={() => navigate(PATH_ROUTE_HOME)}
+            className={styles.backButton}
+          >
+            {t('actions.backHome', 'Volver al inicio')}
+          </Button>
         </form>
 
         <div className={styles.footerText}>
           <Text>
-            {t('auth.login.noAccount')} <Link href="/register">{t('auth.login.register')}</Link>
+            {t('auth.login.noAccount')}{' '}
+            <Link href={PATH_ROUTE_REGISTER}>{t('auth.login.register')}</Link>
           </Text>
         </div>
       </Card>

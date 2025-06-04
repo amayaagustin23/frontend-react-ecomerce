@@ -1,3 +1,4 @@
+import React from 'react';
 import { AuthProvider } from '../Auth/AuthContext';
 import { CartProvider } from '../Cart/CartContext';
 import { CategoryProvider } from '../Category/CategoryContext';

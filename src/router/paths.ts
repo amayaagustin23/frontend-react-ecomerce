@@ -1,5 +1,8 @@
 export const PATH_ROUTE_HOME = '/';
 export const PATH_ROUTE_LOGIN = '/login';
+export const PATH_ROUTE_REGISTER = '/registro';
+export const PATH_ROUTE_RECOVERY_PASSWORD = '/recuperar-contraseña';
+export const PATH_ROUTE_RESET_PASSWORD = '/cambiar-contraseña/:token';
 export const PATH_ROUTE_DASHBOARD = '/dashboard';
 export const PATH_ROUTE_PRODUCTS = '/productos';
 export const PATH_ROUTE_CONTACT = '/contacto';

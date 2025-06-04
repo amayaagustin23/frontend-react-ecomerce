@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Typography, Divider, Spin, Tag, List, Image, Button } from 'antd';
 import { useOrder } from '@/context/Order/OrderContext';
-import { Order } from '@/types/Order';
 import styles from './OrderDetailPage.module.scss';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';

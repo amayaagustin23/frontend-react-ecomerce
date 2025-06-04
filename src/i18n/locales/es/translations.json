@@ -48,6 +48,9 @@
     "categories": "Categorías",
     "brands": "Marcas",
     "variants": "Variantes",
+    "colors": "Colores",
+    "sizes": "Talles",
+    "genders": "Generos",
     "empty": "No se encontraron productos",
     "title": "Productos",
     "orderBy": "Ordenar por",
@@ -140,16 +143,16 @@
   },
   "profile": {
     "title": "Información personal",
-    "description": "Modificá tus datos personales a continuación para que tu cuenta esté actualizada.",
+    "description": "Aquí podés ver y gestionar tu perfil.",
     "name": "Nombre",
-    "birthDate": "Fecha de nacimiento",
-    "gender": "Género",
-    "phone": "Telefono",
-    "dni": "DNI",
-    "male": "Hombre",
-    "female": "Mujer",
+    "dni": "CUIT/DNI",
     "email": "Correo electrónico",
-    "password": "Contraseña"
+    "phone": "Teléfono",
+    "password": "Contraseña",
+    "addresses": "Direcciones",
+    "defaultAddress": "Dirección predeterminada",
+    "hello": "Hola",
+    "points": "Puntos:"
   },
   "orderDetail": {
     "title": "Detalle de la orden",
@@ -192,5 +195,39 @@
       "updateQuantity": "No se pudo actualizar la cantidad",
       "removeItem": "No se pudo eliminar el producto del carrito"
     }
+  },
+  "register": {
+    "title": "Registro",
+    "credentials": "Credenciales",
+    "person": "Datos personales",
+    "address": "Dirección",
+    "errorTitle": "Error al registrarse"
+  },
+  "fields": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "cuitOrDni": "CUIT o DNI",
+    "street": "Calle",
+    "city": "Ciudad",
+    "province": "Provincia",
+    "postalCode": "Código postal",
+    "lat": "Latitud",
+    "lng": "Longitud"
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "email": "Debe ser un correo válido",
+    "passwordLength": "Debe tener al menos 8 caracteres",
+    "passwordFormat": "Debe tener una mayúscula, una minúscula y un número",
+    "unknownError": "Ocurrió un error inesperado"
+  },
+  "actions": {
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "addAddress": "Agregar dirección",
+    "save": "Guardar",
+    "cancel": "Cancelar"
   }
 }

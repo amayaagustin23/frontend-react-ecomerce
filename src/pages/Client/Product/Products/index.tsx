@@ -44,15 +44,13 @@ const ProductsPage: React.FC = () => {
   const isMobile = !screens.md;
 
   const [filterVisible, setFilterVisible] = useState(false);
-  const initialCategoryId = searchParams.get('categoryId');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialCategoryId ? [initialCategoryId] : []
-  );
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState<string>('createdAt_desc');
   const [pageSize, setPageSize] = useState<number>(12);
+  const category = searchParams.get('category');
 
   const redirect = (id: string) => {
     navigate(PRODUCT_ROUTES.getDetailPath(id));
@@ -76,6 +74,7 @@ const ProductsPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     fetchProducts({
       page,
+      category: category || undefined,
       size: pageSize,
       categoryIds: selectedCategories.join(',') || undefined,
       brandIds: selectedBrands.join(',') || undefined,
@@ -93,6 +92,7 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     fetchProducts({
       page: 1,
+      category: category || undefined,
       size: pageSize,
       categoryIds: selectedCategories.join(',') || undefined,
       brandIds: selectedBrands.join(',') || undefined,

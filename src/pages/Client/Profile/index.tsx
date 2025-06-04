@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Tabs, Typography, List, Card, Button, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Tabs, Typography, List, Card, Button, Space, Radio } from 'antd';
 import styles from './UserProfilePage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/Auth/AuthContext';
@@ -10,20 +10,24 @@ import { useNavigate } from 'react-router-dom';
 import { ORDER_ROUTES } from '@/router/paths';
 import { Coupon } from '@/types/Coupon';
 import { useCoupon } from '@/context/Coupon/CouponContext';
-import NumberFlow, { continuous } from '@number-flow/react';
+import NumberFlow from '@number-flow/react';
+import AddAddressModal from '@/components/AddAdressModal';
+import { AddressDto } from '@/types/Auth';
+import { Address } from '@/types/User';
 
-dayjs.locale('es');
-
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const UserProfilePage = () => {
   const { t } = useTranslation();
-  const { user, fetchUser } = useAuth();
+  const { user, fetchUser, addAddress, updateAddress, deleteAddress, defaultAddress } = useAuth();
   const { orders, fetchOrders } = useOrder();
   const { generalCoupons, userCoupons, exchangeCouponCode, fetchGeneralCoupons, fetchUserCoupons } =
     useCoupon();
-
   const navigate = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
+  const [editingAddress, setEditingAddress] = useState<any | null>(null);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -31,8 +35,36 @@ const UserProfilePage = () => {
     fetchUserCoupons();
   }, []);
 
+  useEffect(() => {
+    if (user?.addresses?.length) {
+      const defaultAddress = user.addresses.find((addr) => addr.isDefault);
+      setSelectedAddressId(defaultAddress?.id || null);
+    }
+  }, [user]);
+
   const redirect = (id: string) => {
     navigate(ORDER_ROUTES.getDetailPath(id));
+  };
+
+  const handleSaveAddress = (values: { address: AddressDto }) => {
+    if (editingAddress) {
+      console.log(values);
+
+      updateAddress(editingAddress.id, values.address);
+    } else {
+      addAddress(values.address);
+    }
+    setEditingAddress(null);
+    setOpenModal(false);
+  };
+
+  const handleEditAddress = (address: Address) => {
+    setEditingAddress({ address: { ...address }, id: address.id });
+    setOpenModal(true);
+  };
+
+  const handleDeleteAddress = (id: string) => {
+    deleteAddress(id);
   };
 
   const items = [
@@ -74,9 +106,9 @@ const UserProfilePage = () => {
             dataSource={userCoupons}
             renderItem={(item: Coupon) => (
               <List.Item>
-                <Card className={styles.userCouponCard}>
+                <Card className={styles.userCouponCardExchange}>
                   <div className={styles.discount}>-{item.value}%</div>
-                  <div>{item.code}</div>
+                  <Text copyable>{item.code}</Text>
                   <div>
                     {t('coupons.expiration')}: {dayjs(item.expiresAt).format('DD/MM/YYYY')}
                   </div>
@@ -146,6 +178,44 @@ const UserProfilePage = () => {
             <p>
               <strong>{t('profile.password')}:</strong> ************
             </p>
+
+            <div className={styles.addressHeader}>
+              <Title level={5}>{t('profile.addresses')}</Title>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setEditingAddress(null);
+                  setOpenModal(true);
+                }}
+              >
+                {t('actions.addAddress', 'Agregar dirección')}
+              </Button>
+            </div>
+
+            <Radio.Group
+              value={selectedAddressId}
+              onChange={(e) => defaultAddress(e.target.value)}
+              style={{ width: '100%' }}
+            >
+              {user?.addresses.map((address) => (
+                <Card key={address.id} className={styles.addressCard}>
+                  <Radio value={address.id}>
+                    {`${address.street}, ${address.city}, ${address.province}, CP ${address.postalCode}`}
+                  </Radio>
+                  {address.isDefault && (
+                    <div className={styles.defaultTag}>{t('profile.defaultAddress')}</div>
+                  )}
+                  <div className={styles.actions}>
+                    <Button size="small" onClick={() => handleEditAddress(address)}>
+                      {t('actions.edit')}
+                    </Button>
+                    <Button size="small" danger onClick={() => handleDeleteAddress(address.id)}>
+                      {t('actions.delete')}
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </Radio.Group>
           </Card>
         </>
       ),
@@ -154,11 +224,22 @@ const UserProfilePage = () => {
 
   return (
     <div className={styles.userProfilePage}>
-      <Title>Hola {user?.name}</Title>
+      <Title>
+        {t('profile.hello')} {user?.name}
+      </Title>
       <Title level={4}>
-        Puntos: <NumberFlow plugins={[continuous]} value={user?.points} />{' '}
+        {t('profile.points')} <NumberFlow value={user?.points} />{' '}
       </Title>
       <Tabs defaultActiveKey="1" items={items} centered />
+      <AddAddressModal
+        open={openModal}
+        onCancel={() => {
+          setOpenModal(false);
+          setEditingAddress(null);
+        }}
+        onFinish={handleSaveAddress}
+        initialValues={editingAddress}
+      />
     </div>
   );
 };
