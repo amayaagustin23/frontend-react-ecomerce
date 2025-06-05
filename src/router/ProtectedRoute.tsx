@@ -1,4 +1,4 @@
-import { useEffect, useState, type JSX } from 'react';
+import React, { useEffect, useState, type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 import { getMe } from '@/services/calls/auth.service';
 import { PATH_ROUTE_LOGIN } from './paths';

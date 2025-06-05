@@ -15,6 +15,9 @@ export const getAllCategories = (params?: PaginationParams) =>
     }
   );
 
+export const getAllCategoriesOutPaginated = () =>
+  api.get<Category[]>(CATEGORY_ENDPOINTS.GET_ALL_OUT_PAGINATED);
+
 export const getCategoryById = (id: string) => api.get<Category>(CATEGORY_ENDPOINTS.GET_BY_ID(id));
 
 export const createCategory = (data: Partial<Category>) =>

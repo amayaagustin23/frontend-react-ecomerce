@@ -1,0 +1,32 @@
+.container {
+  margin-top: 40px;
+}
+
+.card {
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.variantRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.colorPicker {
+  width: 130px;
+  height: 32px;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.sizeInput,
+.stockInput {
+  width: 120px;
+}

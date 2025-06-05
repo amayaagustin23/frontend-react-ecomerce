@@ -56,12 +56,27 @@
     "orderBy": "Ordenar por",
     "itemsPerPage": "Mostrar",
     "filter": "Filtros",
+    "titlePanel": "Listado de productos",
+    "create": "Crear producto",
+    "columns": {
+      "name": "Nombre",
+      "price": "Precio",
+      "brand.name": "Marca",
+      "category.name": "Categoría"
+    },
     "sort": {
       "newest": "Más recientes",
       "lowToHigh": "Precio: Menor a mayor",
       "highToLow": "Precio: Mayor a menor",
       "nameAsc": "Nombre: A-Z",
       "nameDesc": "Nombre: Z-A"
+    },
+    "confirm": {
+      "delete": {
+        "title": "¿Estás seguro de eliminar este elemento?",
+        "ok": "Sí",
+        "cancel": "No"
+      }
     }
   },
   "categories": {
@@ -139,7 +154,19 @@
   },
   "orders": {
     "title": "Historial de pedidos",
-    "orderNumber": "Número de pedido"
+    "orderNumber": "Número de pedido",
+    "titlePanel": "Órdenes",
+    "customer": "Cliente",
+    "email": "Correo electrónico",
+    "status": "Estado",
+    "subtotal": "Subtotal",
+    "shipping": "Envío",
+    "total": "Total",
+    "products": "Productos",
+    "quantity": "Cantidad",
+    "variant.size": "talle",
+    "variant.color": "color",
+    "empty": "N/A"
   },
   "profile": {
     "title": "Información personal",
@@ -229,5 +256,88 @@
     "addAddress": "Agregar dirección",
     "save": "Guardar",
     "cancel": "Cancelar"
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "exportPDF": "Exportar PDF",
+    "totalSales": "Ventas totales",
+    "users": "Usuarios",
+    "productsTitle": "Productos",
+    "ordersPerDay": "Órdenes por día",
+    "cartStatus": "Estado de carritos",
+    "paymentStatus": "Estado de pagos",
+    "topProducts": "Productos más vendidos",
+    "topCoupons": "Cupones más canjeados",
+    "products": {
+      "name": "Producto",
+      "price": "Precio",
+      "totalSold": "Cantidad Vendida"
+    },
+    "coupons": {
+      "code": "Código",
+      "description": "Descripción",
+      "total": "Total Canjeado"
+    }
+  },
+  "cartStatus": {
+    "ACTIVE": "Activo",
+    "EXPIRED": "Expirado",
+    "ORDERED": "Finalizado",
+    "CANCELLED": "Cancelado"
+  },
+  "paymentStatus": {
+    "APPROVED": "Aprobado",
+    "REJECTED": "Rechazado",
+    "PENDING": "Pendiente",
+    "PAID": "Pagado",
+    "CANCELLED": "Cancelado",
+    "DELIVERED": "Entregado"
+  },
+  "adminMenu": {
+    "dashboard": "Panel",
+    "products": "Productos",
+    "users": "Usuarios",
+    "categories": "Categorías",
+    "brands": "Marcas",
+    "orders": "Pedidos",
+    "logout": "Cerrar sesión"
+  },
+  "product": {
+    "size": "Talle",
+    "stock": "Stock",
+    "createTitle": "Crear producto",
+    "name": "Nombre",
+    "price": "Precio",
+    "description": "Descripción",
+    "isService": "¿Es un servicio?",
+    "isActive": "¿Está activo?",
+    "hasDelivery": "¿Tiene envío?",
+    "category": "Categoría o Subcategoría",
+    "brand": "Marca",
+    "selectCategory": "Seleccionar categoría o subcategoría",
+    "selectBrand": "Seleccionar marca",
+    "categoryPlaceholder": "Seleccionar categoría o subcategoría",
+    "brandPlaceholder": "Seleccionar marca",
+    "variants": "Variantes",
+    "colorRequired": "Color requerido",
+    "sizeRequired": "Talle requerido",
+    "stockRequired": "Stock requerido",
+    "colorPlaceholder": "Color",
+    "sizePlaceholder": "Talle",
+    "stockPlaceholder": "Stock",
+    "addVariant": "Agregar variante",
+    "images": "Imágenes",
+    "uploadImages": "Subir imágenes",
+    "create": "Crear producto",
+    "createdSuccess": "Producto creado con éxito",
+    "createError": "Error al crear el producto",
+    "selectCategoryError": "Debes seleccionar una categoría o subcategoría",
+    "detailTitle": "Detalle del producto",
+    "updateSuccess": "Producto actualizado correctamente",
+    "updateError": "Error al actualizar el producto",
+    "errorLoading": "Error al cargar el producto",
+    "edit": "Editar",
+    "cancelEdit": "Cancelar edición",
+    "save": "Guardar cambios"
   }
 }

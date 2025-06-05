@@ -5,6 +5,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
+  getAllCategoriesOutPaginated,
 } from '@/services/calls/category.service';
 import { Category } from '@/types/Category';
 import { message } from 'antd';
@@ -24,6 +25,7 @@ type PaginationParams = {
 
 type CategoryContextType = {
   categories: Category[];
+  categoriesOutPaginated: Category[];
   selectedCategory: Category | null;
   loading: boolean;
   pagination: Pagination;
@@ -32,6 +34,7 @@ type CategoryContextType = {
   createCategory: (data: Partial<Category>) => Promise<void>;
   updateCategory: (id: string, data: Partial<Category>) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
+  fetchCategoriesOutPaginated: () => Promise<void>;
 };
 
 const CategoryContext = createContext<CategoryContextType | undefined>(undefined);
@@ -39,6 +42,7 @@ const CategoryContext = createContext<CategoryContextType | undefined>(undefined
 export const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [categoriesOutPaginated, setCategoriesOutPaginated] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -67,6 +71,18 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     },
     [t]
   );
+
+  const fetchCategoriesOutPaginated = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res: AxiosResponse = await getAllCategoriesOutPaginated();
+      setCategoriesOutPaginated(res.data);
+    } catch (error) {
+      message.error(t('categories.messages.fetchError'));
+    } finally {
+      setLoading(false);
+    }
+  }, [t]);
 
   const selectCategory = async (id: string) => {
     try {
@@ -115,11 +131,13 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     <CategoryContext.Provider
       value={{
         categories,
+        categoriesOutPaginated,
         selectedCategory,
         loading,
         pagination,
         fetchCategories,
         selectCategory,
+        fetchCategoriesOutPaginated,
         createCategory: handleCreate,
         updateCategory: handleUpdate,
         deleteCategory: handleDelete,

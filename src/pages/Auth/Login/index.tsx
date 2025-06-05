@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './LoginPage.module.scss';
 import { useCart } from '@/context/Cart/CartContext';
 import {
-  PATH_ROUTE_DASHBOARD,
+  PATH_ROUTE_PANEL_DASHBOARD,
   PATH_ROUTE_HOME,
   PATH_ROUTE_RECOVERY_PASSWORD,
   PATH_ROUTE_REGISTER,
@@ -43,7 +43,7 @@ const LoginPage = () => {
       setIsLogin(true);
       message.success(t('auth.login.success'));
       if (user.role === 'ADMIN') {
-        navigate(PATH_ROUTE_DASHBOARD, { replace: true });
+        navigate(PATH_ROUTE_PANEL_DASHBOARD, { replace: true });
       } else {
         fetchCart();
         navigate(PATH_ROUTE_HOME, { replace: true });

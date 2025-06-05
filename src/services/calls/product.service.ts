@@ -26,22 +26,13 @@ export const createProduct = (data: any, files: File[] = []) => {
 };
 
 export const updateProduct = (id: string, data: any, files: File[] = []) => {
-  const formData = new FormData();
-
-  Object.entries(data).forEach(([key, value]) => {
-    formData.append(key, value as string);
-  });
-
-  files.forEach((file) => {
-    formData.append('files', file);
-  });
-
-  return api.patch(PRODUCT_ENDPOINTS.UPDATE(id), formData, {
+  return api.patch(PRODUCT_ENDPOINTS.UPDATE(id), data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
 };
+export const deleteProduct = (id: string) => api.delete(PRODUCT_ENDPOINTS.GET_BY_ID(id));
 
 export const getAllBrands = () => api.get(PRODUCT_ENDPOINTS.GET_ALL_BRANDS);
 

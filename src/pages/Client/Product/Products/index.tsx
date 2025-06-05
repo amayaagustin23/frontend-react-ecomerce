@@ -1,7 +1,7 @@
 // Importaciones
 import React, { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
-import { useProduct } from '@/context/Product/ProductContext';
+import { FetchProductsParams, useProduct } from '@/context/Product/ProductContext';
 import { useCategory } from '@/context/Category/CategoryContext';
 import { PRODUCT_ROUTES } from '@/router/paths';
 import {
@@ -25,83 +25,65 @@ import styles from './ProductsPage.module.scss';
 const { useBreakpoint } = Grid;
 
 const ProductsPage: React.FC = () => {
-  const {
-    products,
-    loading,
-    pagination,
-    fetchProducts,
-    loadBrandsAndVariants,
-    variantColors,
-    variantSizes,
-    variantGenders,
-    brands,
-  } = useProduct();
+  const { products, loading, pagination, fetchProducts, loadBrandsAndVariants, brands } =
+    useProduct();
   const { categories } = useCategory();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
   const screens = useBreakpoint();
   const isMobile = !screens.md;
 
   const [filterVisible, setFilterVisible] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState<string>('createdAt_desc');
   const [pageSize, setPageSize] = useState<number>(12);
-  const category = searchParams.get('category');
 
   const redirect = (id: string) => {
     navigate(PRODUCT_ROUTES.getDetailPath(id));
   };
 
-  const handleCategoryChange = (checked: boolean, id: string, children: string[] = []) => {
+  const cleanObject = <T extends object>(obj: T): Partial<T> =>
+    Object.fromEntries(
+      Object.entries(obj).filter(([_, v]) => v !== undefined && v !== '')
+    ) as Partial<T>;
+
+  function handleCategoryChange(checked: boolean, id: string, children: string[] = []) {
     const idsToToggle = [id, ...children];
     setSelectedCategories((prev) =>
       checked
         ? [...new Set([...prev, ...idsToToggle])]
         : prev.filter((catId) => !idsToToggle.includes(catId))
     );
-  };
-
-  const handleVariantToggle = (value: string) => {
-    setSelectedVariants((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
+  }
 
   const handlePageChange = (page: number) => {
     fetchProducts({
       page,
-      category: category || undefined,
       size: pageSize,
-      categoryIds: selectedCategories.join(',') || undefined,
-      brandIds: selectedBrands.join(',') || undefined,
-      variantsName: selectedVariants.join(',') || undefined,
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
+      categoryIds: selectedCategories.length ? selectedCategories.join(',') : undefined,
+      brandIds: selectedBrands.length ? selectedBrands.join(',') : undefined,
       orderBy,
     });
   };
 
   useEffect(() => {
     loadBrandsAndVariants();
+    fetchProducts({ page: 1, size: pageSize });
   }, []);
 
   useEffect(() => {
-    fetchProducts({
+    const rawParams: FetchProductsParams = {
       page: 1,
-      category: category || undefined,
       size: pageSize,
-      categoryIds: selectedCategories.join(',') || undefined,
-      brandIds: selectedBrands.join(',') || undefined,
-      variantsName: selectedVariants.join(',') || undefined,
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
       orderBy,
-    });
-  }, [selectedCategories, priceRange, selectedBrands, selectedVariants, orderBy, pageSize]);
+      brandIds: selectedBrands.join(','),
+      categoryIds: selectedCategories.join(','),
+    };
+
+    const params = cleanObject(rawParams);
+    fetchProducts(params);
+  }, [selectedCategories, selectedBrands, orderBy, pageSize]);
 
   const FilterContent = (
     <div className={styles.sidebar}>
@@ -165,62 +147,6 @@ const ProductsPage: React.FC = () => {
                       }
                     >
                       {brand.name}
-                    </Checkbox>
-                  </div>
-                ))}
-              </>
-            ),
-          },
-          {
-            key: 'colors',
-            label: t('products.colors'),
-            children: (
-              <div className={styles.colorGrid}>
-                {variantColors.map((color) => {
-                  const isSelected = selectedVariants.includes(color);
-                  return (
-                    <div
-                      key={color}
-                      className={`${styles.colorCircle} ${isSelected ? styles.selected : ''}`}
-                      style={{ backgroundColor: color }}
-                      onClick={() => handleVariantToggle(color)}
-                      title={color}
-                    />
-                  );
-                })}
-              </div>
-            ),
-          },
-          {
-            key: 'sizes',
-            label: t('products.sizes'),
-            children: (
-              <>
-                {variantSizes.map((size) => (
-                  <div key={size}>
-                    <Checkbox
-                      checked={selectedVariants.includes(size)}
-                      onChange={() => handleVariantToggle(size)}
-                    >
-                      {size}
-                    </Checkbox>
-                  </div>
-                ))}
-              </>
-            ),
-          },
-          {
-            key: 'genders',
-            label: t('products.genders'),
-            children: (
-              <>
-                {variantGenders.map((gender) => (
-                  <div key={gender}>
-                    <Checkbox
-                      checked={selectedVariants.includes(gender)}
-                      onChange={() => handleVariantToggle(gender)}
-                    >
-                      {gender}
                     </Checkbox>
                   </div>
                 ))}

@@ -1,0 +1,51 @@
+.tableWrapper {
+  .ant-table {
+    border-radius: 12px;
+    overflow: hidden;
+
+    .ant-table-thead > tr > th {
+      background-color: #f0f2f5;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #e6f7ff;
+    }
+
+    .ant-table-tbody > tr:nth-child(even) > td {
+      background-color: #fafafa;
+    }
+
+    .ant-table-tbody > tr > td {
+      vertical-align: middle;
+    }
+  }
+}
+
+.actionIcon {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &.view {
+    color: #1890ff;
+  }
+
+  &.edit {
+    color: #52c41a;
+  }
+
+  &.delete {
+    color: #ff4d4f;
+  }
+}
+
+.productImage {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import {
   getAllProducts,
   getAllBrands,
@@ -6,13 +6,17 @@ import {
   getAllVariantSizes,
   getAllVariantGenders,
   getAllFavorites,
+  getProductById,
+  updateProduct,
+  createProduct,
 } from '@/services/calls/product.service';
 import { Brand } from '@/types/Brand';
 import { Product } from '@/types/Product';
-import Cookies from 'js-cookie';
-import { useAuth } from '../Auth/AuthContext';
+import { message } from 'antd';
 
-type Pagination = {
+// Types
+
+export type Pagination = {
   page: number;
   size: number;
   total: number;
@@ -33,6 +37,8 @@ export type FetchProductsParams = {
 
 type ProductContextType = {
   products: Product[];
+  product: Product | null;
+  setProduct: React.Dispatch<React.SetStateAction<Product | null>>;
   productsFiltered: Product[];
   favoriteProducts: Product[];
   loading: boolean;
@@ -45,26 +51,28 @@ type ProductContextType = {
   fetchFilteredProducts: (params?: FetchProductsParams) => Promise<void>;
   fetchFavoriteProducts: () => Promise<void>;
   loadBrandsAndVariants: () => Promise<void>;
+  toggleProductActive: (id: string, isActive: boolean) => Promise<void>;
+  createNewProduct: (data: any, files: File[]) => Promise<void>;
+  editProduct: (id: string, data: any, files: File[]) => Promise<void>;
+  fetchProductById: (id: string) => Promise<void>;
+  updateProductById: (id: string, data: FormData) => Promise<void>;
 };
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [variantColors, setVariantColors] = useState<string[]>([]);
   const [variantSizes, setVariantSizes] = useState<string[]>([]);
   const [variantGenders, setVariantGenders] = useState<string[]>([]);
-  const [pagination, setPagination] = useState<Pagination>({
-    page: 1,
-    size: 10,
-    total: 0,
-  });
+  const [pagination, setPagination] = useState<Pagination>({ page: 1, size: 10, total: 0 });
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchProducts: ProductContextType['fetchProducts'] = async (params = {}) => {
+  const fetchProducts = async (params: FetchProductsParams = {}) => {
     setLoading(true);
     try {
       const response = await getAllProducts(params);
@@ -81,16 +89,11 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
-  const fetchFilteredProducts: ProductContextType['fetchFilteredProducts'] = async (
-    params = {}
-  ) => {
-    const paramKeys = Object.keys(params).filter(
-      (key) => params[key as keyof typeof params] !== undefined
-    );
-
-    const shouldSetLoading = paramKeys.length <= 2;
+  const fetchFilteredProducts = async (params: FetchProductsParams = {}) => {
+    const shouldSetLoading =
+      Object.keys(params).filter((key) => params[key as keyof typeof params] !== undefined)
+        .length <= 2;
     if (shouldSetLoading) setLoading(true);
-
     try {
       const response = await getAllProducts(params);
       setProductsFiltered(response.data.data);
@@ -134,10 +137,68 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
+  const toggleProductActive = async (id: string, isActive: boolean) => {
+    try {
+      await updateProduct(id, { isActive });
+      await fetchProducts(pagination);
+    } catch (err) {
+      console.error('Error al actualizar el estado del producto:', err);
+    }
+  };
+
+  const createNewProduct = async (data: any, files: File[]) => {
+    try {
+      setLoading(true);
+      await createProduct(data, files);
+      await fetchProducts(pagination);
+      message.success('Producto creado con éxito');
+    } catch (err) {
+      console.error('Error al crear producto:', err);
+      message.error('Error al crear el producto');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editProduct = async (id: string, data: any, files: File[]) => {
+    try {
+      setLoading(true);
+      await updateProduct(id, data, files);
+      await fetchProducts(pagination);
+      message.success('Producto actualizado con éxito');
+    } catch (err) {
+      console.error('Error al editar producto:', err);
+      message.error('Error al editar el producto');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProductById = async (id: string): Promise<void> => {
+    try {
+      const response = await getProductById(id);
+      setProduct(response.data);
+    } catch (error) {
+      throw new Error('Error al obtener el producto');
+    }
+  };
+
+  const updateProductById = async (id: string, data: FormData): Promise<void> => {
+    try {
+      await updateProduct(id, data);
+      await fetchProductById(id);
+    } catch (error) {
+      console.error('Error al actualizar producto:', error);
+      throw error;
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
         products,
+        product,
+        setProduct,
         productsFiltered,
         favoriteProducts,
         loading,
@@ -150,6 +211,11 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
         fetchFilteredProducts,
         fetchFavoriteProducts,
         loadBrandsAndVariants,
+        toggleProductActive,
+        createNewProduct,
+        editProduct,
+        fetchProductById,
+        updateProductById,
       }}
     >
       {children}

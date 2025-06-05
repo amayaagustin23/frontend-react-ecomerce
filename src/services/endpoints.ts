@@ -36,6 +36,7 @@ export const PRODUCT_ENDPOINTS = {
 
 export const CATEGORY_ENDPOINTS = {
   GET_ALL: '/categories',
+  GET_ALL_OUT_PAGINATED: '/categories/all/out-paginated',
   GET_BY_ID: (id: string) => `/categories/${id}`,
   CREATE: '/categories',
   UPDATE: (id: string) => `/categories/${id}`,
@@ -66,4 +67,16 @@ export const COUPON_ENDPOINTS = {
 export const GOOGLE_PLACES_ENDPOINTS = {
   GET_AUTOCOMPLETE: '/google-places/autocomplete',
   GET_DETAIL: '/google-places/details',
+};
+
+export const PANEL_ENDPOINTS = {
+  GET_DASHBOARD: '/panel/dashboard',
+  GET_ALL_ORDERS: '/panel/orders',
+};
+
+export const BRAND_ENDPOINTS = {
+  GET_ALL: '/brands',
+  GET_BY_ID: (id: string) => `/brands/${id}`,
+  UPDATE: (id: string) => `/brands/${id}`,
+  DELETE: (id: string) => `/brands/${id}`,
 };
