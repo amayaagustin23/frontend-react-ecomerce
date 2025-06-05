@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.paragraph {
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.info {
+  margin-top: 2rem;
+
+  .ant-col {
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.ant-space) {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+
+  a,
+  span {
+    font-size: 0.95rem;
+  }
+}
+
+.buttonContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0rem !important;
+    margin: 0rem !important;
+    width: 100% !important;
+  }
+
+  .card {
+    padding: 0rem !important;
+    width: 100% !important;
+  }
+
+  .info {
+    text-align: center;
+
+    .ant-col {
+      justify-content: center;
+    }
+
+    :global(.ant-space) {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
+
+  .buttonContainer {
+    justify-content: center;
+  }
+}

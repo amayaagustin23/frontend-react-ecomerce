@@ -1,0 +1,82 @@
+.userProfilePage {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.couponCard {
+  text-align: center;
+  padding: 1rem;
+}
+
+.discount {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.orderCard {
+  padding: 1rem;
+}
+
+.infoCard {
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.ordersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.orderCard {
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.productImages {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.productThumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.addressCard {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  width: 100% !important;
+
+  .ant-radio-wrapper {
+    display: block;
+    font-weight: 500;
+  }
+
+  .defaultTag {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    color: #52c41a;
+    font-weight: 500;
+  }
+}
+.addressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.userCouponCardExchange {
+  text-align: center;
+  width: 22rem !important;
+}

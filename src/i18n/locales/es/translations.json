@@ -1,9 +1,343 @@
 {
   "welcome": "¡Bienvenido!",
-  "login": {
-    "title": "Iniciar sesión",
-    "email": "Correo",
+  "auth": {
+    "login": {
+      "title": "Bienvenido 👋",
+      "subtitle": "Iniciá sesión para continuar",
+      "email": "Email",
+      "emailPlaceholder": "ejemplo@correo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "button": "Iniciar sesión",
+      "noAccount": "¿No tenés cuenta?",
+      "register": "Registrate",
+      "success": "Sesión iniciada con éxito",
+      "error": "Error al iniciar sesión"
+    }
+  },
+  "layout": {
+    "search": {
+      "placeholder": "Buscar productos"
+    },
+    "menu": {
+      "title": "Menú",
+      "home": "Inicio",
+      "products": "Productos",
+      "contact": "Contacto",
+      "account": "Cuenta",
+      "myProfile": "Mi perfil",
+      "logout": "Cerrar sesión",
+      "login": "Iniciar sesión"
+    },
+    "footer": {
+      "text": "Mi Tienda ©{{year}} - Todos los derechos reservados"
+    }
+  },
+  "productDetail": {
+    "selectSize": "Seleccioná tu talle:",
+    "addToCart": "Agregar al carrito",
+    "brand": "Marca",
+    "quantity": "Cantidad",
+    "errorLoading": "Error al cargar el producto"
+  },
+  "products": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre...",
+    "price": "Precio",
+    "categories": "Categorías",
+    "brands": "Marcas",
+    "variants": "Variantes",
+    "colors": "Colores",
+    "sizes": "Talles",
+    "genders": "Generos",
+    "empty": "No se encontraron productos",
+    "title": "Productos",
+    "orderBy": "Ordenar por",
+    "itemsPerPage": "Mostrar",
+    "filter": "Filtros",
+    "titlePanel": "Listado de productos",
+    "create": "Crear producto",
+    "columns": {
+      "name": "Nombre",
+      "price": "Precio",
+      "brand.name": "Marca",
+      "category.name": "Categoría"
+    },
+    "sort": {
+      "newest": "Más recientes",
+      "lowToHigh": "Precio: Menor a mayor",
+      "highToLow": "Precio: Mayor a menor",
+      "nameAsc": "Nombre: A-Z",
+      "nameDesc": "Nombre: Z-A"
+    },
+    "confirm": {
+      "delete": {
+        "title": "¿Estás seguro de eliminar este elemento?",
+        "ok": "Sí",
+        "cancel": "No"
+      }
+    }
+  },
+  "categories": {
+    "messages": {
+      "fetchError": "Error al cargar las categorías",
+      "getOneError": "No se pudo obtener la categoría",
+      "createSuccess": "Categoría creada con éxito",
+      "createError": "Error al crear la categoría",
+      "updateSuccess": "Categoría actualizada con éxito",
+      "updateError": "Error al actualizar la categoría",
+      "deleteSuccess": "Categoría eliminada con éxito",
+      "deleteError": "Error al eliminar la categoría"
+    }
+  },
+  "home": {
+    "banner1": {
+      "alt": "Banner de productos electrónicos y servicios",
+      "products": "Ver productos",
+      "services": "Ver servicios"
+    },
+    "banner2": {
+      "message": "Comprá en cuotas sin interés y con envíos gratis a todo el país 🚚"
+    }
+  },
+  "contact": {
+    "title": "Agustín Amaya",
+    "subtitle": "Desarrollador Full Stack",
+    "intro": "Desarrollador con 4 años de experiencia en frontend y backend, especializado en NestJS y ReactJS. Me apasiona crear soluciones eficientes y escalables, con foco en buenas prácticas, adaptación al cambio y trabajo colaborativo. He liderado formación técnica como instructor de Backend, integrando plataformas como AWS, Firebase, Mercado Pago y WhatsApp.",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "location": "Ubicación",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "cv": "Descargar CV (PDF)",
+    "contactMe": "Contactame"
+  },
+  "cart": {
+    "greeting": "Hola, Agustín!",
+    "title": "Tu carrito",
+    "totalProducts": "TOTAL ({{count}} productos)",
+    "notReserved": "Los artículos en tu carrito no están reservados. Terminá el proceso de compra ahora para hacerte con ellos.",
+    "alertTitle": "TUS ARTÍCULOS DEL CARRITO NO ESTÁN RESERVADOS",
+    "alertDescription": "Asegurá tus artículos antes que se agoten. Además, obtené cuotas sin interés.",
+    "empty": "Tu carrito está vacío",
+    "size": "Tamaño",
+    "color": "Color",
+    "remove": "Eliminar",
+    "summary": "Resumen del pedido",
+    "productCount": "{{count}} productos",
+    "delivery": "Entrega",
+    "free": "Gratis",
+    "total": "Total",
+    "discount": "Descuento ({{code}})",
+    "enterCoupon": "Ingresá un código promocional",
+    "usePromoCode": "Usá un código promocional",
+    "checkout": "Ir a pagar",
+    "invalidCoupon": "Cupón inválido",
+    "couponApplied": "Cupón aplicado",
+    "withDiscount": "Total con descuento del {{percent}}%"
+  },
+  "tabs": {
+    "coupons": "Cupones",
+    "orders": "Pedidos",
+    "profile": "Mi Perfil"
+  },
+  "coupons": {
+    "title": "Tus cupones",
+    "available": "Canjeá puntos por cupones",
+    "yours": "Cupones canjeados",
+    "redeem": "Canjear",
+    "expiration": "Válido hasta",
+    "success": "🎉 ¡Cupón canjeado con éxito!",
+    "error": "❌ No se pudo canjear el cupón",
+    "notEnoughPoints": "No tenés suficientes puntos"
+  },
+  "orders": {
+    "title": "Historial de pedidos",
+    "orderNumber": "Número de pedido",
+    "titlePanel": "Órdenes",
+    "customer": "Cliente",
+    "email": "Correo electrónico",
+    "status": "Estado",
+    "subtotal": "Subtotal",
+    "shipping": "Envío",
+    "total": "Total",
+    "products": "Productos",
+    "quantity": "Cantidad",
+    "variant.size": "talle",
+    "variant.color": "color",
+    "empty": "N/A"
+  },
+  "profile": {
+    "title": "Información personal",
+    "description": "Aquí podés ver y gestionar tu perfil.",
+    "name": "Nombre",
+    "dni": "CUIT/DNI",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
     "password": "Contraseña",
-    "submit": "Ingresar"
+    "addresses": "Direcciones",
+    "defaultAddress": "Dirección predeterminada",
+    "hello": "Hola",
+    "points": "Puntos:"
+  },
+  "orderDetail": {
+    "title": "Detalle de la orden",
+    "orderId": "Orden #{{id}}",
+    "date": "Fecha",
+    "status": "Estado",
+    "total": "Total",
+    "shipping": "Costo de envío",
+    "products": "Productos",
+    "category": "Categoría",
+    "brand": "Marca",
+    "color": "Color",
+    "size": "Talle",
+    "quantity": "Cantidad",
+    "subtotal": "Subtotal"
+  },
+  "common": {
+    "back": "Volver"
+  },
+  "orderStatus": {
+    "PENDING": "Pendiente",
+    "PAID": "Pagado",
+    "CANCELLED": "Cancelado",
+    "DELIVERED": "Entregado"
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
+    "toggle": "Cambiar tema"
+  },
+  "messages": {
+    "success": {
+      "couponCart": "Cupón aplicado correctamente al carrito",
+      "addToCart": "Producto agregado al carrito"
+    },
+    "error": {
+      "couponCart": "No se pudo aplicar el cupón",
+      "fetchCart": "No se pudo obtener el carrito",
+      "addToCart": "No se pudo agregar el producto al carrito",
+      "updateQuantity": "No se pudo actualizar la cantidad",
+      "removeItem": "No se pudo eliminar el producto del carrito"
+    }
+  },
+  "register": {
+    "title": "Registro",
+    "credentials": "Credenciales",
+    "person": "Datos personales",
+    "address": "Dirección",
+    "errorTitle": "Error al registrarse"
+  },
+  "fields": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "cuitOrDni": "CUIT o DNI",
+    "street": "Calle",
+    "city": "Ciudad",
+    "province": "Provincia",
+    "postalCode": "Código postal",
+    "lat": "Latitud",
+    "lng": "Longitud"
+  },
+  "errors": {
+    "required": "Este campo es obligatorio",
+    "email": "Debe ser un correo válido",
+    "passwordLength": "Debe tener al menos 8 caracteres",
+    "passwordFormat": "Debe tener una mayúscula, una minúscula y un número",
+    "unknownError": "Ocurrió un error inesperado"
+  },
+  "actions": {
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "addAddress": "Agregar dirección",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "dashboard": {
+    "title": "Panel de control",
+    "exportPDF": "Exportar PDF",
+    "totalSales": "Ventas totales",
+    "users": "Usuarios",
+    "productsTitle": "Productos",
+    "ordersPerDay": "Órdenes por día",
+    "cartStatus": "Estado de carritos",
+    "paymentStatus": "Estado de pagos",
+    "topProducts": "Productos más vendidos",
+    "topCoupons": "Cupones más canjeados",
+    "products": {
+      "name": "Producto",
+      "price": "Precio",
+      "totalSold": "Cantidad Vendida"
+    },
+    "coupons": {
+      "code": "Código",
+      "description": "Descripción",
+      "total": "Total Canjeado"
+    }
+  },
+  "cartStatus": {
+    "ACTIVE": "Activo",
+    "EXPIRED": "Expirado",
+    "ORDERED": "Finalizado",
+    "CANCELLED": "Cancelado"
+  },
+  "paymentStatus": {
+    "APPROVED": "Aprobado",
+    "REJECTED": "Rechazado",
+    "PENDING": "Pendiente",
+    "PAID": "Pagado",
+    "CANCELLED": "Cancelado",
+    "DELIVERED": "Entregado"
+  },
+  "adminMenu": {
+    "dashboard": "Panel",
+    "products": "Productos",
+    "users": "Usuarios",
+    "categories": "Categorías",
+    "brands": "Marcas",
+    "orders": "Pedidos",
+    "logout": "Cerrar sesión"
+  },
+  "product": {
+    "size": "Talle",
+    "stock": "Stock",
+    "createTitle": "Crear producto",
+    "name": "Nombre",
+    "price": "Precio",
+    "description": "Descripción",
+    "isService": "¿Es un servicio?",
+    "isActive": "¿Está activo?",
+    "hasDelivery": "¿Tiene envío?",
+    "category": "Categoría o Subcategoría",
+    "brand": "Marca",
+    "selectCategory": "Seleccionar categoría o subcategoría",
+    "selectBrand": "Seleccionar marca",
+    "categoryPlaceholder": "Seleccionar categoría o subcategoría",
+    "brandPlaceholder": "Seleccionar marca",
+    "variants": "Variantes",
+    "colorRequired": "Color requerido",
+    "sizeRequired": "Talle requerido",
+    "stockRequired": "Stock requerido",
+    "colorPlaceholder": "Color",
+    "sizePlaceholder": "Talle",
+    "stockPlaceholder": "Stock",
+    "addVariant": "Agregar variante",
+    "images": "Imágenes",
+    "uploadImages": "Subir imágenes",
+    "create": "Crear producto",
+    "createdSuccess": "Producto creado con éxito",
+    "createError": "Error al crear el producto",
+    "selectCategoryError": "Debes seleccionar una categoría o subcategoría",
+    "detailTitle": "Detalle del producto",
+    "updateSuccess": "Producto actualizado correctamente",
+    "updateError": "Error al actualizar el producto",
+    "errorLoading": "Error al cargar el producto",
+    "edit": "Editar",
+    "cancelEdit": "Cancelar edición",
+    "save": "Guardar cambios"
   }
 }
