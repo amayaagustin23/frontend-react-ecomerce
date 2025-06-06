@@ -6,6 +6,9 @@ export const getAllBrandsPanel = (params = { page: 1, size: 10 }) =>
 
 export const getBrandById = (id: string) => api.get(BRAND_ENDPOINTS.GET_BY_ID(id));
 
-export const updateBrand = (id: string, data: any) => api.patch(BRAND_ENDPOINTS.UPDATE(id), data);
+export const createBrand = (data: { name: string }) => api.post(BRAND_ENDPOINTS.CREATE, data);
+
+export const updateBrand = (id: string, data: { name: string }) =>
+  api.patch(BRAND_ENDPOINTS.UPDATE(id), data);
 
 export const deleteBrand = (id: string) => api.delete(BRAND_ENDPOINTS.DELETE(id));

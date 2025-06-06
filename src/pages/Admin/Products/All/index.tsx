@@ -43,10 +43,6 @@ const ProductsPanelPage = () => {
     navigate(`${PATH_PANEL_PRODUCT.getDetailPath(product.id)}?edit=true`);
   };
 
-  const handleDelete = (product: Product) => {
-    console.log('Eliminar:', product);
-  };
-
   return (
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -67,7 +63,6 @@ const ProductsPanelPage = () => {
             columnsKeys={['images', 'name', 'price', 'brand.name', 'category.name', 'isActive']}
             onView={handleView}
             onEdit={handleEdit}
-            onDelete={handleDelete}
             onToggleActive={handleToggleActive}
             pagination={{
               current: pagination.page,

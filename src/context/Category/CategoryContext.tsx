@@ -7,10 +7,10 @@ import {
   deleteCategory,
   getAllCategoriesOutPaginated,
 } from '@/services/calls/category.service';
-import { Category } from '@/types/Category';
-import { message } from 'antd';
+import { Category, UpdateCategoryDto } from '@/types/Category';
 import { useTranslation } from 'react-i18next';
 import { AxiosResponse } from 'axios';
+import { useMessageApi } from '../Message/MessageContext';
 
 type Pagination = {
   page: number;
@@ -27,20 +27,23 @@ type CategoryContextType = {
   categories: Category[];
   categoriesOutPaginated: Category[];
   selectedCategory: Category | null;
+  category: Category | null;
   loading: boolean;
   pagination: Pagination;
   fetchCategories: (params?: PaginationParams) => Promise<void>;
+  fetchCategoriesOutPaginated: () => Promise<void>;
+  fetchCategoryById: (id: string) => void;
   selectCategory: (id: string) => Promise<void>;
   createCategory: (data: Partial<Category>) => Promise<void>;
-  updateCategory: (id: string, data: Partial<Category>) => Promise<void>;
+  updateCategory: (id: string, data: UpdateCategoryDto) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
-  fetchCategoriesOutPaginated: () => Promise<void>;
 };
 
 const CategoryContext = createContext<CategoryContextType | undefined>(undefined);
 
 export const CategoryProvider = ({ children }: { children: React.ReactNode }) => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [category, setCategory] = useState<Category | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [categoriesOutPaginated, setCategoriesOutPaginated] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,6 +52,7 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     size: 10,
     total: 0,
   });
+  const message = useMessageApi();
 
   const { t } = useTranslation();
 
@@ -84,6 +88,16 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     }
   }, [t]);
 
+  const fetchCategoryById = async (id: string) => {
+    try {
+      const { data } = await getCategoryById(id);
+      setCategory(data);
+    } catch {
+      message.error(t('categories.messages.getOneError'));
+      return null;
+    }
+  };
+
   const selectCategory = async (id: string) => {
     try {
       const { data } = await getCategoryById(id);
@@ -103,7 +117,7 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     }
   };
 
-  const handleUpdate = async (id: string, data: Partial<Category>) => {
+  const handleUpdate = async (id: string, data: UpdateCategoryDto) => {
     try {
       await updateCategory(id, data);
       message.success(t('categories.messages.updateSuccess'));
@@ -131,13 +145,15 @@ export const CategoryProvider = ({ children }: { children: React.ReactNode }) =>
     <CategoryContext.Provider
       value={{
         categories,
+        category,
         categoriesOutPaginated,
         selectedCategory,
         loading,
         pagination,
         fetchCategories,
-        selectCategory,
         fetchCategoriesOutPaginated,
+        fetchCategoryById,
+        selectCategory,
         createCategory: handleCreate,
         updateCategory: handleUpdate,
         deleteCategory: handleDelete,

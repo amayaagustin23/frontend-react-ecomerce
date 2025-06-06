@@ -16,6 +16,13 @@
       "error": "Error al iniciar sesión"
     }
   },
+  "users": {
+    "role": {
+      "ADMIN": "Administrador",
+      "CLIENT": "Cliente",
+      "SUPERADMIN": "Super Administrador"
+    }
+  },
   "layout": {
     "search": {
       "placeholder": "Buscar productos"
@@ -58,12 +65,7 @@
     "filter": "Filtros",
     "titlePanel": "Listado de productos",
     "create": "Crear producto",
-    "columns": {
-      "name": "Nombre",
-      "price": "Precio",
-      "brand.name": "Marca",
-      "category.name": "Categoría"
-    },
+
     "sort": {
       "newest": "Más recientes",
       "lowToHigh": "Precio: Menor a mayor",
@@ -77,18 +79,6 @@
         "ok": "Sí",
         "cancel": "No"
       }
-    }
-  },
-  "categories": {
-    "messages": {
-      "fetchError": "Error al cargar las categorías",
-      "getOneError": "No se pudo obtener la categoría",
-      "createSuccess": "Categoría creada con éxito",
-      "createError": "Error al crear la categoría",
-      "updateSuccess": "Categoría actualizada con éxito",
-      "updateError": "Error al actualizar la categoría",
-      "deleteSuccess": "Categoría eliminada con éxito",
-      "deleteError": "Error al eliminar la categoría"
     }
   },
   "home": {
@@ -150,7 +140,24 @@
     "expiration": "Válido hasta",
     "success": "🎉 ¡Cupón canjeado con éxito!",
     "error": "❌ No se pudo canjear el cupón",
-    "notEnoughPoints": "No tenés suficientes puntos"
+    "notEnoughPoints": "No tenés suficientes puntos",
+    "createTitle": "Crear cupón",
+    "editTitle": "Detalle del cupón",
+    "description": "Descripción",
+    "value": "Valor",
+    "price": "Precio en puntos",
+    "type": "Tipo",
+    "code": "Código",
+    "status": "Estado",
+    "expiresAt": "Fecha de expiración",
+    "types": {
+      "DISCOUNT": "Descuento",
+      "EXCHANGE_POINT": "Canje por puntos"
+    },
+    "statuses": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    }
   },
   "orders": {
     "title": "Historial de pedidos",
@@ -197,7 +204,10 @@
     "subtotal": "Subtotal"
   },
   "common": {
-    "back": "Volver"
+    "back": "Volver",
+    "actions": {
+      "save": "Guardar"
+    }
   },
   "orderStatus": {
     "PENDING": "Pendiente",
@@ -255,7 +265,8 @@
     "delete": "Eliminar",
     "addAddress": "Agregar dirección",
     "save": "Guardar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "create": "Crear"
   },
   "dashboard": {
     "title": "Panel de control",
@@ -300,6 +311,7 @@
     "categories": "Categorías",
     "brands": "Marcas",
     "orders": "Pedidos",
+    "coupons": "Cupones",
     "logout": "Cerrar sesión"
   },
   "product": {
@@ -339,5 +351,117 @@
     "edit": "Editar",
     "cancelEdit": "Cancelar edición",
     "save": "Guardar cambios"
+  },
+  "categories": {
+    "messages": {
+      "fetchError": "Error al cargar las categorías",
+      "getOneError": "No se pudo obtener la categoría",
+      "createSuccess": "Categoría creada con éxito",
+      "createError": "Error al crear la categoría",
+      "updateSuccess": "Categoría actualizada con éxito",
+      "updateError": "Error al actualizar la categoría",
+      "deleteSuccess": "Categoría eliminada con éxito",
+      "deleteError": "Error al eliminar la categoría"
+    },
+    "create": {
+      "title": "Crear categoría"
+    },
+    "edit": {
+      "title": "Editar categoría"
+    },
+    "fields": {
+      "name": "Nombre",
+      "description": "Descripción"
+    },
+    "placeholders": {
+      "name": "Ingresá el nombre",
+      "description": "Ingresá la descripción",
+      "subcategoryName": "Nombre de subcategoría",
+      "subcategoryDescription": "Descripción de subcategoría"
+    },
+    "errors": {
+      "nameRequired": "El nombre es obligatorio",
+      "descriptionRequired": "La descripción es obligatoria",
+      "subcategoryNameRequired": "El nombre de la subcategoría es obligatorio",
+      "subcategoryDescriptionRequired": "La descripción de la subcategoría es obligatoria"
+    },
+    "subcategories": {
+      "title": "Subcategorías"
+    },
+    "actions": {
+      "addSubcategory": "Agregar subcategoría",
+      "create": "Crear categoría"
+    }
+  },
+  "table": {
+    "columns": {
+      "name": "Nombre",
+      "price": "Precio",
+      "stock": "Stock",
+      "createdAt": "Creado el",
+      "updatedAt": "Actualizado el",
+      "role": "Rol",
+      "email": "Email",
+      "phone": "Teléfono",
+      "code": "Código",
+      "status": "Estado",
+      "total": "Total",
+      "expiresAt": "Válido hasta",
+      "value": "Descuento",
+      "description": "Descripción",
+      "brand.name": "Marca",
+      "category.name": "Categoría"
+    }
+  },
+  "brands": {
+    "createTitle": "Crear Marca",
+    "name": "Nombre de la marca",
+    "namePlaceholder": "Ingresá el nombre",
+    "nameRequired": "El nombre es obligatorio",
+    "save": "Guardar",
+    "createdSuccess": "Marca creada exitosamente",
+    "createdError": "Error al crear la marca",
+    "editTitle": "Editar Marca",
+    "updatedSuccess": "Marca actualizada exitosamente",
+    "updatedError": "Error al actualizar la marca",
+    "loadError": "No se pudo cargar la marca",
+    "edit": "Editar"
+  },
+  "form": {
+    "required": "Este campo es obligatorio",
+    "submit": "Crear"
+  },
+  "productDetail": {
+    "title": "Detalle del Usuario",
+    "loading": "Cargando usuario...",
+    "notFound": "No se encontró el usuario.",
+    "accountInfo": "Información de la cuenta",
+    "personalInfo": "Datos personales",
+    "defaultAddress": "Dirección por defecto",
+    "orders": "Órdenes del usuario",
+    "email": "Email",
+    "role": "Rol",
+    "points": "Puntos",
+    "active": "Activo",
+    "yes": "Sí",
+    "no": "No",
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "dni": "CUIT o DNI",
+    "street": "Calle",
+    "city": "Ciudad",
+    "province": "Provincia",
+    "postalCode": "Código Postal",
+    "orderId": "Orden",
+    "status": "Estado",
+    "total": "Total",
+    "paymentMethod": "Método de pago",
+    "noPayment": "Sin pago",
+    "products": "Productos",
+    "category": "Categoría",
+    "finalPrice": "Precio final",
+    "color": "Color",
+    "size": "Talle",
+    "noOrders": "No hay órdenes registradas."
   }
 }

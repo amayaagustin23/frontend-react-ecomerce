@@ -5,12 +5,16 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { TablePaginationConfig } from 'antd/es/table';
 import CustomTable from '@/components/CustomTable';
+import { useNavigate } from 'react-router-dom';
+import { PATH_PANEL_CATEGORY, PATH_ROUTE_PANEL_CATEGORIES_CREATE } from '@/router/paths';
+import { Category } from '@/types/Category';
 
 const { Title } = Typography;
 
 const CategoriesPanelPage = () => {
   const { t } = useTranslation();
   const { categories, loading, pagination, fetchCategories } = useCategory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCategories({ page: 1, size: 10 });
@@ -25,12 +29,12 @@ const CategoriesPanelPage = () => {
     [fetchCategories]
   );
 
-  const handleView = (record: any) => {
-    console.log('Ver', record);
+  const handleView = (record: Category) => {
+    navigate(PATH_PANEL_CATEGORY.getDetailPath(record.id));
   };
 
-  const handleEdit = (record: any) => {
-    console.log('Editar', record);
+  const handleEdit = (record: Category) => {
+    navigate(`${PATH_PANEL_CATEGORY.getDetailPath(record.id)}?edit=true`);
   };
 
   const handleDelete = (record: any) => {
@@ -38,7 +42,7 @@ const CategoriesPanelPage = () => {
   };
 
   const handleCreate = () => {
-    console.log('Crear nueva categoría');
+    navigate(PATH_ROUTE_PANEL_CATEGORIES_CREATE);
   };
 
   return (
@@ -49,7 +53,7 @@ const CategoriesPanelPage = () => {
         </Col>
         <Col>
           <Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
-            {t('actions.create')}
+            {t('categories.actions.create')}
           </Button>
         </Col>
       </Row>

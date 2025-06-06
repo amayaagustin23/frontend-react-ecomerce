@@ -1,6 +1,12 @@
-export type CouponStatus = 'ACTIVE' | 'INACTIVE' | 'EXPIRED';
-export type CouponType = 'EXCHANGE_POINT' | 'PROMOTION';
+export enum CouponType {
+  DISCOUNT = 'DISCOUNT',
+  EXCHANGE_POINT = 'EXCHANGE_POINT',
+}
 
+export enum CouponStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
 export type Coupon = {
   id: string;
   description: string;
@@ -11,4 +17,14 @@ export type Coupon = {
   status: CouponStatus;
   expiresAt: string;
   createdAt: string;
+};
+
+export type CreateCouponDto = {
+  description: string;
+  value: number;
+  price: number;
+  type: CouponType;
+  code: string;
+  status: CouponStatus;
+  expiresAt: string;
 };

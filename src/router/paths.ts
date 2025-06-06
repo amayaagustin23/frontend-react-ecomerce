@@ -29,27 +29,32 @@ export const PATH_PANEL_PRODUCT = {
   getDetailPath: (id: string) => `detail/${id}`,
 };
 
+export const PATH_ROUTE_PANEL_CATEGORIES = 'categories';
+export const PATH_ROUTE_PANEL_CATEGORIES_CREATE = '/categories/create';
+export const PATH_ROUTE_PANEL_CATEGORIES_DETAIL = '/categories/detail/:id';
+export const PATH_PANEL_CATEGORY = {
+  getDetailPath: (id: string) => `detail/${id}`,
+};
+
 export const PATH_ROUTE_PANEL_USERS = 'users';
-export const PATH_ROUTE_PANEL_USERS_CREATE = 'users/create';
-export const PATH_ROUTE_PANEL_USERS_EDIT = 'users/edit/:id';
-export const PATH_ROUTE_PANEL_USERS_DETAIL = 'users/detail/:id';
+export const PATH_ROUTE_PANEL_USERS_DETAIL = '/users/detail/:id';
+export const PATH_PANEL_USER = {
+  getDetailPath: (id: string) => `detail/${id}`,
+};
 
 export const PATH_ROUTE_PANEL_COUPONS = 'coupons';
-export const PATH_ROUTE_PANEL_COUPONS_CREATE = 'coupons/create';
-export const PATH_ROUTE_PANEL_COUPONS_EDIT = 'coupons/edit/:id';
-export const PATH_ROUTE_PANEL_COUPONS_DETAIL = 'coupons/detail/:id';
+export const PATH_ROUTE_PANEL_COUPONS_CREATE = '/coupons/create';
+export const PATH_ROUTE_PANEL_COUPONS_DETAIL = '/coupons/detail/:id';
+export const PATH_PANEL_COUPON = {
+  getDetailPath: (id: string) => `detail/${id}`,
+};
 
 export const PATH_ROUTE_PANEL_ORDERS = 'orders';
-export const PATH_ROUTE_PANEL_ORDERS_DETAIL = 'orders/detail/:id';
-export const PATH_ROUTE_PANEL_ORDERS_EDIT = 'orders/edit/:id';
-export const PATH_ROUTE_PANEL_ORDERS_CREATE = 'orders/create';
-
-export const PATH_ROUTE_PANEL_CATEGORIES = 'categories';
-export const PATH_ROUTE_PANEL_CATEGORIES_CREATE = 'categories/create';
-export const PATH_ROUTE_PANEL_CATEGORIES_EDIT = 'categories/edit/:id';
-export const PATH_ROUTE_PANEL_CATEGORIES_DETAIL = 'categories/detail/:id';
+export const PATH_ROUTE_PANEL_ORDERS_DETAIL = 'o/rders/detail/:id';
 
 export const PATH_ROUTE_PANEL_BRANDS = 'brands';
-export const PATH_ROUTE_PANEL_BRANDS_CREATE = 'brands/create';
-export const PATH_ROUTE_PANEL_BRANDS_EDIT = 'brands/edit/:id';
-export const PATH_ROUTE_PANEL_BRANDS_DETAIL = 'brands/detail/:id';
+export const PATH_ROUTE_PANEL_BRANDS_CREATE = '/brands/create';
+export const PATH_ROUTE_PANEL_BRANDS_DETAIL = '/brands/detail/:id';
+export const PATH_PANEL_BRAND = {
+  getDetailPath: (id: string) => `detail/${id}`,
+};

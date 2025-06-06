@@ -1,0 +1,60 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card {
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+
+  .ant-descriptions-item-label {
+    font-weight: 600;
+    color: #5e5e5e;
+  }
+
+  .ant-tag {
+    font-size: 14px;
+    padding-inline: 10px;
+    border-radius: 6px;
+  }
+}
+
+.innerCard {
+  margin-bottom: 1rem;
+
+  .ant-list-item {
+    padding: 8px 0;
+
+    .ant-tag {
+      border-radius: 4px;
+    }
+  }
+
+  .ant-card-head-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.ant-divider-horizontal {
+  margin: 12px 0;
+}
+
+.colorLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.colorPreview {
+  width: 30px;
+  height: 16px;
+  margin-top: -.2rem;
+  border-radius: 20%;
+  border: 1px solid #d9d9d9;
+  background-color: transparent;
+}

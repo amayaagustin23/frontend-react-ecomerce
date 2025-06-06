@@ -3,11 +3,13 @@ import { Card, Typography, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import CustomTable from '@/components/CustomTable';
 import { useUser } from '@/context/User/UserContext';
+import { PATH_PANEL_USER } from '@/router/paths';
+import { User } from '@/types/User';
 
 const { Title } = Typography;
 
 const UsersPanelPage = () => {
-  const { users, loading, fetchUsers, pagination, deleteUserById, updateUserData } = useUser();
+  const { users, loading, fetchUsers, pagination, updateUserData } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,16 +20,8 @@ const UsersPanelPage = () => {
     fetchUsers({ page: pagination.current, limit: pagination.pageSize });
   };
 
-  const handleView = (user: any) => {
-    navigate(`/panel/users/${user.id}`);
-  };
-
-  const handleEdit = (user: any) => {
-    navigate(`/panel/users/edit/${user.id}`);
-  };
-
-  const handleDelete = async (user: any) => {
-    await deleteUserById(user.id);
+  const handleView = (user: User) => {
+    navigate(PATH_PANEL_USER.getDetailPath(user.id));
   };
 
   const handleToggleActive = (user: any, active: boolean) => {
@@ -42,10 +36,10 @@ const UsersPanelPage = () => {
       ) : (
         <CustomTable
           data={users}
-          columnsKeys={['name', 'email', 'role']}
+          columnsKeys={['name', 'email', 'role', 'isActive']}
           onView={handleView}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
+          // onEdit={handleEdit}
+          // onDelete={handleDelete}
           onToggleActive={handleToggleActive}
           pagination={pagination}
           onChangePage={handlePageChange}

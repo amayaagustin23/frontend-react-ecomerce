@@ -57,6 +57,12 @@ const ProductDetailPage = () => {
     loadProduct();
   }, [id, t]);
 
+  useEffect(() => {
+    if (product) {
+      form.setFieldsValue({ ...product });
+    }
+  }, [product]);
+
   const toggleEdit = () => setIsEditing((prev) => !prev);
 
   const handleRemoveImage = (url: string) => {
@@ -128,174 +134,170 @@ const ProductDetailPage = () => {
   if (!product) return null;
 
   return (
-    <Row justify="center" className={styles.container}>
-      <Col span={20}>
-        <Card bordered className={styles.card}>
-          <Title level={3}>{t('product.detailTitle')}</Title>
+    <div className={styles.container}>
+      <Title level={3}>{t('product.detailTitle')}</Title>
 
-          <Form form={form} layout="vertical" onFinish={handleSubmit}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Item name="name" label={t('product.name')}>
-                  <Input disabled={!isEditing} />
-                </Item>
-              </Col>
-              <Col span={12}>
-                <Item name="price" label={t('product.price')}>
-                  <InputNumber
-                    disabled={!isEditing}
-                    style={{ width: '100%' }}
-                    min={0}
-                    max={999999}
-                    formatter={(value) =>
-                      value ? `ARS $ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : ''
-                    }
-                    parser={(value) => {
-                      const parsed = value?.replace(/[^\d]/g, '');
-                      if (!parsed) return 0;
-                      const num = Number(parsed);
-                      if (num <= 0) return 0;
-                      if (num >= 999999) return 999999;
-                      return num as 0 | 999999;
-                    }}
-                    onKeyDown={(e) => {
-                      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
-
-                      const isNumber = /^[0-9]$/.test(e.key);
-                      if (!isNumber && !allowedKeys.includes(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    stringMode
-                  />
-                </Item>
-              </Col>
-            </Row>
-
-            <Item name="description" label={t('product.description')}>
+      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Item name="name" label={t('product.name')}>
               <Input disabled={!isEditing} />
             </Item>
+          </Col>
+          <Col span={12}>
+            <Item name="price" label={t('product.price')}>
+              <InputNumber
+                disabled={!isEditing}
+                style={{ width: '100%' }}
+                min={0}
+                max={999999}
+                formatter={(value) =>
+                  value ? `ARS $ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : ''
+                }
+                parser={(value) => {
+                  const parsed = value?.replace(/[^\d]/g, '');
+                  if (!parsed) return 0;
+                  const num = Number(parsed);
+                  if (num <= 0) return 0;
+                  if (num >= 999999) return 999999;
+                  return num as 0 | 999999;
+                }}
+                onKeyDown={(e) => {
+                  const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
 
-            <Row gutter={16}>
-              <Col span={8}>
-                <Item name="isService" label={t('product.isService')} valuePropName="checked">
-                  <Switch disabled={!isEditing} />
-                </Item>
-              </Col>
-              <Col span={8}>
-                <Item name="isActive" label={t('product.isActive')} valuePropName="checked">
-                  <Switch disabled={!isEditing} />
-                </Item>
-              </Col>
-              <Col span={8}>
-                <Item name="hasDelivery" label={t('product.hasDelivery')} valuePropName="checked">
-                  <Switch disabled={!isEditing} />
-                </Item>
-              </Col>
-            </Row>
-
-            <Title level={5}>{t('product.variants')}</Title>
-            <List name="variants">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, ...restField }) => (
-                    <Space key={key} align="start" style={{ display: 'flex' }}>
-                      <Item {...restField} name={[name, 'id']} hidden>
-                        <Input type="hidden" />
-                      </Item>
-                      <Item {...restField} name={[name, 'color']}>
-                        <ColorPicker disabled={!isEditing} />
-                      </Item>
-                      <Item {...restField} name={[name, 'size']}>
-                        <Input disabled={!isEditing} />
-                      </Item>
-                      <Item {...restField} name={[name, 'stock']}>
-                        <InputNumber disabled={!isEditing} />
-                      </Item>
-                      {isEditing && (
-                        <MinusCircleOutlined
-                          onClick={() => {
-                            const variantId = form.getFieldValue(['variants', name, 'id']);
-                            handleRemoveVariant(variantId);
-                            remove(name);
-                          }}
-                        />
-                      )}
-                    </Space>
-                  ))}
-                  {isEditing && (
-                    <Item>
-                      <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                        {t('product.addVariant')}
-                      </Button>
-                    </Item>
-                  )}
-                </>
-              )}
-            </List>
-
-            <Title level={5}>{t('product.images')}</Title>
-            <Row gutter={8} style={{ marginBottom: 16 }}>
-              {product.images?.map((img, idx) => (
-                <Col key={idx} span={6}>
-                  <Card
-                    cover={
-                      <img
-                        alt={`product-${idx}`}
-                        src={img.url}
-                        style={{ height: 100, objectFit: 'cover' }}
-                      />
-                    }
-                    actions={
-                      isEditing
-                        ? [
-                            <Button
-                              key={`remove-image-${img.url}`}
-                              danger
-                              onClick={() => handleRemoveImage(img.url)}
-                            >
-                              Eliminar
-                            </Button>,
-                          ]
-                        : []
-                    }
-                  />
-                </Col>
-              ))}
-            </Row>
-
-            {isEditing && (
-              <Item name="files">
-                <Upload
-                  multiple
-                  listType="picture"
-                  beforeUpload={() => false}
-                  fileList={fileList}
-                  onChange={({ fileList }) => setFileList(fileList)}
-                >
-                  <Button icon={<UploadOutlined />}>{t('product.uploadImages')}</Button>
-                </Upload>
-              </Item>
-            )}
-
-            <Item>
-              {isEditing ? (
-                <Space>
-                  <Button onClick={toggleEdit}>{t('product.cancelEdit')}</Button>
-                  <Button type="primary" htmlType="submit">
-                    {t('product.save')}
-                  </Button>
-                </Space>
-              ) : (
-                <Button type="primary" onClick={toggleEdit}>
-                  {t('product.edit')}
-                </Button>
-              )}
+                  const isNumber = /^[0-9]$/.test(e.key);
+                  if (!isNumber && !allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                stringMode
+              />
             </Item>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+          </Col>
+        </Row>
+
+        <Item name="description" label={t('product.description')}>
+          <Input disabled={!isEditing} />
+        </Item>
+
+        <Row gutter={16}>
+          <Col span={8}>
+            <Item name="isService" label={t('product.isService')} valuePropName="checked">
+              <Switch disabled={!isEditing} />
+            </Item>
+          </Col>
+          <Col span={8}>
+            <Item name="isActive" label={t('product.isActive')} valuePropName="checked">
+              <Switch disabled={!isEditing} />
+            </Item>
+          </Col>
+          <Col span={8}>
+            <Item name="hasDelivery" label={t('product.hasDelivery')} valuePropName="checked">
+              <Switch disabled={!isEditing} />
+            </Item>
+          </Col>
+        </Row>
+
+        <Title level={5}>{t('product.variants')}</Title>
+        <List name="variants">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Space key={key} align="start" style={{ display: 'flex' }}>
+                  <Item {...restField} name={[name, 'id']} hidden>
+                    <Input type="hidden" />
+                  </Item>
+                  <Item {...restField} name={[name, 'color']}>
+                    <ColorPicker disabled={!isEditing} />
+                  </Item>
+                  <Item {...restField} name={[name, 'size']}>
+                    <Input disabled={!isEditing} />
+                  </Item>
+                  <Item {...restField} name={[name, 'stock']}>
+                    <InputNumber disabled={!isEditing} />
+                  </Item>
+                  {isEditing && (
+                    <MinusCircleOutlined
+                      onClick={() => {
+                        const variantId = form.getFieldValue(['variants', name, 'id']);
+                        handleRemoveVariant(variantId);
+                        remove(name);
+                      }}
+                    />
+                  )}
+                </Space>
+              ))}
+              {isEditing && (
+                <Item>
+                  <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                    {t('product.addVariant')}
+                  </Button>
+                </Item>
+              )}
+            </>
+          )}
+        </List>
+
+        <Title level={5}>{t('product.images')}</Title>
+        <Row gutter={8} style={{ marginBottom: 16 }}>
+          {product.images?.map((img, idx) => (
+            <Col key={idx} span={6}>
+              <Card
+                cover={
+                  <img
+                    alt={`product-${idx}`}
+                    src={img.url}
+                    style={{ height: 100, objectFit: 'cover' }}
+                  />
+                }
+                actions={
+                  isEditing
+                    ? [
+                        <Button
+                          key={`remove-image-${img.url}`}
+                          danger
+                          onClick={() => handleRemoveImage(img.url)}
+                        >
+                          Eliminar
+                        </Button>,
+                      ]
+                    : []
+                }
+              />
+            </Col>
+          ))}
+        </Row>
+
+        {isEditing && (
+          <Item name="files">
+            <Upload
+              multiple
+              listType="picture"
+              beforeUpload={() => false}
+              fileList={fileList}
+              onChange={({ fileList }) => setFileList(fileList)}
+            >
+              <Button icon={<UploadOutlined />}>{t('product.uploadImages')}</Button>
+            </Upload>
+          </Item>
+        )}
+
+        <Item>
+          {isEditing ? (
+            <Space>
+              <Button onClick={toggleEdit}>{t('product.cancelEdit')}</Button>
+              <Button type="primary" htmlType="submit">
+                {t('product.save')}
+              </Button>
+            </Space>
+          ) : (
+            <Button type="primary" onClick={toggleEdit}>
+              {t('product.edit')}
+            </Button>
+          )}
+        </Item>
+      </Form>
+    </div>
   );
 };
 

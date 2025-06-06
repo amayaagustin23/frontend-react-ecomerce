@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf dist && find src -type f -name '*.js' ! -name '*.test.js' -delete"
   },
   "dependencies": {
     "@number-flow/react": "^0.5.9",

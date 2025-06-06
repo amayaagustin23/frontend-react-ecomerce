@@ -72,10 +72,12 @@ export const GOOGLE_PLACES_ENDPOINTS = {
 export const PANEL_ENDPOINTS = {
   GET_DASHBOARD: '/panel/dashboard',
   GET_ALL_ORDERS: '/panel/orders',
+  GET_USER_BY_ID: (id: string) => `/panel/users-order/${id}`,
 };
 
 export const BRAND_ENDPOINTS = {
   GET_ALL: '/brands',
+  CREATE: '/brands',
   GET_BY_ID: (id: string) => `/brands/${id}`,
   UPDATE: (id: string) => `/brands/${id}`,
   DELETE: (id: string) => `/brands/${id}`,

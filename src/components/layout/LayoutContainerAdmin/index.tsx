@@ -1,21 +1,22 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar, theme } from 'antd';
+import { Layout, Menu, Dropdown, Avatar } from 'antd';
 import {
   DashboardOutlined,
   UserOutlined,
   ShoppingOutlined,
-  TagsOutlined,
   AppstoreOutlined,
   LogoutOutlined,
   ShoppingCartOutlined,
+  TagOutlined,
+  GiftOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '@/context/Auth/AuthContext';
 import styles from './LayoutContainerAdmin.module.scss';
 import {
   PATH_ROUTE_PANEL_BRANDS,
   PATH_ROUTE_PANEL_CATEGORIES,
-  PATH_ROUTE_PANEL_DASHBOARD,
+  PATH_ROUTE_PANEL_COUPONS,
   PATH_ROUTE_PANEL_ORDERS,
   PATH_ROUTE_PANEL_PRODUCTS,
   PATH_ROUTE_PANEL_USERS,
@@ -29,9 +30,7 @@ const LayoutContainerAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [collapsed, setCollapsed] = React.useState(false);
 
   const menuItems = [
     {
@@ -67,8 +66,14 @@ const LayoutContainerAdmin = () => {
     {
       key: PATH_ROUTE_PANEL_BRANDS,
       label: t('adminMenu.brands'),
-      icon: <TagsOutlined />,
+      icon: <TagOutlined />,
       onClick: () => navigate(PATH_ROUTE_PANEL_BRANDS),
+    },
+    {
+      key: PATH_ROUTE_PANEL_COUPONS,
+      label: t('adminMenu.coupons'),
+      icon: <GiftOutlined />,
+      onClick: () => navigate(PATH_ROUTE_PANEL_COUPONS),
     },
   ];
 
@@ -86,25 +91,32 @@ const LayoutContainerAdmin = () => {
   );
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible>
-        <div className={styles.logo}>Admin</div>
+    <Layout className={styles.layoutContainerAdmin}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+        width={200}
+        className={styles.sider}
+      >
+        <div className={styles.logo}>{collapsed ? 'A' : 'Admin'}</div>
         <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname.replace('/', '')]}
           items={menuItems}
+          className={styles.menu}
         />
       </Sider>
-      <Layout>
+
+      <Layout className={styles.mainLayout}>
         <Header className={styles.header}>
-          <div className={styles.rightContent}>
-            <Dropdown overlay={userMenu} trigger={['click']}>
-              <Avatar style={{ cursor: 'pointer' }} icon={<UserOutlined />} />
-            </Dropdown>
-          </div>
+          <Dropdown overlay={userMenu} trigger={['click']}>
+            <Avatar style={{ cursor: 'pointer' }} icon={<UserOutlined />} />
+          </Dropdown>
         </Header>
-        <Content style={{ margin: '24px 16px', background: colorBgContainer }}>
+
+        <Content className={styles.content}>
           <Outlet />
         </Content>
       </Layout>

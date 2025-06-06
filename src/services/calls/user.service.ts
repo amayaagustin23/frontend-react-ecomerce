@@ -1,6 +1,6 @@
 import { AddressInputDto } from '@/types/User';
 import { api } from '../api';
-import { USER_ENDPOINTS } from '../endpoints';
+import { PANEL_ENDPOINTS, USER_ENDPOINTS } from '../endpoints';
 
 export const getAllUsers = (pagination = { page: 1, limit: 10 }) =>
   api.get(USER_ENDPOINTS.GET_ALL, { params: pagination });
@@ -31,3 +31,5 @@ export const updateUserAddress = (id: string, addressData: AddressInputDto) =>
 export const deleteUserAddress = (id: string) => api.patch(USER_ENDPOINTS.DELETE_ADDRESS(id));
 export const defaultChangeUserAddress = (id: string) =>
   api.patch(USER_ENDPOINTS.DEFAULT_CHANGE_ADDRESS(id));
+
+export const getPanelUserById = (id: string) => api.get(PANEL_ENDPOINTS.GET_USER_BY_ID(id));
