@@ -11,25 +11,25 @@ import { UserProvider } from '../User/UserContext';
 import { BrandProvider } from '../Brand/BrandContext';
 
 const AppProviders = ({ children }: { children: React.ReactNode }) => (
-  <AuthProvider>
-    <UserProvider>
-      <DashboardProvider>
-        <CategoryProvider>
-          <ProductProvider>
-            <OrderProvider>
-              <CouponProvider>
-                <MessageProvider>
+  <MessageProvider>
+    <AuthProvider>
+      <UserProvider>
+        <DashboardProvider>
+          <CategoryProvider>
+            <ProductProvider>
+              <OrderProvider>
+                <CouponProvider>
                   <BrandProvider>
                     <CartProvider>{children}</CartProvider>
                   </BrandProvider>
-                </MessageProvider>
-              </CouponProvider>
-            </OrderProvider>
-          </ProductProvider>
-        </CategoryProvider>
-      </DashboardProvider>
-    </UserProvider>
-  </AuthProvider>
+                </CouponProvider>
+              </OrderProvider>
+            </ProductProvider>
+          </CategoryProvider>
+        </DashboardProvider>
+      </UserProvider>
+    </AuthProvider>
+  </MessageProvider>
 );
 
 export default AppProviders;

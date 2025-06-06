@@ -1,23 +1,78 @@
-.logo {
-  height: 32px;
-  margin: 16px;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  font-size: 18px;
+$primary-dark: #263238;
+$primary-light: #4fc3f7;
+$primary-hover: #0288d1;
+$bg-content: #f5f8fa;
+$text-light: #b0bec5;
+
+.layoutContainerAdmin {
+  display: flex;
+  height: 100vh;
+  background-color: $bg-content;
+}
+
+.sider {
+  background-color: $primary-dark !important;
+
+  .logo {
+    color: $bg-content;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 16px;
+    text-align: center;
+    background-color: $primary-dark;
+  }
+
+  .menu {
+    background-color: $primary-dark !important;
+
+    .ant-menu-item {
+      color: $text-light;
+      border-radius: 8px;
+      margin-inline: 8px;
+      margin-block: 4px;
+
+      .anticon {
+        color: #ffffff !important;
+      }
+
+      &.ant-menu-item-selected {
+        background-color: $primary-light !important;
+        color: #ffffff !important;
+      }
+
+      &:hover {
+        background-color: $primary-hover !important;
+        color: #ffffff !important;
+      }
+    }
+
+    .ant-menu-submenu-title {
+      color: $text-light;
+
+      .anticon {
+        color: #ffffff !important; // también blanco para submenús
+      }
+    }
+  }
+}
+
+.mainLayout {
+  transition: margin-left 0.2s;
+  background-color: $bg-content;
 }
 
 .header {
-  background: #fff;
+  height: 64px;
+  padding: 0 24px;
+  background-color: $primary-dark !important;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 24px;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 }
 
-.rightContent {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+  background-color: $bg-content;
 }

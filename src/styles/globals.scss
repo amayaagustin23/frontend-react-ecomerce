@@ -37,6 +37,14 @@ body {
     &.ant-menu-item-selected {
       font-weight: 500;
       color: $color-white !important;
+      .anticon {
+        color: $color-white !important;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $color-white !important;
+        }
+      }
     }
   }
 
@@ -80,4 +88,7 @@ body {
     color: $color-dark-text !important;
     font-weight: 500;
   }
+}
+.ant-layout-sider-trigger {
+  background-color: $color-bg-footer !important;
 }

@@ -3,7 +3,6 @@ import { Cart, CartItem } from '@/types/Cart';
 import { getCart, updateCart, createCart } from '@/services/calls/cart.service';
 import { useTranslation } from 'react-i18next';
 import { useMessageApi } from '../Message/MessageContext';
-import Cookies from 'js-cookie';
 import { useAuth } from '../Auth/AuthContext';
 
 type CartContextType = {
@@ -31,13 +30,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const cartItems = cart?.items || [];
   const coupon = cart?.coupon || null;
   const message = useMessageApi();
+  const { user } = useAuth();
 
   const fetchCart = async () => {
     try {
       const response = await getCart();
       setCart(response.data);
     } catch (error) {
-      console.error('❌', t('messages.error.fetchCart'), error);
+      message.error(t('messages.error.fetchCart'));
     }
   };
 
@@ -52,7 +52,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    fetchCart();
+    if (user && user.role === 'CLIENT') {
+      fetchCart();
+    }
   }, []);
 
   const setCartItems = (items: CartItem[]) => {
@@ -79,7 +81,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         });
         cartId = response.data.id;
         setCart(response.data);
-        return;
       } else {
         const productVariantExist = await cart?.items.find(
           ({ product, variant }) => item.productId === product.id && item.variantId === variant.id

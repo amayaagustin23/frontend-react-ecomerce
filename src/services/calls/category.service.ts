@@ -1,4 +1,4 @@
-import { Category } from '@/types/Category';
+import { Category, UpdateCategoryDto } from '@/types/Category';
 import { api } from '../api';
 import { CATEGORY_ENDPOINTS } from '../endpoints';
 
@@ -23,7 +23,7 @@ export const getCategoryById = (id: string) => api.get<Category>(CATEGORY_ENDPOI
 export const createCategory = (data: Partial<Category>) =>
   api.post<Category>(CATEGORY_ENDPOINTS.CREATE, data);
 
-export const updateCategory = (id: string, data: Partial<Category>) =>
+export const updateCategory = (id: string, data: UpdateCategoryDto) =>
   api.patch<Category>(CATEGORY_ENDPOINTS.UPDATE(id), data);
 
 export const deleteCategory = (id: string) => api.delete<void>(CATEGORY_ENDPOINTS.DELETE(id));

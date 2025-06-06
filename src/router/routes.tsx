@@ -59,28 +59,28 @@ import {
   PATH_ROUTE_PANEL_PRODUCTS_CREATE,
   PATH_ROUTE_PANEL_PRODUCTS_DETAIL,
   PATH_ROUTE_PANEL_USERS,
-  PATH_ROUTE_PANEL_USERS_CREATE,
-  PATH_ROUTE_PANEL_USERS_EDIT,
   PATH_ROUTE_PANEL_USERS_DETAIL,
   PATH_ROUTE_PANEL_COUPONS,
   PATH_ROUTE_PANEL_COUPONS_CREATE,
-  PATH_ROUTE_PANEL_COUPONS_EDIT,
   PATH_ROUTE_PANEL_COUPONS_DETAIL,
-  PATH_ROUTE_PANEL_ORDERS_CREATE,
-  PATH_ROUTE_PANEL_ORDERS_EDIT,
   PATH_ROUTE_PANEL_ORDERS_DETAIL,
   PATH_ROUTE_PANEL_CATEGORIES,
   PATH_ROUTE_PANEL_ORDERS,
   PATH_ROUTE_PANEL_CATEGORIES_CREATE,
-  PATH_ROUTE_PANEL_CATEGORIES_EDIT,
   PATH_ROUTE_PANEL_CATEGORIES_DETAIL,
   PATH_ROUTE_PANEL_BRANDS,
   PATH_ROUTE_PANEL_BRANDS_CREATE,
-  PATH_ROUTE_PANEL_BRANDS_EDIT,
   PATH_ROUTE_PANEL_BRANDS_DETAIL,
 } from './paths';
 import ProductCreatePanelPage from '@/pages/Admin/Products/Create';
 import ProductDetailPanelPage from '@/pages/Admin/Products/Detail';
+import CreateCategoryPanelPage from '@/pages/Admin/Categories/Create';
+import DetailCategoryPanelPage from '@/pages/Admin/Categories/Detail';
+import CreateBrandPage from '@/pages/Admin/Brands/Create';
+import DetailBrandPage from '@/pages/Admin/Brands/Detail';
+import CreateCouponPage from '@/pages/Admin/Coupons/Create';
+import DetailCouponPage from '@/pages/Admin/Coupons/Detail';
+import DetailUserPage from '@/pages/Admin/Users/Detail';
 
 export const routes = [
   { path: PATH_ROUTE_HOME, element: <HomePage />, isPrivate: false, layout: 'client' },
@@ -134,12 +134,6 @@ export const routes = [
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_PRODUCTS_EDIT,
-  //   element: <ProductEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
   {
     path: PATH_ROUTE_PANEL_PRODUCTS_DETAIL,
     element: <ProductDetailPanelPage />,
@@ -153,68 +147,36 @@ export const routes = [
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_USERS_CREATE,
-  //   element: <UserCreatePanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_USERS_EDIT,
-  //   element: <UserEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_USERS_DETAIL,
-  //   element: <UserDetailPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-
+  {
+    path: PATH_ROUTE_PANEL_USERS_DETAIL,
+    element: <DetailUserPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
   {
     path: PATH_ROUTE_PANEL_COUPONS,
     element: <CouponsPanelPage />,
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_COUPONS_CREATE,
-  //   element: <CouponCreatePanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_COUPONS_EDIT,
-  //   element: <CouponEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_COUPONS_DETAIL,
-  //   element: <CouponDetailPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-
+  {
+    path: PATH_ROUTE_PANEL_COUPONS_CREATE,
+    element: <CreateCouponPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
+  {
+    path: PATH_ROUTE_PANEL_COUPONS_DETAIL,
+    element: <DetailCouponPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
   {
     path: PATH_ROUTE_PANEL_ORDERS,
     element: <OrdersPanelPage />,
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_ORDERS_CREATE,
-  //   element: <OrderCreatePanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_ORDERS_EDIT,
-  //   element: <OrderEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
   // {
   //   path: PATH_ROUTE_PANEL_ORDERS_DETAIL,
   //   element: <OrderDetailPanel />,
@@ -228,47 +190,34 @@ export const routes = [
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_CATEGORIES_CREATE,
-  //   element: <CategoryCreatePanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_CATEGORIES_EDIT,
-  //   element: <CategoryEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_CATEGORIES_DETAIL,
-  //   element: <CategoryDetailPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-
+  {
+    path: PATH_ROUTE_PANEL_CATEGORIES_CREATE,
+    element: <CreateCategoryPanelPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
+  {
+    path: PATH_ROUTE_PANEL_CATEGORIES_DETAIL,
+    element: <DetailCategoryPanelPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
   {
     path: PATH_ROUTE_PANEL_BRANDS,
     element: <BrandsPanelPage />,
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_BRANDS_CREATE,
-  //   element: <BrandCreatePanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_BRANDS_EDIT,
-  //   element: <BrandEditPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
-  // {
-  //   path: PATH_ROUTE_PANEL_BRANDS_DETAIL,
-  //   element: <BrandDetailPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
+  {
+    path: PATH_ROUTE_PANEL_BRANDS_CREATE,
+    element: <CreateBrandPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
+  {
+    path: PATH_ROUTE_PANEL_BRANDS_DETAIL,
+    element: <DetailBrandPage />,
+    isPrivate: true,
+    layout: 'dashboard',
+  },
 ];

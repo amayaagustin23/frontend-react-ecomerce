@@ -25,7 +25,10 @@
 
 .actionIcon {
   transition: transform 0.2s ease;
-
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
   &:hover {
     transform: scale(1.2);
   }

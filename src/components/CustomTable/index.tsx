@@ -3,7 +3,10 @@ import { Table, Space, Tooltip, Switch, Popconfirm } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
 import styles from './CustomTable.module.scss';
+import { t } from 'i18next';
 
 type Props<T> = {
   data: T[];
@@ -19,11 +22,38 @@ type Props<T> = {
 const getValueByPath = (obj: any, path: string): any => {
   const keys = path.split('.');
   const value = keys.reduce((acc, key) => acc?.[key], obj);
+  const lastKey = keys[keys.length - 1].toLowerCase();
 
-  return keys.some((key) => key.toLowerCase().includes('price')) ? `$${value}` : value;
+  if (value == null) return '-';
+
+  if (Array.isArray(value)) {
+    return value.length ? value.join(', ') : '-';
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? t('common.yes', 'Sí') : t('common.no', 'No');
+  }
+
+  if (lastKey.includes('price') || lastKey.includes('amount') || lastKey.includes('total')) {
+    return `$${Number(value).toLocaleString('es-AR')}`;
+  }
+
+  if (lastKey.includes('role') && typeof value === 'string') {
+    return t(`users.role.${value}`, value);
+  }
+
+  if (lastKey.includes('at') && dayjs(value).isValid()) {
+    return dayjs(value).format('DD/MM/YYYY HH:mm');
+  }
+
+  if (lastKey === 'value' && typeof value === 'number') {
+    return `${value}%`;
+  }
+
+  return value;
 };
 
-const CustomTable = <T extends { id: string; active?: boolean; images?: { url: string }[] }>({
+const CustomTable = <T extends { id: string; isActive?: boolean; images?: { url: string }[] }>({
   data,
   columnsKeys,
   onView,
@@ -34,8 +64,6 @@ const CustomTable = <T extends { id: string; active?: boolean; images?: { url: s
   onChangePage,
 }: Props<T>) => {
   const { t } = useTranslation();
-
-  const hasActive = data.some((item) => typeof item.active === 'boolean');
 
   const columns: ColumnsType<T> = [
     ...(columnsKeys.includes('images')
@@ -56,7 +84,7 @@ const CustomTable = <T extends { id: string; active?: boolean; images?: { url: s
     ...columnsKeys
       .filter((key) => key !== 'images' && key !== 'isActive')
       .map((key) => ({
-        title: t(`products.columns.${key}`, key),
+        title: t(`table.columns.${key}`, key),
         dataIndex: key,
         key,
         render: (_: unknown, record: T) => getValueByPath(record, key) ?? '-',
@@ -67,7 +95,7 @@ const CustomTable = <T extends { id: string; active?: boolean; images?: { url: s
           {
             title: t('products.columns.active', 'Estado'),
             key: 'active',
-            render: (_: any, record: any) =>
+            render: (_: unknown, record: T) =>
               typeof record.isActive === 'boolean' ? (
                 <Switch
                   checked={record.isActive}

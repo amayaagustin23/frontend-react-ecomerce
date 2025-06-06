@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, use, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   LaptopOutlined,
@@ -36,11 +36,11 @@ const LayoutContainerClient: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const { getQuantityTotal } = useCart();
+  const { getQuantityTotal, cart } = useCart();
 
   const { user, isLogin, logout } = useAuth();
   const { fetchFilteredProducts, productsFiltered } = useProduct();
-  const itemCount = getQuantityTotal();
+  const [itemCount, setItemCount] = useState(getQuantityTotal());
   const [searchValue, setSearchValue] = useState('');
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -117,6 +117,10 @@ const LayoutContainerClient: React.FC = () => {
   const redirect = (id: string) => {
     navigate(PRODUCT_ROUTES.getDetailPath(id));
   };
+
+  useEffect(() => {
+    setItemCount(getQuantityTotal());
+  }, [cart]);
 
   return (
     <Layout className={styles.layoutContainer}>

@@ -1,14 +1,15 @@
+// src/context/Brand/BrandContext.tsx
 import React, { createContext, useCallback, useContext, useState } from 'react';
-
 import { Brand } from '@/types/Brand';
 import { TablePaginationConfig } from 'antd/es/table';
-import { getAllBrands } from '@/services/calls/product.service';
 import {
+  createBrand,
   deleteBrand,
   getAllBrandsPanel,
   getBrandById,
   updateBrand,
 } from '@/services/calls/brand.service';
+import { useMessageApi } from '../Message/MessageContext';
 
 interface BrandContextProps {
   brands: Brand[];
@@ -17,8 +18,9 @@ interface BrandContextProps {
   pagination: TablePaginationConfig;
   fetchBrands: (pagination?: { page: number; size: number }) => Promise<void>;
   fetchBrandById: (id: string) => Promise<void>;
-  updateBrandData: (id: string, data: any) => Promise<void>;
+  updateBrandData: (id: string, data: { name: string }) => Promise<void>;
   deleteBrandById: (id: string) => Promise<void>;
+  createBrandData: (data: { name: string }) => Promise<void>;
 }
 
 const BrandContext = createContext<BrandContextProps>({} as BrandContextProps);
@@ -32,8 +34,9 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     pageSize: 10,
     total: 0,
   });
+  const message = useMessageApi();
 
-  const fetchBrands = useCallback(async (params = { page: 1, size: 10 }) => {
+  const fetchBrands = async (params = { page: 1, size: 10 }) => {
     setLoading(true);
     try {
       const res = await getAllBrandsPanel(params);
@@ -44,53 +47,62 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         total: res.data.total,
       });
     } catch (err) {
-      console.error('Error al obtener marcas', err);
+      message.error('Error al obtener marcas');
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  const fetchBrandById = useCallback(async (id: string) => {
+  const fetchBrandById = async (id: string) => {
     setLoading(true);
     try {
       const res = await getBrandById(id);
       setBrandDetails(res.data);
     } catch (err) {
-      console.error('Error al obtener marca por ID', err);
+      message.error('Error al obtener marca');
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  const updateBrandData = useCallback(
-    async (id: string, data: any) => {
-      setLoading(true);
-      try {
-        await updateBrand(id, data);
-        await fetchBrands();
-      } catch (err) {
-        console.error('Error al actualizar marca', err);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchBrands]
-  );
+  const updateBrandData = async (id: string, data: any) => {
+    setLoading(true);
+    try {
+      await updateBrand(id, data);
+      await fetchBrands();
+      message.success('Marca actualizada exitosamente');
+    } catch (err) {
+      message.error('Error al actualizar marca');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const deleteBrandById = useCallback(
-    async (id: string) => {
-      setLoading(true);
-      try {
-        await deleteBrand(id);
-        await fetchBrands();
-      } catch (err) {
-        console.error('Error al eliminar marca', err);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [fetchBrands]
-  );
+  const deleteBrandById = async (id: string) => {
+    setLoading(true);
+    try {
+      await deleteBrand(id);
+      await fetchBrands();
+    } catch (err) {
+      message.error('Error al eliminar marca');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createBrandData = async (data: { name: string }) => {
+    setLoading(true);
+    try {
+      await createBrand(data);
+      message.success('Marca creada exitosamente');
+      await fetchBrands();
+    } catch (err) {
+      message.error('Error al crear marca');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <BrandContext.Provider
@@ -103,6 +115,7 @@ export const BrandProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         fetchBrandById,
         updateBrandData,
         deleteBrandById,
+        createBrandData,
       }}
     >
       {children}

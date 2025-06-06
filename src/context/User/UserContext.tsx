@@ -1,11 +1,17 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { getAllUsers, getUserById, updateUser, deleteUser } from '@/services/calls/user.service';
-import { User } from '@/types/User';
+import {
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  getPanelUserById,
+} from '@/services/calls/user.service';
+import { User, UserWithOrders } from '@/types/User';
 import { TablePaginationConfig } from 'antd/es/table';
 
 interface UserContextProps {
   users: User[];
-  userDetails: User | null;
+  userDetails: UserWithOrders | null;
   loading: boolean;
   pagination: TablePaginationConfig;
   fetchUsers: (pagination?: { page: number; limit: number }) => Promise<void>;
@@ -18,7 +24,7 @@ const UserContext = createContext<UserContextProps>({} as UserContextProps);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [users, setUsers] = useState<User[]>([]);
-  const [userDetails, setUserDetails] = useState<User | null>(null);
+  const [userDetails, setUserDetails] = useState<UserWithOrders | null>(null);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
@@ -30,7 +36,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       const res = await getAllUsers(params);
-      setUsers(res.data.data); // ajustá según tu backend
+      setUsers(res.data.data);
       setPagination({
         current: res.data.page,
         pageSize: res.data.limit,
@@ -46,7 +52,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserById = useCallback(async (id: string) => {
     setLoading(true);
     try {
-      const res = await getUserById(id);
+      const res = await getPanelUserById(id);
       setUserDetails(res.data);
     } catch (err) {
       console.error('Error al obtener usuario por ID', err);
@@ -60,7 +66,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       try {
         await updateUser(id, data);
-        await fetchUsers(); // refresca la lista
+        await fetchUsers();
       } catch (err) {
         console.error('Error al actualizar usuario', err);
       } finally {
@@ -102,7 +108,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </UserContext.Provider>
   );
 };
-
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
