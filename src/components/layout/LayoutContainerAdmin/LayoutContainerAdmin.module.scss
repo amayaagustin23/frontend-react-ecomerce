@@ -76,3 +76,52 @@ $text-light: #b0bec5;
   overflow-y: auto;
   background-color: $bg-content;
 }
+
+@media screen and (max-width: 768px) {
+  .layoutContainerAdmin {
+    height: 100vh;
+  }
+  .headerInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+  }
+
+  .rightContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .ant-avatar {
+      background-color: #fff !important;
+      color: #263238;
+    }
+  }
+
+  .sider {
+    background-color: #263238;
+
+    .logo {
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  .header {
+    background: #ffffff;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menuButton {
+    margin-right: auto;
+    font-size: 1.4rem;
+  }
+}

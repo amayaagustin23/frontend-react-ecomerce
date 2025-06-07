@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Dropdown, Avatar } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu, Dropdown, Avatar, Drawer, Button } from 'antd';
 import {
   DashboardOutlined,
   UserOutlined,
@@ -10,9 +9,15 @@ import {
   ShoppingCartOutlined,
   TagOutlined,
   GiftOutlined,
+  MenuOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/Auth/AuthContext';
+import { useTranslation } from 'react-i18next';
 import styles from './LayoutContainerAdmin.module.scss';
+import ThemeToggle from '../../ThemeToggle'; // Asegurate que la ruta sea correcta
+
 import {
   PATH_ROUTE_PANEL_BRANDS,
   PATH_ROUTE_PANEL_CATEGORIES,
@@ -21,7 +26,6 @@ import {
   PATH_ROUTE_PANEL_PRODUCTS,
   PATH_ROUTE_PANEL_USERS,
 } from '@/router/paths';
-import { useTranslation } from 'react-i18next';
 
 const { Header, Sider, Content } = Layout;
 
@@ -30,23 +34,20 @@ const LayoutContainerAdmin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const [collapsed, setCollapsed] = React.useState(false);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setCollapsed(true);
-      } else {
-        setCollapsed(false);
-      }
+      setIsMobile(window.innerWidth < 768);
     };
-
-    handleResize(); // set on load
+    handleResize();
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const toggleDrawer = () => setDrawerVisible(!drawerVisible);
 
   const menuItems = [
     {
@@ -108,34 +109,74 @@ const LayoutContainerAdmin = () => {
 
   return (
     <Layout className={styles.layoutContainerAdmin}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        width={200}
-        className={styles.sider}
-      >
-        <div className={styles.logo}>{collapsed ? 'A' : 'Admin'}</div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[location.pathname.replace('/', '')]}
-          items={menuItems}
-          className={styles.menu}
-        />
-      </Sider>
+      {!isMobile && (
+        <Sider
+          collapsible
+          style={{ backgroundColor: '#263238' }}
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          width={200}
+          className={styles.sider}
+        >
+          <div className={styles.logo}>{collapsed ? 'A' : 'Admin'}</div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[location.pathname.replace('/', '')]}
+            items={menuItems}
+            className={styles.menu}
+          />
+        </Sider>
+      )}
 
       <Layout className={styles.mainLayout}>
         <Header className={styles.header}>
-          <Dropdown overlay={userMenu} trigger={['click']}>
-            <Avatar style={{ cursor: 'pointer' }} icon={<UserOutlined />} />
-          </Dropdown>
+          <div className={styles.headerInner}>
+            {isMobile && (
+              <Button
+                icon={<MenuOutlined style={{ color: 'white' }} />}
+                onClick={toggleDrawer}
+                className={styles.menuButton}
+                type="text"
+              />
+            )}
+            <div className={styles.rightContent}>
+              <ThemeToggle />
+              <Dropdown overlay={userMenu} trigger={['click']}>
+                <Avatar style={{ cursor: 'pointer' }} icon={<UserOutlined />} />
+              </Dropdown>
+            </div>
+          </div>
         </Header>
 
         <Content className={styles.content}>
           <Outlet />
         </Content>
       </Layout>
+
+      <Drawer
+        style={{ backgroundColor: '#263238' }}
+        title={<span style={{ color: 'white' }}>{t('layout.menu.title', 'Menú Admin')}</span>}
+        placement="left"
+        closable
+        closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+        onClose={toggleDrawer}
+        open={drawerVisible}
+        bodyStyle={{ padding: 0 }}
+      >
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[location.pathname.replace('/', '')]}
+          items={menuItems.map((item) => ({
+            ...item,
+            onClick: () => {
+              item.onClick?.();
+              setDrawerVisible(false);
+            },
+          }))}
+        />
+      </Drawer>
     </Layout>
   );
 };
