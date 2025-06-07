@@ -21,6 +21,7 @@ import {
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './ProductsPage.module.scss';
+import { FilterOutlined } from '@ant-design/icons';
 
 const { useBreakpoint } = Grid;
 
@@ -198,13 +199,14 @@ const ProductsPage: React.FC = () => {
           <>
             <Button
               type="primary"
+              icon={<FilterOutlined />}
               onClick={() => setFilterVisible(true)}
-              style={{ marginBottom: '1rem' }}
+              style={{ margin: '1rem' }}
             >
-              {t('products.filter') || 'Filters'}
+              {t('products.filter')}
             </Button>
             <Drawer
-              title={t('products.filter') || 'Filters'}
+              title={t('products.filter')}
               placement="left"
               onClose={() => setFilterVisible(false)}
               open={filterVisible}

@@ -33,15 +33,20 @@ const LoginPage = () => {
       const response = await login({ email, password });
       const { token, user } = response.data;
 
+      // Debug token
+      console.log('🔑 Token recibido:', token);
+
+      // Guardar token en cookies
       Cookies.set('access_token', token, {
-        path: PATH_ROUTE_HOME,
-        secure: true,
+        path: '/', // accesible en toda la app
         sameSite: 'strict',
+        // secure: true, // habilitar esto solo si estás usando HTTPS
       });
 
       setUser(user);
       setIsLogin(true);
       message.success(t('auth.login.success'));
+
       if (user.role === 'ADMIN') {
         navigate(PATH_ROUTE_PANEL_DASHBOARD, { replace: true });
       } else {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Menu, Dropdown, Avatar } from 'antd';
 import {
@@ -31,6 +31,22 @@ const LayoutContainerAdmin = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = React.useState(false);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCollapsed(true);
+      } else {
+        setCollapsed(false);
+      }
+    };
+
+    handleResize(); // set on load
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const menuItems = [
     {

@@ -10,4 +10,85 @@
   vertical-align: middle;
   margin-left: 0.5rem;
   cursor: default;
+  pointer-events: none;
+}
+
+// Estilo para hacer responsive la tabla
+.tableResponsive {
+  .ant-table {
+    border-radius: 12px;
+
+    .ant-table-thead > tr > th {
+      background-color: #f0f2f5;
+      font-weight: 600;
+      color: #333;
+      font-size: 13px;
+      padding: 10px;
+      white-space: nowrap;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #e6f7ff;
+    }
+
+    .ant-table-tbody > tr:nth-child(even) > td {
+      background-color: #fafafa;
+    }
+
+    .ant-table-tbody > tr > td {
+      font-size: 13px;
+      padding: 10px;
+      white-space: nowrap;
+    }
+  }
+
+  .ant-collapse {
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    border: 1px solid #eee;
+
+    .ant-collapse-header {
+      font-weight: 500;
+    }
+  }
+
+  .ant-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+// Responsive
+@media screen and (max-width: 768px) {
+  .tableResponsive {
+    overflow-x: auto;
+
+    .ant-table {
+      min-width: 600px;
+
+      .ant-table-thead > tr > th,
+      .ant-table-tbody > tr > td {
+        font-size: 12px;
+        padding: 6px;
+      }
+    }
+
+    .ant-list-item-meta-description {
+      font-size: 12px;
+    }
+
+    .ant-collapse-header {
+      font-size: 13px;
+    }
+
+    .colorPicker {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .container {
+    padding: 0.5rem;
+  }
 }

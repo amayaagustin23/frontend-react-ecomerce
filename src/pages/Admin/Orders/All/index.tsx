@@ -29,6 +29,15 @@ const OrdersPanelPage = () => {
 
   const columns = [
     {
+      title: t('orders.status'),
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => {
+        const color = status === 'PAID' ? 'green' : status === 'PENDING' ? 'orange' : 'red';
+        return <Tag color={color}>{t(`paymentStatus.${status}`)}</Tag>;
+      },
+    },
+    {
       title: t('orders.customer'),
       dataIndex: ['user', 'person', 'name'],
       key: 'customer',
@@ -38,15 +47,7 @@ const OrdersPanelPage = () => {
       dataIndex: ['user', 'email'],
       key: 'email',
     },
-    {
-      title: t('orders.status'),
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => {
-        const color = status === 'PAID' ? 'green' : status === 'PENDING' ? 'orange' : 'red';
-        return <Tag color={color}>{t(`paymentStatus.${status}`)}</Tag>;
-      },
-    },
+
     {
       title: t('orders.subtotal'),
       dataIndex: 'subtotal',
@@ -77,6 +78,8 @@ const OrdersPanelPage = () => {
           dataSource={orders}
           columns={columns}
           rowKey="id"
+          scroll={{ x: 1000 }}
+          className={styles.tableResponsive}
           expandable={{
             expandedRowRender: (record: Order) => (
               <Collapse>

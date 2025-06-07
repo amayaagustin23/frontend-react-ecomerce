@@ -18,6 +18,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 const HomePage = () => {
   const { favoriteProducts, fetchFavoriteProducts, loading } = useProduct();
   const { categories } = useCategory();
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   const navigate = useNavigate();
 
@@ -56,7 +57,11 @@ const HomePage = () => {
                 <div className={styles.icon}>
                   {categoryIcons[category.name] || <AppstoreOutlined />}
                 </div>
-                <Typography.Text strong>{category.name}</Typography.Text>
+                {!isMobile && (
+                  <Typography.Text strong className={styles.textCategory}>
+                    {category.name}
+                  </Typography.Text>
+                )}
               </Card>
             ))}
           </div>

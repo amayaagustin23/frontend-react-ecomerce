@@ -8,6 +8,7 @@ import {
   UserOutlined,
   SearchOutlined,
   MenuOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Badge, AutoComplete, Input, Drawer, Button } from 'antd';
 import type { MenuProps } from 'antd';
@@ -128,14 +129,20 @@ const LayoutContainerClient: React.FC = () => {
         {isMobile ? (
           <>
             <div className={styles.mobileHeader}>
-              <Button icon={<MenuOutlined />} type="text" onClick={toggleMobileMenu} />
+              <Button
+                icon={<MenuOutlined style={{ color: 'white' }} />}
+                type="text"
+                onClick={toggleMobileMenu}
+              />
               <ThemeToggle />
             </div>
 
             <Drawer
-              title={t('layout.menu.title')}
+              style={{ backgroundColor: '#263238' }}
+              title={<span style={{ color: 'white' }}>{t('layout.menu.title')}</span>}
               placement="left"
               closable
+              closeIcon={<CloseOutlined style={{ color: 'white' }} />}
               onClose={toggleMobileMenu}
               open={isMobileMenuOpen}
             >

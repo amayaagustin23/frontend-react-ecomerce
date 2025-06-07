@@ -41,13 +41,6 @@
       "text": "Mi Tienda ©{{year}} - Todos los derechos reservados"
     }
   },
-  "productDetail": {
-    "selectSize": "Seleccioná tu talle:",
-    "addToCart": "Agregar al carrito",
-    "brand": "Marca",
-    "quantity": "Cantidad",
-    "errorLoading": "Error al cargar el producto"
-  },
   "products": {
     "search": "Buscar",
     "searchPlaceholder": "Buscar por nombre...",
@@ -261,6 +254,7 @@
     "unknownError": "Ocurrió un error inesperado"
   },
   "actions": {
+    "register": "Registrarse",
     "edit": "Editar",
     "delete": "Eliminar",
     "addAddress": "Agregar dirección",
@@ -272,17 +266,23 @@
     "title": "Panel de control",
     "exportPDF": "Exportar PDF",
     "totalSales": "Ventas totales",
+    "totalProfit": "Ganancia total",
+    "totalRevenue": "Ingresos totales",
+    "averageOrderValue": "Valor promedio de orden",
+    "customerLifetimeValue": "Valor de vida del cliente",
     "users": "Usuarios",
     "productsTitle": "Productos",
     "ordersPerDay": "Órdenes por día",
     "cartStatus": "Estado de carritos",
     "paymentStatus": "Estado de pagos",
     "topProducts": "Productos más vendidos",
+    "topProfitableProducts": "Productos más rentables",
     "topCoupons": "Cupones más canjeados",
     "products": {
       "name": "Producto",
       "price": "Precio",
-      "totalSold": "Cantidad Vendida"
+      "totalSold": "Cantidad Vendida",
+      "profit": "Ganancia"
     },
     "coupons": {
       "code": "Código",
@@ -432,6 +432,11 @@
     "submit": "Crear"
   },
   "productDetail": {
+    "selectSize": "Seleccioná tu talle:",
+    "addToCart": "Agregar al carrito",
+    "brand": "Marca",
+    "quantity": "Cantidad",
+    "errorLoading": "Error al cargar el producto",
     "title": "Detalle del Usuario",
     "loading": "Cargando usuario...",
     "notFound": "No se encontró el usuario.",

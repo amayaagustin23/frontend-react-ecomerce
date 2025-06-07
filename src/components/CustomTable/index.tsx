@@ -152,6 +152,7 @@ const CustomTable = <T extends { id: string; isActive?: boolean; images?: { url:
         rowKey="id"
         pagination={pagination}
         onChange={(pagination) => onChangePage?.(pagination)}
+        scroll={{ x: true }}
       />
     </div>
   );

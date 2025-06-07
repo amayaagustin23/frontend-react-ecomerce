@@ -77,7 +77,13 @@ const UserProfilePage = () => {
 
           <Title level={5}>{t('coupons.available')}</Title>
           <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{
+              gutter: 16,
+              xs: 2,
+              sm: 2,
+              md: 3,
+              lg: 5,
+            }}
             dataSource={generalCoupons}
             renderItem={(item: Coupon) => (
               <List.Item>
@@ -102,7 +108,13 @@ const UserProfilePage = () => {
 
           <Title level={5}>{t('coupons.yours')}</Title>
           <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{
+              gutter: 16,
+              xs: 2,
+              sm: 2,
+              md: 3,
+              lg: 5,
+            }}
             dataSource={userCoupons}
             renderItem={(item: Coupon) => (
               <List.Item>

@@ -1,37 +1,58 @@
 import { getPanelDashboard } from '@/services/calls/panel.service';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type StatusCount = { status: string; count: number };
+export interface DashboardData {
+  kpis: {
+    totalProfit: number;
+    totalRevenue: number;
+    ordersCountPaid: number;
+    usersCount: number;
+    productsCount: number;
+    averageOrderValue: number;
+    repeatPurchaseRate: number;
+    customerLifetimeValue: number;
+  };
+  reports: {
+    orderListForDays: OrderByDay[];
+    cartStatusReport: StatusCount[];
+    paymentStatusReport: StatusCount[];
+  };
+  highlights: {
+    productsMostSoldWithDetails: ProductInfo[];
+    topProfitableProducts: ProductProfitInfo[];
+    couponsMostUsed: CouponInfo[];
+  };
+}
 
-type ProductInfo = {
+export type StatusCount = {
+  status: string;
+  count: number;
+};
+
+export type ProductInfo = {
   id: string;
   name: string;
   price: number;
   totalSold: number;
 };
 
-type CouponInfo = {
+export type ProductProfitInfo = {
+  id: string;
+  name: string;
+  profit: number;
+};
+
+export type CouponInfo = {
   id: string;
   description: string;
   code: string;
   total: number;
 };
 
-type OrderByDay = {
+export type OrderByDay = {
   date: string;
   count: number;
 };
-
-interface DashboardData {
-  ordersCountPaid: number;
-  usersCount: number;
-  productsCount: number;
-  cartStatusReport: StatusCount[];
-  paymentStatusReport: StatusCount[];
-  productsMostSoldWithDetails: ProductInfo[];
-  couponsMostUsed: CouponInfo[];
-  orderListForDays: OrderByDay[];
-}
 
 interface DashboardContextProps {
   data: DashboardData | null;

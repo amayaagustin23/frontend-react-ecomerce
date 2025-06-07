@@ -101,3 +101,36 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.mobileDrawer {
+  .ant-drawer-body {
+    padding: 0;
+
+    .ant-menu {
+      border-inline-end: none;
+    }
+  }
+
+  .ant-drawer-header {
+    background-color: #263238;
+    color: white;
+  }
+
+  .ant-drawer-body {
+    background-color: #263238;
+    color: white;
+  }
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    color: white !important;
+  }
+
+  .ant-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .anticon {
+    color: white !important;
+  }
+}

@@ -11,9 +11,12 @@
     "clean": "rm -rf dist && find src -type f -name '*.js' ! -name '*.test.js' -delete"
   },
   "dependencies": {
+    "@ant-design/icons": "5.x",
     "@number-flow/react": "^0.5.9",
+    "@types/d3": "^7.4.3",
     "antd": "^5.25.4",
     "axios": "^1.9.0",
+    "d3": "^7.9.0",
     "html2canvas": "^1.4.1",
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.1.0",
