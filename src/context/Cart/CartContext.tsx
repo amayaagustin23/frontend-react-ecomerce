@@ -52,9 +52,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (user && user.role === 'CLIENT') {
-      fetchCart();
-    }
+    fetchCart();
   }, []);
 
   const setCartItems = (items: CartItem[]) => {

@@ -3,13 +3,17 @@ import {
   createOrderFromCart,
   getUserOrders,
   getUserOrderById,
+  calculateShippingApi,
 } from '@/services/calls/order.service';
-import { Order } from '@/types/Order';
+import { CreateOrderDto, Order } from '@/types/Order';
 
 type OrderContextType = {
-  createOrder: (cartId: string) => Promise<void>;
+  createOrder: (cartId: string, body: CreateOrderDto) => Promise<void>;
   fetchOrders: () => Promise<void>;
   getOrderById: (id: string) => Promise<Order | null>;
+  calculateShipping: (
+    cp: string
+  ) => Promise<{ shippingCost: number; estimatedDeliveryDate: string } | null>;
   orders: Order[];
   order: Order | undefined;
   ordersLoading: boolean;
@@ -24,9 +28,9 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
 
-  const createOrder = async (cartId: string) => {
+  const createOrder = async (cartId: string, body: CreateOrderDto) => {
     try {
-      const response = await createOrderFromCart(cartId);
+      const response = await createOrderFromCart(cartId, body);
       const preferenceUrl = response.data.preferenceUrl;
 
       if (preferenceUrl) {
@@ -65,6 +69,11 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const calculateShipping = async (cp: string) => {
+    const { data } = await calculateShippingApi(cp);
+    return data;
+  };
+
   return (
     <OrderContext.Provider
       value={{
@@ -73,6 +82,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         getOrderById,
         orders,
         order,
+        calculateShipping,
         ordersLoading,
         orderLoading,
       }}

@@ -48,8 +48,6 @@ const UserProfilePage = () => {
 
   const handleSaveAddress = (values: { address: AddressDto }) => {
     if (editingAddress) {
-      console.log(values);
-
       updateAddress(editingAddress.id, values.address);
     } else {
       addAddress(values.address);

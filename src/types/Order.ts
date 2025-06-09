@@ -67,3 +67,9 @@ export type Variant = {
   stock: number;
   productId: string;
 };
+
+export type CreateOrderDto = {
+  address: string;
+  shippingCost: number;
+  estimatedDeliveryDate: string;
+};

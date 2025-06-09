@@ -54,6 +54,7 @@ export const ORDER_ENDPOINTS = {
   CREATE_FROM_CART: (cartId: string) => `/orders/cart/${cartId}`,
   GET_ALL: '/orders',
   GET_BY_ID: (id: string) => `/orders/${id}`,
+  GET_CALCULATE_SHIPING: (cp: string) => `/orders/calculate/${cp}`,
 };
 
 export const COUPON_ENDPOINTS = {
