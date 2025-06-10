@@ -136,7 +136,7 @@ const CartPage: React.FC = () => {
                     <Row justify="space-between" align="middle">
                       <Col span={4}>
                         <Image
-                          src={item.product.images?.[0]?.url}
+                          src={item.variant.images?.[0]?.url}
                           alt={item.product.name}
                           width={80}
                           height={80}
@@ -330,7 +330,7 @@ const CartPage: React.FC = () => {
                     <Row justify="space-between" align="middle">
                       <Col span={4}>
                         <Image
-                          src={item.product.images?.[0]?.url}
+                          src={item.variant.images?.[0]?.url}
                           alt={item.product.name}
                           width={80}
                           height={80}

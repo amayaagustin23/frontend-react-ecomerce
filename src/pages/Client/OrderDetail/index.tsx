@@ -69,7 +69,7 @@ const OrderDetailPage = () => {
                 <div className={styles.productItem}>
                   <Image
                     width={150}
-                    src={product.images?.[0]?.url}
+                    src={variant.images?.[0]?.url}
                     alt={product.name}
                     fallback="https://via.placeholder.com/100x100.png?text=Imagen"
                   />
@@ -82,8 +82,8 @@ const OrderDetailPage = () => {
                       {t('orderDetail.brand')}: {product.brand.name}
                     </Text>
                     <Text>
-                      {t('orderDetail.color')}: {variant.color} | {t('orderDetail.size')}:{' '}
-                      {variant.size}
+                      {t('orderDetail.color')}: {String(variant.color)} | {t('orderDetail.size')}:{' '}
+                      {String(variant.size)}
                     </Text>
                     <Text>
                       {t('orderDetail.quantity')}: {quantity}

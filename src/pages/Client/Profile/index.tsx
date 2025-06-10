@@ -152,7 +152,7 @@ const UserProfilePage = () => {
                   {order.items.map((item, idx) => (
                     <img
                       key={idx}
-                      src={item.product.images[0].url}
+                      src={item.variant.images[0].url}
                       alt="Producto"
                       className={styles.productThumb}
                     />
