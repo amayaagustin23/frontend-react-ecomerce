@@ -21,7 +21,6 @@ const DetailCategoryPanelPage = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
-  // 1. Cargar categoría y activar edición si hay ?edit=true
   useEffect(() => {
     const load = async () => {
       if (searchParams.get('edit') === 'true') {
@@ -36,7 +35,6 @@ const DetailCategoryPanelPage = () => {
     load();
   }, [id, searchParams]);
 
-  // 2. Cargar datos en el form cuando llega category
   useEffect(() => {
     if (!category || category.id !== id) return;
 

@@ -1,9 +1,7 @@
-// 🔧 Breakpoints
 $breakpoint-xs: 480px;
 $breakpoint-sm: 768px;
 $breakpoint-md: 1024px;
 
-// 🎴 Tarjeta principal
 .productCard {
   border-radius: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
@@ -43,7 +41,6 @@ $breakpoint-md: 1024px;
   }
 }
 
-// ℹ️ Contenido inferior (info producto)
 .productInfo {
   padding: 0.75rem;
   @media (max-width: $breakpoint-sm) {

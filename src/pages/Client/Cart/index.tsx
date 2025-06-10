@@ -1,4 +1,3 @@
-// CartPage con 3 tabs y soporte completo para CRUD de direcciones
 import React, { useState } from 'react';
 import {
   Row,

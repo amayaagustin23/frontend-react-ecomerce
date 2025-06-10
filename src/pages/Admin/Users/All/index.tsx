@@ -38,8 +38,6 @@ const UsersPanelPage = () => {
           data={users}
           columnsKeys={['name', 'email', 'role', 'isActive']}
           onView={handleView}
-          // onEdit={handleEdit}
-          // onDelete={handleDelete}
           onToggleActive={handleToggleActive}
           pagination={pagination}
           onChangePage={handlePageChange}

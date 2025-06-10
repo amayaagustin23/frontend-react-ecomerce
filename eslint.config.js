@@ -31,7 +31,6 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
     },
     rules: {
-      // Reglas del backend aplicadas acá también
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -39,7 +38,6 @@ export default tseslint.config(
       "no-console": "warn",
       "prettier/prettier": "error",
 
-      // Reglas de React
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [

@@ -1,5 +1,6 @@
 import { getPanelDashboard } from '@/services/calls/panel.service';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useMessageApi } from '../Message/MessageContext';
 
 export interface DashboardData {
   kpis: {
@@ -71,13 +72,14 @@ const DashboardContext = createContext<DashboardContextProps>({
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const message = useMessageApi();
 
   const fetchDashboard = async () => {
     try {
       const res = await getPanelDashboard();
       setData(res.data);
     } catch (error) {
-      console.error('Error cargando dashboard:', error);
+      message.error('Error cargando dashboard:');
     } finally {
       setLoading(false);
     }

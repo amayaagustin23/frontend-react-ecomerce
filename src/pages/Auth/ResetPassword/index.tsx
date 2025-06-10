@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Typography, Alert } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -21,20 +21,15 @@ const ResetPasswordPage = () => {
 
   const handleFinish = async (values: { password: string; confirmPassword: string }) => {
     setLoading(true);
-    try {
-      if (token) {
-        await resetPassword({
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-          token,
-        });
-        setSubmitted(true);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+    if (token) {
+      await resetPassword({
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        token,
+      });
+      setSubmitted(true);
     }
+    setLoading(false);
   };
 
   return (

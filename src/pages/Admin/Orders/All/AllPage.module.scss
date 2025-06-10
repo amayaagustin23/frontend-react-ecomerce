@@ -13,7 +13,6 @@
   pointer-events: none;
 }
 
-// Estilo para hacer responsive la tabla
 .tableResponsive {
   .ant-table {
     border-radius: 12px;
@@ -59,7 +58,6 @@
   }
 }
 
-// Responsive
 @media screen and (max-width: 768px) {
   .tableResponsive {
     overflow-x: auto;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Typography, Alert } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './RecoveryPasswordPage.module.scss';
 import { useAuth } from '@/context/Auth/AuthContext';
 import { PATH_ROUTE_HOME } from '@/router/paths';
+import { useMessageApi } from '@/context/Message/MessageContext';
 
 const { Title } = Typography;
 
@@ -16,6 +17,7 @@ const RecoveryPasswordPage = () => {
   const [loading, setLoading] = useState(false);
   const { recoverPassword } = useAuth();
   const navigate = useNavigate();
+  const message = useMessageApi();
 
   const handleFinish = async (values: { email: string }) => {
     setLoading(true);
@@ -23,7 +25,7 @@ const RecoveryPasswordPage = () => {
       await recoverPassword(values);
       setSubmitted(true);
     } catch (error) {
-      console.error(error);
+      message.error('error');
     } finally {
       setLoading(false);
     }

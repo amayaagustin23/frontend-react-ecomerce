@@ -6,6 +6,7 @@ import {
   calculateShippingApi,
 } from '@/services/calls/order.service';
 import { CreateOrderDto, Order } from '@/types/Order';
+import { useMessageApi } from '../Message/MessageContext';
 
 type OrderContextType = {
   createOrder: (cartId: string, body: CreateOrderDto) => Promise<void>;
@@ -27,6 +28,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [order, setOrder] = useState<Order>();
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
+  const message = useMessageApi();
 
   const createOrder = async (cartId: string, body: CreateOrderDto) => {
     try {
@@ -36,10 +38,10 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       if (preferenceUrl) {
         window.location.href = preferenceUrl;
       } else {
-        console.error('❌ No se recibió la URL de preferencia');
+        message.error('❌ No se recibió la URL de preferencia');
       }
     } catch (error) {
-      console.error('❌ Error al crear orden:', error);
+      message.error('❌ Error al crear orden:');
     }
   };
 
@@ -49,7 +51,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await getUserOrders();
       setOrders(response.data);
     } catch (error) {
-      console.error('❌ Error al traer las órdenes:', error);
+      message.error('❌ Error al traer las órdenes:');
     } finally {
       setOrdersLoading(false);
     }
@@ -62,7 +64,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
       setOrder(response.data);
       return response.data;
     } catch (error) {
-      console.error('❌ Error al traer la orden:', error);
+      message.error('❌ Error al traer la orden:');
       return null;
     } finally {
       setOrderLoading(false);

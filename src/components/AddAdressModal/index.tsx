@@ -56,23 +56,19 @@ const AddAddressModal: React.FC<AddAddressModalProps> = ({
   };
 
   const handleSelect = async (_: string, option: { value: string; placeId: string }) => {
-    try {
-      const res = await getPlaceDetails(option.placeId);
-      const data = res.data;
+    const res = await getPlaceDetails(option.placeId);
+    const data = res.data;
 
-      form.setFieldsValue({
-        address: {
-          street: data.formattedAddress,
-          city: data.city,
-          province: data.province,
-          postalCode: data.postalCode,
-          lat: data.lat,
-          lng: data.lng,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    form.setFieldsValue({
+      address: {
+        street: data.formattedAddress,
+        city: data.city,
+        province: data.province,
+        postalCode: data.postalCode,
+        lat: data.lat,
+        lng: data.lng,
+      },
+    });
   };
 
   const handleSubmit = () => {

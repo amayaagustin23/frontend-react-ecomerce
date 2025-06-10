@@ -109,7 +109,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       fetchCart();
       message.success(t('messages.success.addToCart'));
     } catch (error) {
-      console.error('❌', t('messages.error.addToCart'), error);
       message.error(t('messages.error.addToCart'));
     }
   };
@@ -129,7 +128,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           : null
       );
     } catch (error) {
-      console.error('❌', t('messages.error.updateQuantity'), error);
       message.error(t('messages.error.updateQuantity'));
     }
   };
@@ -149,7 +147,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           : null
       );
     } catch (error) {
-      console.error('❌', t('messages.error.removeItem'), error);
       message.error(t('messages.error.removeItem'));
     }
   };

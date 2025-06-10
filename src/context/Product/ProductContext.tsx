@@ -12,8 +12,8 @@ import {
 } from '@/services/calls/product.service';
 import { Brand } from '@/types/Brand';
 import { Color, DetailedProduct, Gender, Size } from '@/types/Product';
-import { message } from 'antd';
 import { useAuth } from '../Auth/AuthContext';
+import { useMessageApi } from '../Message/MessageContext';
 
 export type Pagination = {
   page: number;
@@ -71,6 +71,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
   const [pagination, setPagination] = useState<Pagination>({ page: 1, size: 10, total: 0 });
   const [loading, setLoading] = useState<boolean>(true);
   const { user } = useAuth();
+  const message = useMessageApi();
 
   const fetchProducts = async (params: FetchProductsParams = {}) => {
     setLoading(true);
@@ -144,7 +145,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       await updateProduct(id, { isActive });
       await fetchProducts(pagination);
     } catch (err) {
-      console.error('Error al actualizar el estado del producto:', err);
+      message.error('Error al actualizar el estado del producto:');
     }
   };
 
@@ -155,7 +156,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       await fetchProducts(pagination);
       message.success('Producto creado con éxito');
     } catch (err) {
-      console.error('Error al crear producto:', err);
+      message.error('Error al crear producto:');
       message.error('Error al crear el producto');
     } finally {
       setLoading(false);
@@ -169,7 +170,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       await fetchProducts(pagination);
       message.success('Producto actualizado con éxito');
     } catch (err) {
-      console.error('Error al editar producto:', err);
+      message.error('Error al editar producto:');
       message.error('Error al editar el producto');
     } finally {
       setLoading(false);
@@ -190,7 +191,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       await updateProduct(id, data);
       await fetchProductById(id);
     } catch (error) {
-      console.error('Error al actualizar producto:', error);
+      message.error('Error al actualizar producto:');
       throw error;
     }
   };

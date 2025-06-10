@@ -33,7 +33,6 @@ export interface UserWithOrders {
   orders: Order[];
 }
 
-// Subinterfaces internas
 export interface Person {
   id: string;
   name: string;

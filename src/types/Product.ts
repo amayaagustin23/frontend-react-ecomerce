@@ -120,9 +120,9 @@ export interface VariantFormValue extends Omit<Partial<Variant>, 'color' | 'size
     | string;
   size?: string;
   gender?: string;
-  images?: { id: string; url: string }[]; // o el tipo exacto que uses para las imágenes
-  newFiles?: any[]; // o File[] si preferís más específico
-  tempId?: string; // si lo estás usando temporalmente para subir imágenes
+  images?: { id: string; url: string }[];
+  newFiles?: any[];
+  tempId?: string;
 }
 
 export interface ProductFormValues

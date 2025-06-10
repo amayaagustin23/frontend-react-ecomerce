@@ -6,12 +6,11 @@ import { PATH_ROUTE_PANEL_DASHBOARD, PATH_ROUTE_HOME } from './paths';
 import LayoutContainerClient from '@/components/layout/LayoutContainerClient';
 import LayoutContainerAdmin from '@/components/layout/LayoutContainerAdmin';
 import { useAuth } from '@/context/Auth/AuthContext';
-import DashboardPage from '@/pages/Admin/Dashboard'; // importa el index
+import DashboardPage from '@/pages/Admin/Dashboard';
 
 const AppRoutes = () => {
   const { user } = useAuth();
 
-  // Evitá renderizar rutas hasta que sepamos el rol del usuario
   if (user === undefined) return null;
 
   const clientRoutes = routes.filter((r) => r.layout === 'client');

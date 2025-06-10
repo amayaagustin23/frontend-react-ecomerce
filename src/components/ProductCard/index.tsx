@@ -4,6 +4,7 @@ import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { DetailedProduct } from '@/types/Product';
 import styles from './ProductCard.module.scss';
 import { useAuth } from '@/context/Auth/AuthContext';
+import { useMessageApi } from '@/context/Message/MessageContext';
 
 type Props = {
   product: DetailedProduct;
@@ -12,6 +13,7 @@ type Props = {
 
 const ProductCard: React.FC<Props> = ({ product, onClick }) => {
   const { addFavoriteProduct, deleteFavoriteProduct, isLogin } = useAuth();
+  const message = useMessageApi();
   const mainImage = product.variants
     ?.flatMap((v) => v.images || [])
     .sort((a, b) => a.order - b.order)[0]?.url;
@@ -22,7 +24,7 @@ const ProductCard: React.FC<Props> = ({ product, onClick }) => {
 
   const toggleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isLogin) return; // opcional: redirigir o mostrar login
+    if (!isLogin) return;
 
     setLoading(true);
     try {
@@ -33,7 +35,7 @@ const ProductCard: React.FC<Props> = ({ product, onClick }) => {
       }
       setIsFavorite(!isFavorite);
     } catch (err) {
-      console.error('Error al cambiar favorito', err);
+      message.error('Error al cambiar favorito');
     } finally {
       setLoading(false);
     }

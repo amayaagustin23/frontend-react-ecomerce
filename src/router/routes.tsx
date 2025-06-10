@@ -18,34 +18,9 @@ import CategoriesPanelPage from '@/pages/Admin/Categories/All';
 import BrandsPanelPage from '@/pages/Admin/Brands/All';
 import OrdersPanelPage from '@/pages/Admin/Orders/All';
 
-// import ProductCreatePanel from '@/pages/Admin/Products/Create';
-// import ProductEditPanel from '@/pages/Admin/Products/Edit';
-import ProductDetailPanel from '@/pages/Admin/Products/Detail';
-
-// import UserCreatePanel from '@/pages/Admin/Users/Create';
-// import UserEditPanel from '@/pages/Admin/Users/Edit';
-// import UserDetailPanel from '@/pages/Admin/Users/Detail';
-
-// import CouponCreatePanel from '@/pages/Admin/Coupons/Create';
-// import CouponEditPanel from '@/pages/Admin/Coupons/Edit';
-// import CouponDetailPanel from '@/pages/Admin/Coupons/Detail';
-
-// import OrderCreatePanel from '@/pages/Admin/Orders/Create';
-// import OrderEditPanel from '@/pages/Admin/Orders/Edit';
-// import OrderDetailPanel from '@/pages/Admin/Orders/Detail';
-
-// import CategoryCreatePanel from '@/pages/Admin/Categories/Create';
-// import CategoryEditPanel from '@/pages/Admin/Categories/Edit';
-// import CategoryDetailPanel from '@/pages/Admin/Categories/Detail';
-
-// import BrandCreatePanel from '@/pages/Admin/Brands/Create';
-// import BrandEditPanel from '@/pages/Admin/Brands/Edit';
-// import BrandDetailPanel from '@/pages/Admin/Brands/Detail';
-
 import {
   PATH_ROUTE_HOME,
   PATH_ROUTE_LOGIN,
-  PATH_ROUTE_PANEL_DASHBOARD,
   PATH_ROUTE_PRODUCT_DETAIL,
   PATH_ROUTE_PRODUCTS,
   PATH_ROUTE_CONTACT,
@@ -177,12 +152,6 @@ export const routes = [
     isPrivate: true,
     layout: 'dashboard',
   },
-  // {
-  //   path: PATH_ROUTE_PANEL_ORDERS_DETAIL,
-  //   element: <OrderDetailPanel />,
-  //   isPrivate: true,
-  //   layout: 'dashboard',
-  // },
 
   {
     path: PATH_ROUTE_PANEL_CATEGORIES,

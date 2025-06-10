@@ -67,12 +67,7 @@ const OrderDetailPage = () => {
             <List.Item>
               <Card>
                 <div className={styles.productItem}>
-                  <Image
-                    width={150}
-                    src={variant.images?.[0]?.url}
-                    alt={product.name}
-                    fallback="https://via.placeholder.com/100x100.png?text=Imagen"
-                  />
+                  <Image width={150} src={variant.images?.[0]?.url} alt={product.name} />
                   <div className={styles.productInfo}>
                     <Title level={4}>{product.name}</Title>
                     <Text>

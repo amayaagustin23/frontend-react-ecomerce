@@ -16,7 +16,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/Auth/AuthContext';
 import { useTranslation } from 'react-i18next';
 import styles from './LayoutContainerAdmin.module.scss';
-import ThemeToggle from '../../ThemeToggle'; // Asegurate que la ruta sea correcta
+import ThemeToggle from '../../ThemeToggle';
 
 import {
   PATH_ROUTE_PANEL_BRANDS,

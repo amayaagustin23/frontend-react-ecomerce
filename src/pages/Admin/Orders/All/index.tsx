@@ -4,6 +4,7 @@ import { Order } from '@/types/Order';
 import { useTranslation } from 'react-i18next';
 import { getAllOrders } from '@/services/calls/panel.service';
 import styles from './AllPage.module.scss';
+import { useMessageApi } from '@/context/Message/MessageContext';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -12,6 +13,7 @@ const OrdersPanelPage = () => {
   const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const message = useMessageApi();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -19,7 +21,7 @@ const OrdersPanelPage = () => {
         const response = await getAllOrders({ page: 1, size: 10 });
         setOrders(response.data.data);
       } catch (err) {
-        console.error('Error fetching orders:', err);
+        message.error('Error fetching orders:');
       } finally {
         setLoading(false);
       }

@@ -8,6 +8,7 @@ import {
 } from '@/services/calls/user.service';
 import { User, UserWithOrders } from '@/types/User';
 import { TablePaginationConfig } from 'antd/es/table';
+import { useMessageApi } from '../Message/MessageContext';
 
 interface UserContextProps {
   users: User[];
@@ -26,6 +27,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [users, setUsers] = useState<User[]>([]);
   const [userDetails, setUserDetails] = useState<UserWithOrders | null>(null);
   const [loading, setLoading] = useState(false);
+  const message = useMessageApi();
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 10,
@@ -43,7 +45,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         total: res.data.total,
       });
     } catch (err) {
-      console.error('Error al obtener usuarios', err);
+      message.error('Error al obtener usuarios');
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await getPanelUserById(id);
       setUserDetails(res.data);
     } catch (err) {
-      console.error('Error al obtener usuario por ID', err);
+      message.error('Error al obtener usuario por ID');
     } finally {
       setLoading(false);
     }
@@ -68,7 +70,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await updateUser(id, data);
         await fetchUsers();
       } catch (err) {
-        console.error('Error al actualizar usuario', err);
+        message.error('Error al actualizar usuario');
       } finally {
         setLoading(false);
       }
@@ -81,9 +83,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       try {
         await deleteUser(id);
-        await fetchUsers(); // refresca la lista
+        await fetchUsers();
       } catch (err) {
-        console.error('Error al eliminar usuario', err);
+        message.error('Error al eliminar usuario');
       } finally {
         setLoading(false);
       }

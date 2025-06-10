@@ -37,9 +37,7 @@ const CategoriesPanelPage = () => {
     navigate(`${PATH_PANEL_CATEGORY.getDetailPath(record.id)}?edit=true`);
   };
 
-  const handleDelete = (record: any) => {
-    console.log('Eliminar', record);
-  };
+  const handleDelete = (record: any) => {};
 
   const handleCreate = () => {
     navigate(PATH_ROUTE_PANEL_CATEGORIES_CREATE);

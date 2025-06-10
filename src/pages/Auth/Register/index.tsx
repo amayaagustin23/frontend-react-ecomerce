@@ -30,38 +30,30 @@ const RegisterPage = () => {
     }
 
     debounceTimeout.current = setTimeout(async () => {
-      try {
-        const res = await getAutocomplete(value);
-        const predictions = res.data || [];
-        const formatted = predictions.map((p: any) => ({
-          value: p.description,
-          placeId: p.place_id,
-        }));
-        setOptions(formatted);
-      } catch (err) {
-        console.error(err);
-      }
+      const res = await getAutocomplete(value);
+      const predictions = res.data || [];
+      const formatted = predictions.map((p: any) => ({
+        value: p.description,
+        placeId: p.place_id,
+      }));
+      setOptions(formatted);
     }, 300);
   };
 
   const handleSelect = async (_: string, option: any) => {
-    try {
-      const res = await getPlaceDetails(option.placeId);
-      const data = res.data;
+    const res = await getPlaceDetails(option.placeId);
+    const data = res.data;
 
-      form.setFieldsValue({
-        address: {
-          street: data.formattedAddress,
-          city: data.city,
-          province: data.province,
-          postalCode: data.postalCode,
-          lat: data.lat,
-          lng: data.lng,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    form.setFieldsValue({
+      address: {
+        street: data.formattedAddress,
+        city: data.city,
+        province: data.province,
+        postalCode: data.postalCode,
+        lat: data.lat,
+        lng: data.lng,
+      },
+    });
   };
 
   const onFinish = async (values: RegisterUserDto) => {
