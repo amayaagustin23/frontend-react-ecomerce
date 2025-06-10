@@ -1,5 +1,4 @@
 .container {
-  max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #ffffff;
@@ -19,4 +18,12 @@
 
 .variantRow {
   margin-bottom: 8px;
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
 }

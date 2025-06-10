@@ -1,4 +1,3 @@
-// Importaciones
 import React, { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { FetchProductsParams, useProduct } from '@/context/Product/ProductContext';
@@ -17,8 +16,9 @@ import {
   Button,
   Grid,
   Collapse,
+  Slider,
 } from 'antd';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './ProductsPage.module.scss';
 import { FilterOutlined } from '@ant-design/icons';
@@ -26,8 +26,17 @@ import { FilterOutlined } from '@ant-design/icons';
 const { useBreakpoint } = Grid;
 
 const ProductsPage: React.FC = () => {
-  const { products, loading, pagination, fetchProducts, loadBrandsAndVariants, brands } =
-    useProduct();
+  const {
+    products,
+    loading,
+    pagination,
+    fetchProducts,
+    loadBrandsAndVariants,
+    variantColors,
+    variantGenders,
+    variantSizes,
+    brands,
+  } = useProduct();
   const { categories } = useCategory();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -39,6 +48,10 @@ const ProductsPage: React.FC = () => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState<string>('createdAt_desc');
   const [pageSize, setPageSize] = useState<number>(12);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
   const redirect = (id: string) => {
     navigate(PRODUCT_ROUTES.getDetailPath(id));
@@ -49,23 +62,30 @@ const ProductsPage: React.FC = () => {
       Object.entries(obj).filter(([_, v]) => v !== undefined && v !== '')
     ) as Partial<T>;
 
-  function handleCategoryChange(checked: boolean, id: string, children: string[] = []) {
+  const handleCategoryChange = (checked: boolean, id: string, children: string[] = []) => {
     const idsToToggle = [id, ...children];
     setSelectedCategories((prev) =>
       checked
         ? [...new Set([...prev, ...idsToToggle])]
         : prev.filter((catId) => !idsToToggle.includes(catId))
     );
-  }
+  };
 
   const handlePageChange = (page: number) => {
-    fetchProducts({
+    const allVariantIds = [...selectedColors, ...selectedGenders, ...selectedSizes];
+    const rawParams: FetchProductsParams = {
       page,
       size: pageSize,
-      categoryIds: selectedCategories.length ? selectedCategories.join(',') : undefined,
-      brandIds: selectedBrands.length ? selectedBrands.join(',') : undefined,
       orderBy,
-    });
+      brandIds: selectedBrands.join(','),
+      categoryIds: selectedCategories.join(','),
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
+      variantsName: allVariantIds.join(','),
+    };
+
+    const params = cleanObject(rawParams);
+    fetchProducts(params);
   };
 
   useEffect(() => {
@@ -74,17 +94,30 @@ const ProductsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const allVariantIds = [...selectedColors, ...selectedGenders, ...selectedSizes];
     const rawParams: FetchProductsParams = {
       page: 1,
       size: pageSize,
       orderBy,
       brandIds: selectedBrands.join(','),
       categoryIds: selectedCategories.join(','),
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
+      variantsName: allVariantIds.join(','),
     };
 
     const params = cleanObject(rawParams);
     fetchProducts(params);
-  }, [selectedCategories, selectedBrands, orderBy, pageSize]);
+  }, [
+    selectedCategories,
+    selectedBrands,
+    orderBy,
+    pageSize,
+    priceRange,
+    selectedColors,
+    selectedGenders,
+    selectedSizes,
+  ]);
 
   const FilterContent = (
     <div className={styles.sidebar}>
@@ -92,6 +125,30 @@ const ProductsPage: React.FC = () => {
         defaultActiveKey={[]}
         expandIconPosition="end"
         items={[
+          {
+            key: 'price',
+            label: t('products.price'),
+            children: (
+              <div style={{ padding: '0.5rem' }}>
+                <Typography.Text>
+                  ${priceRange[0]} - ${priceRange[1]}
+                </Typography.Text>
+                <br />
+                <Slider
+                  range
+                  min={0}
+                  max={1000}
+                  step={50}
+                  value={priceRange}
+                  onChange={(value) => {
+                    if (Array.isArray(value) && value.length === 2) {
+                      setPriceRange([value[0], value[1]]);
+                    }
+                  }}
+                />
+              </div>
+            ),
+          },
           {
             key: 'categories',
             label: t('products.categories'),
@@ -152,6 +209,96 @@ const ProductsPage: React.FC = () => {
                   </div>
                 ))}
               </>
+            ),
+          },
+          {
+            key: 'genders',
+            label: t('products.gender'),
+            children: (
+              <div style={{ padding: '0.5rem' }}>
+                {variantGenders.map((gender) => (
+                  <div key={gender.id}>
+                    <Checkbox
+                      checked={selectedGenders.includes(gender.id)}
+                      onChange={(e) =>
+                        setSelectedGenders((prev) =>
+                          e.target.checked
+                            ? [...prev, gender.id]
+                            : prev.filter((id) => id !== gender.id)
+                        )
+                      }
+                    >
+                      {gender.name}
+                    </Checkbox>
+                  </div>
+                ))}
+              </div>
+            ),
+          },
+          {
+            key: 'sizes',
+            label: t('products.size'),
+            children: (
+              <div style={{ padding: '0.5rem' }}>
+                {variantSizes.map((size) => (
+                  <div key={size.id}>
+                    <Checkbox
+                      checked={selectedSizes.includes(size.id)}
+                      onChange={(e) =>
+                        setSelectedSizes((prev) =>
+                          e.target.checked
+                            ? [...prev, size.id]
+                            : prev.filter((id) => id !== size.id)
+                        )
+                      }
+                    >
+                      {size.name}
+                    </Checkbox>
+                  </div>
+                ))}
+              </div>
+            ),
+          },
+
+          {
+            key: 'colors',
+            label: t('products.colors'),
+            children: (
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '0.75rem',
+                  padding: '0.5rem',
+                }}
+              >
+                {variantColors.map((color) => {
+                  if (color) {
+                    const isSelected = selectedColors.includes(color?.hex);
+
+                    return (
+                      <div
+                        key={color.hex}
+                        title={color.name}
+                        onClick={() =>
+                          setSelectedColors((prev) =>
+                            isSelected ? prev.filter((c) => c !== color.id) : [...prev, color.id]
+                          )
+                        }
+                        style={{
+                          width: 24,
+                          height: 24,
+                          borderRadius: '50%',
+                          backgroundColor: color.hex,
+                          border: isSelected ? '3px solid #1890ff' : '2px solid #ccc',
+                          cursor: 'pointer',
+                          transition: 'border 0.2s ease-in-out',
+                        }}
+                      />
+                    );
+                  }
+                })}
+              </div>
             ),
           },
         ]}

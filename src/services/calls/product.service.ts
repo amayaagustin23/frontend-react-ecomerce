@@ -7,18 +7,8 @@ export const getAllProducts = (params: FetchProductsParams) =>
 
 export const getProductById = (id: string) => api.get(PRODUCT_ENDPOINTS.GET_BY_ID(id));
 
-export const createProduct = (data: any, files: File[] = []) => {
-  const formData = new FormData();
-
-  Object.entries(data).forEach(([key, value]) => {
-    formData.append(key, value as string);
-  });
-
-  files.forEach((file) => {
-    formData.append('files', file);
-  });
-
-  return api.post(PRODUCT_ENDPOINTS.CREATE, formData, {
+export const createProduct = (data: any) => {
+  return api.post(PRODUCT_ENDPOINTS.CREATE, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

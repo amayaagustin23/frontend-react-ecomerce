@@ -34,8 +34,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchCart = async () => {
     try {
-      const response = await getCart();
-      setCart(response.data);
+      if (user?.role === 'CLIENT') {
+        const response = await getCart();
+        setCart(response.data);
+      }
     } catch (error) {
       message.error(t('messages.error.fetchCart'));
     }
@@ -53,7 +55,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [user]);
 
   const setCartItems = (items: CartItem[]) => {
     setCart((prev) => (prev ? { ...prev, items } : null));

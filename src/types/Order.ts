@@ -1,3 +1,5 @@
+import { Color, Gender, Size } from './Product';
+
 export type Order = {
   id: string;
   userId: string;
@@ -62,10 +64,15 @@ export type Brand = {
 
 export type Variant = {
   id: string;
-  size: string;
-  color: string;
+  size: Size;
+  color: Color;
+  gender: Gender;
   stock: number;
   productId: string;
+  images: {
+    id: string;
+    url: string;
+  }[];
 };
 
 export type CreateOrderDto = {

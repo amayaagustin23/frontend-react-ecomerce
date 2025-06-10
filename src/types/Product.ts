@@ -32,8 +32,97 @@ export type Product = {
   }[];
 };
 
-export interface VariantFormValue extends Omit<Partial<Variant>, 'color'> {
-  color?: string | { metaColor: { toHexString: () => string } };
+export type Color = {
+  id: string;
+  name: string;
+  hex: string;
+};
+
+export type Size = {
+  id: string;
+  name: string;
+};
+
+export type Gender = {
+  id: string;
+  name: string;
+};
+
+export type DetailedVariant = {
+  id: string;
+  stock?: number;
+  productId?: string;
+  colorId?: string;
+  sizeId?: string;
+  genderId?: string;
+  color?: Color;
+  size?: Size;
+  gender?: Gender;
+  images?: {
+    id: string;
+    url: string;
+    description: string;
+    order: number;
+    type: 'VARIANT';
+    productId: string | null;
+    variantId: string;
+    categoryId: string | null;
+    brandId: string | null;
+    userId: string | null;
+    configId: string | null;
+    bannerId: string | null;
+  }[];
+};
+
+export type DetailedProduct = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  isService: boolean;
+  isActive: boolean;
+  hasDelivery: boolean;
+  isFavorite?: boolean;
+  category: {
+    id: string;
+    name: string;
+    subcategories: any[];
+  };
+  brand?: {
+    id: string;
+    name: string;
+    code?: string | null;
+  };
+  variants: DetailedVariant[];
+  images: {
+    id: string;
+    url: string;
+    description?: string;
+    order: number;
+    type: string;
+    productId?: string;
+    variantId?: string;
+    categoryId?: string;
+    brandId?: string;
+    userId?: string;
+    configId?: string;
+    bannerId?: string;
+  }[];
+};
+
+export interface VariantFormValue extends Omit<Partial<Variant>, 'color' | 'size' | 'gender'> {
+  color?:
+    | {
+        id: string;
+        name: string;
+        hex: string;
+      }
+    | string;
+  size?: string;
+  gender?: string;
+  images?: { id: string; url: string }[]; // o el tipo exacto que uses para las imágenes
+  newFiles?: any[]; // o File[] si preferís más específico
+  tempId?: string; // si lo estás usando temporalmente para subir imágenes
 }
 
 export interface ProductFormValues

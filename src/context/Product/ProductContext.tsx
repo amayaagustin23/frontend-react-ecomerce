@@ -11,10 +11,9 @@ import {
   createProduct,
 } from '@/services/calls/product.service';
 import { Brand } from '@/types/Brand';
-import { Product } from '@/types/Product';
+import { Color, DetailedProduct, Gender, Size } from '@/types/Product';
 import { message } from 'antd';
-
-// Types
+import { useAuth } from '../Auth/AuthContext';
 
 export type Pagination = {
   page: number;
@@ -36,23 +35,23 @@ export type FetchProductsParams = {
 };
 
 type ProductContextType = {
-  products: Product[];
-  product: Product | null;
-  setProduct: React.Dispatch<React.SetStateAction<Product | null>>;
-  productsFiltered: Product[];
-  favoriteProducts: Product[];
+  products: DetailedProduct[];
+  product: DetailedProduct | null;
+  setProduct: React.Dispatch<React.SetStateAction<DetailedProduct | null>>;
+  productsFiltered: DetailedProduct[];
+  favoriteProducts: DetailedProduct[];
   loading: boolean;
   pagination: Pagination;
   brands: Brand[];
-  variantColors: string[];
-  variantSizes: string[];
-  variantGenders: string[];
+  variantColors: Color[];
+  variantSizes: Size[];
+  variantGenders: Gender[];
   fetchProducts: (params?: FetchProductsParams) => Promise<void>;
   fetchFilteredProducts: (params?: FetchProductsParams) => Promise<void>;
   fetchFavoriteProducts: () => Promise<void>;
   loadBrandsAndVariants: () => Promise<void>;
   toggleProductActive: (id: string, isActive: boolean) => Promise<void>;
-  createNewProduct: (data: any, files: File[]) => Promise<void>;
+  createNewProduct: (data: any) => Promise<void>;
   editProduct: (id: string, data: any, files: File[]) => Promise<void>;
   fetchProductById: (id: string) => Promise<void>;
   updateProductById: (id: string, data: FormData) => Promise<void>;
@@ -61,16 +60,17 @@ type ProductContextType = {
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [product, setProduct] = useState<Product | null>(null);
-  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
-  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<DetailedProduct[]>([]);
+  const [product, setProduct] = useState<DetailedProduct | null>(null);
+  const [productsFiltered, setProductsFiltered] = useState<DetailedProduct[]>([]);
+  const [favoriteProducts, setFavoriteProducts] = useState<DetailedProduct[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [variantColors, setVariantColors] = useState<string[]>([]);
-  const [variantSizes, setVariantSizes] = useState<string[]>([]);
-  const [variantGenders, setVariantGenders] = useState<string[]>([]);
+  const [variantColors, setVariantColors] = useState<Color[]>([]);
+  const [variantSizes, setVariantSizes] = useState<Size[]>([]);
+  const [variantGenders, setVariantGenders] = useState<Gender[]>([]);
   const [pagination, setPagination] = useState<Pagination>({ page: 1, size: 10, total: 0 });
   const [loading, setLoading] = useState<boolean>(true);
+  const { user } = useAuth();
 
   const fetchProducts = async (params: FetchProductsParams = {}) => {
     setLoading(true);
@@ -106,9 +106,11 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
 
   const fetchFavoriteProducts = async () => {
     try {
-      setLoading(true);
-      const res = await getAllFavorites();
-      setFavoriteProducts(res.data);
+      if (user?.role === 'CLIENT') {
+        setLoading(true);
+        const res = await getAllFavorites();
+        setFavoriteProducts(res.data);
+      }
     } catch {
       setFavoriteProducts([]);
     } finally {
@@ -146,10 +148,10 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   };
 
-  const createNewProduct = async (data: any, files: File[]) => {
+  const createNewProduct = async (data: any) => {
     try {
       setLoading(true);
-      await createProduct(data, files);
+      await createProduct(data);
       await fetchProducts(pagination);
       message.success('Producto creado con éxito');
     } catch (err) {

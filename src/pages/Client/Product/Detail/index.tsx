@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '@/services/calls/product.service';
-import { Product, Variant } from '@/types/Product';
+import { DetailedProduct, DetailedVariant } from '@/types/Product';
 import {
   Spin,
   Typography,
@@ -45,10 +45,11 @@ const SizeButton = ({
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<DetailedProduct | null>(null);
   const { addToCart } = useCart();
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedVariant, setSelectedVariant] = useState<Variant>();
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<DetailedVariant>();
   const [quantity, setQuantity] = useState<number>(1);
   const { t } = useTranslation();
   const screens = useBreakpoint();
@@ -77,10 +78,20 @@ const ProductDetailPage: React.FC = () => {
     );
   }
 
-  const sortedImages = [...product.images].sort((a, b) => a.order - b.order);
+  const uniqueColors = Array.from(
+    new Map(
+      product.variants
+        .filter((v) => v.color?.id && v.color?.name)
+        .map((v) => [v.color!.id, v.color!])
+    ).values()
+  );
+
+  const allVariantImages = product.variants
+    .flatMap((variant) => variant.images || [])
+    .sort((a, b) => a.order - b.order);
 
   const parsedCartAdd = () => {
-    if (!selectedVariant || !product) return;
+    if (!selectedVariant || !product || !selectedColor) return;
 
     addToCart({
       id: crypto.randomUUID(),
@@ -91,7 +102,9 @@ const ProductDetailPage: React.FC = () => {
       discount: 0,
       finalPrice: product.price,
       product,
-      variant: selectedVariant,
+      variant: {
+        id: selectedVariant.id,
+      },
     });
   };
 
@@ -100,7 +113,7 @@ const ProductDetailPage: React.FC = () => {
       <Row gutter={[24, 24]}>
         <Col xs={24} md={12}>
           <Carousel dots swipeToSlide draggable className={styles.carousel}>
-            {sortedImages.map((img) => (
+            {allVariantImages.map((img) => (
               <div key={img.id} className={styles.imageWrapper}>
                 <Image src={img.url} alt={product.name} className={styles.productImage} />
               </div>
@@ -125,20 +138,52 @@ const ProductDetailPage: React.FC = () => {
               {t('productDetail.brand')}: <strong>{product.brand?.name}</strong>
             </p>
 
-            <div>
-              <p className={styles.label}>{t('productDetail.selectSize')}</p>
-              <div className={styles.sizes}>
-                {product.variants.map((variant) => (
-                  <SizeButton
-                    key={variant.id}
-                    size={variant.size}
-                    disabled={variant.stock === 0}
-                    selected={selectedVariant?.id === variant.id}
-                    onClick={() => setSelectedVariant(variant)}
+            <div style={{ margin: '1rem 0' }}>
+              <p className={styles.label}>{t('productDetail.selectColor')}</p>
+              <div className={styles.colors}>
+                {uniqueColors.map((color) => (
+                  <button
+                    key={color.id}
+                    onClick={() => {
+                      setSelectedColor(color.id);
+                      setSelectedVariant(undefined);
+                    }}
+                    className={`${styles.colorButton} ${
+                      selectedColor === color.id ? styles.selected : ''
+                    }`}
+                    title={color.name}
+                    style={{
+                      backgroundColor: color.name,
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      border: selectedColor === color.id ? '2px solid #000' : '1px solid #ccc',
+                      marginRight: 8,
+                      cursor: 'pointer',
+                    }}
                   />
                 ))}
               </div>
             </div>
+
+            {selectedColor && (
+              <>
+                <p className={styles.label}>{t('productDetail.selectSize')}</p>
+                <div className={styles.sizes}>
+                  {product.variants
+                    .filter((v) => v.color?.id === selectedColor)
+                    .map((variant) => (
+                      <SizeButton
+                        key={variant.id}
+                        size={variant?.size?.name || ''}
+                        disabled={variant.stock === 0}
+                        selected={selectedVariant?.id === variant.id}
+                        onClick={() => setSelectedVariant(variant)}
+                      />
+                    ))}
+                </div>
+              </>
+            )}
 
             <div style={{ margin: '1rem 0' }}>
               <p className={styles.label}>{t('productDetail.quantity')}</p>
@@ -154,7 +199,7 @@ const ProductDetailPage: React.FC = () => {
               onClick={parsedCartAdd}
               type="primary"
               className={styles.addToCart}
-              disabled={!selectedVariant || selectedVariant.stock === 0}
+              disabled={!selectedVariant || !selectedColor || selectedVariant.stock === 0}
             >
               {t('productDetail.addToCart')}
             </Button>

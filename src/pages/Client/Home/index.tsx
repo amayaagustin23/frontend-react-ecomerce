@@ -8,6 +8,7 @@ import { PATH_ROUTE_PRODUCTS, PRODUCT_ROUTES } from '@/router/paths';
 import styles from './HomePage.module.scss';
 import { useCategory } from '@/context/Category/CategoryContext';
 import BannerCarousel from '@/components/BannerCarousel';
+import { useAuth } from '@/context/Auth/AuthContext';
 
 const categoryIcons: Record<string, React.ReactNode> = {
   Deportes: <SkinOutlined />,
@@ -18,13 +19,14 @@ const categoryIcons: Record<string, React.ReactNode> = {
 const HomePage = () => {
   const { favoriteProducts, fetchFavoriteProducts, loading } = useProduct();
   const { categories } = useCategory();
+  const { user } = useAuth();
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchFavoriteProducts();
-  }, []);
+  }, [user]);
 
   const redirect = (id: string) => {
     navigate(PRODUCT_ROUTES.getDetailPath(id));

@@ -45,6 +45,8 @@
     "search": "Buscar",
     "searchPlaceholder": "Buscar por nombre...",
     "price": "Precio",
+    "size": "Talle",
+    "gender": "Genero",
     "categories": "Categorías",
     "brands": "Marcas",
     "variants": "Variantes",
@@ -145,7 +147,6 @@
     "discountApplied": "Cupón de ({{value}}%) aplicado",
     "removeCoupon": "Eliminar cupón"
   },
-
   "tabs": {
     "coupons": "Cupones",
     "orders": "Pedidos",
@@ -192,6 +193,7 @@
     "quantity": "Cantidad",
     "variant.size": "talle",
     "variant.color": "color",
+    "variant.gender": "genero",
     "empty": "N/A"
   },
   "profile": {
@@ -320,7 +322,8 @@
     "ACTIVE": "Activo",
     "EXPIRED": "Expirado",
     "ORDERED": "Finalizado",
-    "CANCELLED": "Cancelado"
+    "CANCELLED": "Cancelado",
+    "PENDING_PAYMENT": "Pendiente de pago"
   },
   "paymentStatus": {
     "APPROVED": "Aprobado",
@@ -345,8 +348,13 @@
     "stock": "Stock",
     "createTitle": "Crear producto",
     "name": "Nombre",
+    "nameRequired": "El nombre del producto es obligatorio",
     "price": "Precio",
+    "priceRequired": "El precio es obligatorio",
+    "priceList": "Precio de lista",
+    "priceListRequired": "El precio de lista es obligatorio",
     "description": "Descripción",
+    "descriptionRequired": "La descripción es obligatoria",
     "isService": "¿Es un servicio?",
     "isActive": "¿Está activo?",
     "hasDelivery": "¿Tiene envío?",
@@ -356,27 +364,41 @@
     "selectBrand": "Seleccionar marca",
     "categoryPlaceholder": "Seleccionar categoría o subcategoría",
     "brandPlaceholder": "Seleccionar marca",
+    "categoryRequired": "La categoría es obligatoria",
+    "brandRequired": "La marca es obligatoria",
     "variants": "Variantes",
     "colorRequired": "Color requerido",
     "sizeRequired": "Talle requerido",
     "stockRequired": "Stock requerido",
+    "selectColor": "Seleccionar color",
+    "selectSize": "Seleccionar talle",
+    "selectGender": "Seleccionar género",
     "colorPlaceholder": "Color",
     "sizePlaceholder": "Talle",
     "stockPlaceholder": "Stock",
+    "gender": "Género",
     "addVariant": "Agregar variante",
+    "deleteVariant": "Eliminar variante",
+    "variantImages": "Imágenes de la variante",
     "images": "Imágenes",
     "uploadImages": "Subir imágenes",
+    "uploadVariantImages": "Subir",
     "create": "Crear producto",
-    "createdSuccess": "Producto creado con éxito",
+    "createSuccess": "Producto creado con éxito",
     "createError": "Error al crear el producto",
-    "selectCategoryError": "Debes seleccionar una categoría o subcategoría",
-    "detailTitle": "Detalle del producto",
     "updateSuccess": "Producto actualizado correctamente",
     "updateError": "Error al actualizar el producto",
+    "selectCategoryError": "Debes seleccionar una categoría o subcategoría",
     "errorLoading": "Error al cargar el producto",
+    "detailTitle": "Detalle del producto",
     "edit": "Editar",
     "cancelEdit": "Cancelar edición",
-    "save": "Guardar cambios"
+    "save": "Guardar cambios",
+    "delete": "Eliminar",
+    "loading": "Cargando...",
+    "noVariants": "No hay variantes registradas",
+    "noImages": "No hay imágenes disponibles",
+    "maxImagesReached": "Se alcanzó el máximo de imágenes permitidas"
   },
   "categories": {
     "messages": {
@@ -458,6 +480,7 @@
     "submit": "Crear"
   },
   "productDetail": {
+    "selectColor": "Seleccionar color:",
     "selectSize": "Seleccioná tu talle:",
     "addToCart": "Agregar al carrito",
     "brand": "Marca",

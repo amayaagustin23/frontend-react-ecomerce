@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Typography, Collapse, List, Tag, Spin } from 'antd';
+import { Card, Table, Typography, Collapse, List, Tag, Spin, Image } from 'antd';
 import { Order } from '@/types/Order';
 import { useTranslation } from 'react-i18next';
 import { getAllOrders } from '@/services/calls/panel.service';
@@ -47,7 +47,6 @@ const OrdersPanelPage = () => {
       dataIndex: ['user', 'email'],
       key: 'email',
     },
-
     {
       title: t('orders.subtotal'),
       dataIndex: 'subtotal',
@@ -89,19 +88,34 @@ const OrdersPanelPage = () => {
                     renderItem={(item) => (
                       <List.Item>
                         <List.Item.Meta
+                          avatar={
+                            item.variant?.images?.[0]?.url && (
+                              <Image
+                                width={50}
+                                src={item.variant.images[0].url}
+                                alt={item.product.name}
+                                preview={false}
+                              />
+                            )
+                          }
                           title={item.product.name}
                           description={
                             <>
                               {t('orders.quantity')}: {item.quantity} | {t('orders.variant.size')}:{' '}
-                              {item.variant?.size || t('orders.empty')} |{' '}
+                              {item.variant?.size?.name || t('orders.empty')} |{' '}
+                              {t('orders.variant.gender')}:{' '}
+                              {item.variant?.gender?.name || t('orders.empty')} |{' '}
                               {t('orders.variant.color')}:{' '}
                               {item.variant?.color ? (
-                                <input
-                                  type="color"
-                                  value={item.variant.color}
-                                  disabled
-                                  className={styles.colorPicker}
-                                />
+                                <>
+                                  <input
+                                    type="color"
+                                    value={item.variant.color.hex}
+                                    disabled
+                                    className={styles.colorPicker}
+                                  />{' '}
+                                  {item.variant.color.name}
+                                </>
                               ) : (
                                 t('orders.empty')
                               )}

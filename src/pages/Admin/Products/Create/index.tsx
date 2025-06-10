@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   Input,
@@ -8,13 +8,11 @@ import {
   Switch,
   Select,
   Typography,
-  message,
-  Card,
   Row,
   Col,
   Space,
   TreeSelect,
-  ColorPicker,
+  message,
 } from 'antd';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -23,73 +21,30 @@ import { useCategory } from '@/context/Category/CategoryContext';
 import { useTranslation } from 'react-i18next';
 import styles from './CreatePage.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { PATH_ROUTE_PANEL_PRODUCTS } from '@/router/paths';
 
 const { Title } = Typography;
-
+const { Item, List, useForm } = Form;
 const CreateProductForm = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const { createNewProduct, loadBrandsAndVariants, brands } = useProduct();
-  const { categoriesOutPaginated, fetchCategoriesOutPaginated } = useCategory();
-  const [form] = Form.useForm();
-  const { t } = useTranslation();
+  const [form] = useForm();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const {
+    createNewProduct,
+    loadBrandsAndVariants,
+    brands,
+    variantColors,
+    variantSizes,
+    variantGenders,
+  } = useProduct();
+
+  const { categoriesOutPaginated, fetchCategoriesOutPaginated } = useCategory();
 
   useEffect(() => {
     loadBrandsAndVariants();
     fetchCategoriesOutPaginated();
   }, []);
-
-  const handleSubmit = async (values: any) => {
-    try {
-      const variantData = values.variants?.map((v: any) => {
-        let color = v.color;
-
-        if (typeof color === 'object' && color?.metaColor?.toHexString) {
-          color = color.metaColor.toHexString();
-        }
-        return {
-          color,
-          size: v.size,
-          stock: Number(v.stock),
-        };
-      });
-      const { files: _omitFiles, ...rest } = values;
-
-      const data = {
-        ...rest,
-        variants: JSON.stringify(variantData),
-      };
-
-      const files = fileList.filter((f) => f.originFileObj).map((f) => f.originFileObj as File);
-
-      await createNewProduct(data, files);
-
-      form.resetFields();
-      setFileList([]);
-      message.success(t('product.createSuccess'));
-      navigate(-1);
-    } catch (error: any) {
-      const errData = error?.response?.data;
-
-      if (errData?.errors?.length) {
-        const fieldErrors = errData.errors.map((e: any) => ({
-          name: e.property,
-          errors: Object.values(e.constraints || {}),
-        }));
-        form.setFields(fieldErrors);
-      }
-
-      if (errData?.message) {
-        const errMsg = Array.isArray(errData.message)
-          ? errData.message.join(', ')
-          : errData.message;
-        message.error(errMsg);
-      } else {
-        message.error(t('product.createError'));
-      }
-    }
-  };
 
   const treeData = categoriesOutPaginated.map((cat) => ({
     title: cat.name,
@@ -99,6 +54,73 @@ const CreateProductForm = () => {
       value: sub.id,
     })),
   }));
+
+  const handleSubmit = async (values: any) => {
+    try {
+      const { files: _omitFiles, variants, ...rest } = values;
+
+      const formattedVariants = variants.map((v: any, idx: number) => ({
+        color: v.color,
+        size: v.size,
+        gender: v.gender,
+        stock: Number(v.stock),
+        tempId: `temp-${idx}`,
+        newFiles: v.newFiles || [],
+      }));
+
+      const formData = new FormData();
+
+      Object.entries(rest).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+
+      formData.append(
+        'variants',
+        JSON.stringify(
+          formattedVariants.map((variant: { newFiles: UploadFile[]; [key: string]: any }) => {
+            const { newFiles, ...rest } = variant;
+            return rest;
+          })
+        )
+      );
+
+      fileList.forEach((file) => {
+        if (file.originFileObj instanceof File) {
+          formData.append('files', file.originFileObj);
+        }
+      });
+
+      formattedVariants.forEach((variant: any) => {
+        variant.newFiles.forEach((file: any) => {
+          if (file.originFileObj instanceof File) {
+            formData.append(`variantImages-${variant.tempId}`, file.originFileObj);
+          }
+        });
+      });
+
+      await createNewProduct(formData);
+      message.success(t('product.createSuccess'));
+      form.resetFields();
+      setFileList([]);
+      navigate(-1);
+    } catch (error: any) {
+      const errData = error?.response?.data;
+      if (errData?.errors?.length) {
+        const fieldErrors = errData.errors.map((e: any) => ({
+          name: e.property,
+          errors: Object.values(e.constraints || {}),
+        }));
+        form.setFields(fieldErrors);
+      }
+
+      const errMsg = Array.isArray(errData?.message)
+        ? errData.message.join(', ')
+        : errData?.message || t('product.createError');
+      message.error(errMsg);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -113,15 +135,26 @@ const CreateProductForm = () => {
           hasDelivery: false,
           variants: [{}],
         }}
+        onFinishFailed={({ errorFields }) => {
+          console.warn('Errores de validación:', errorFields);
+        }}
       >
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="name" label={t('product.name')} rules={[{ required: true }]}>
+            <Item
+              name="name"
+              label={t('product.name')}
+              rules={[{ required: true, message: t('product.nameRequired') }]}
+            >
               <Input />
-            </Form.Item>
+            </Item>
           </Col>
-          <Col span={12}>
-            <Form.Item name="price" label={t('product.price')} rules={[{ required: true }]}>
+          <Col span={6}>
+            <Item
+              name="price"
+              label={t('product.price')}
+              rules={[{ required: true, message: t('product.priceRequired') }]}
+            >
               <InputNumber
                 style={{ width: '100%' }}
                 min={0}
@@ -139,7 +172,6 @@ const CreateProductForm = () => {
                 }}
                 onKeyDown={(e) => {
                   const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
-
                   const isNumber = /^[0-9]$/.test(e.key);
                   if (!isNumber && !allowedKeys.includes(e.key)) {
                     e.preventDefault();
@@ -147,130 +179,205 @@ const CreateProductForm = () => {
                 }}
                 stringMode
               />
-            </Form.Item>
+            </Item>
+          </Col>
+          <Col span={6}>
+            <Item
+              name="priceList"
+              label={t('product.priceList')}
+              rules={[{ required: true, message: t('product.priceListRequired') }]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                min={0}
+                max={999999}
+                formatter={(value) =>
+                  value ? `ARS $ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : ''
+                }
+                parser={(value) => {
+                  const parsed = value?.replace(/[^\d]/g, '');
+                  if (!parsed) return 0;
+                  const num = Number(parsed);
+                  if (num <= 0) return 0;
+                  if (num >= 999999) return 999999;
+                  return num as 0 | 999999;
+                }}
+                onKeyDown={(e) => {
+                  const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+                  const isNumber = /^[0-9]$/.test(e.key);
+                  if (!isNumber && !allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                stringMode
+              />
+            </Item>
           </Col>
         </Row>
 
-        <Form.Item name="description" label={t('product.description')} rules={[{ required: true }]}>
+        <Item
+          name="description"
+          label={t('product.description')}
+          rules={[{ required: true, message: t('product.descriptionRequired') }]}
+        >
           <Input />
-        </Form.Item>
+        </Item>
 
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="isService" label={t('product.isService')} valuePropName="checked">
+            <Item name="isService" label={t('product.isService')} valuePropName="checked">
               <Switch />
-            </Form.Item>
+            </Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="isActive" label={t('product.isActive')} valuePropName="checked">
+            <Item name="isActive" label={t('product.isActive')} valuePropName="checked">
               <Switch />
-            </Form.Item>
+            </Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="hasDelivery" label={t('product.hasDelivery')} valuePropName="checked">
+            <Item name="hasDelivery" label={t('product.hasDelivery')} valuePropName="checked">
               <Switch />
-            </Form.Item>
+            </Item>
           </Col>
         </Row>
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item
+            <Item
               name="categoryId"
               label={t('product.category')}
               rules={[{ required: true, message: t('product.categoryRequired') }]}
             >
               <TreeSelect
                 treeData={treeData}
-                placeholder={t('product.categoryPlaceholder')}
                 treeDefaultExpandAll
                 allowClear
                 style={{ width: '100%' }}
               />
-            </Form.Item>
+            </Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="brandId" label={t('product.brand')} rules={[{ required: true }]}>
-              <Select
-                placeholder={t('product.brandPlaceholder')}
-                options={brands.map((brand) => ({
-                  value: brand.id,
-                  label: brand.name,
-                }))}
-              />
-            </Form.Item>
+            <Item
+              name="brandId"
+              label={t('product.brand')}
+              rules={[{ required: true, message: t('product.brandRequired') }]}
+            >
+              <Select options={brands.map((b) => ({ label: b.name, value: b.id }))} allowClear />
+            </Item>
           </Col>
         </Row>
 
-        <Form.List name="variants">
+        <List name="variants">
           {(fields, { add, remove }) => (
             <>
               <Title level={5}>{t('product.variants')}</Title>
               {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} align="start" className={styles.variantRow}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'color']}
-                    rules={[{ required: true, message: t('product.colorRequired') }]}
-                    initialValue="#ffffff"
-                  >
-                    <ColorPicker
-                      defaultValue="#ffffff"
-                      format="hex"
-                      className={styles.colorPicker}
-                    />
-                  </Form.Item>
+                <div
+                  key={key}
+                  style={{
+                    border: '1px solid #e5e5e5',
+                    padding: '1rem',
+                    borderRadius: 8,
+                    marginBottom: '1rem',
+                    backgroundColor: '#fafafa',
+                  }}
+                >
+                  <Row gutter={[16, 16]} align="middle">
+                    <Col xs={24} md={6}>
+                      <Item
+                        {...restField}
+                        name={[name, 'color']}
+                        rules={[{ required: true, message: t('product.colorRequired') }]}
+                      >
+                        <Select
+                          placeholder={t('product.selectColor')}
+                          options={variantColors.map((c) => ({ label: c.name, value: c.id }))}
+                          allowClear
+                        />
+                      </Item>
+                    </Col>
 
-                  <Form.Item {...restField} name={[name, 'size']}>
-                    <Input placeholder={t('product.size')} className={styles.variantInput} />
-                  </Form.Item>
+                    <Col xs={24} md={6}>
+                      <Item
+                        {...restField}
+                        name={[name, 'size']}
+                        rules={[{ required: true, message: t('product.sizeRequired') }]}
+                      >
+                        <Select
+                          placeholder={t('product.selectSize')}
+                          options={variantSizes.map((s) => ({ label: s.name, value: s.id }))}
+                          allowClear
+                        />
+                      </Item>
+                    </Col>
 
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'stock']}
-                    rules={[{ required: true, message: t('product.stockRequired') }]}
-                  >
-                    <InputNumber
-                      placeholder={t('product.stock')}
-                      min={0}
-                      className={styles.variantInput}
-                    />
-                  </Form.Item>
+                    <Col xs={24} md={6}>
+                      <Item {...restField} name={[name, 'gender']}>
+                        <Select
+                          placeholder={t('product.selectGender')}
+                          options={variantGenders.map((g) => ({ label: g.name, value: g.id }))}
+                          allowClear
+                        />
+                      </Item>
+                    </Col>
 
-                  <Button
-                    type="text"
-                    icon={<MinusCircleOutlined />}
-                    onClick={() => remove(name)}
-                    className={styles.removeBtn}
-                  />
-                </Space>
+                    <Col xs={24} md={6}>
+                      <Item
+                        {...restField}
+                        name={[name, 'stock']}
+                        rules={[{ required: true, message: t('product.stockRequired') }]}
+                      >
+                        <InputNumber
+                          min={0}
+                          style={{ width: '100%' }}
+                          placeholder={t('product.stock')}
+                        />
+                      </Item>
+                    </Col>
+
+                    <Col xs={24} md={18}>
+                      <Item
+                        name={[name, 'newFiles']}
+                        valuePropName="fileList"
+                        getValueFromEvent={(e) => e.fileList}
+                      >
+                        <Upload listType="picture-card" multiple beforeUpload={() => false}>
+                          <div>
+                            <UploadOutlined /> {t('product.uploadVariantImages')}
+                          </div>
+                        </Upload>
+                      </Item>
+                    </Col>
+
+                    <Col xs={24} md={6}>
+                      <Button
+                        danger
+                        type="text"
+                        icon={<MinusCircleOutlined />}
+                        onClick={() => remove(name)}
+                        style={{ marginTop: 8 }}
+                      >
+                        {t('product.deleteVariant') ?? 'Eliminar'}
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
               ))}
-              <Form.Item>
+
+              <Item>
                 <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
                   {t('product.addVariant')}
                 </Button>
-              </Form.Item>
+              </Item>
             </>
           )}
-        </Form.List>
+        </List>
 
-        <Form.Item name="files" label={t('product.images')}>
-          <Upload
-            multiple
-            listType="picture"
-            beforeUpload={() => false}
-            fileList={fileList}
-            onChange={({ fileList }) => setFileList(fileList)}
-          >
-            <Button icon={<UploadOutlined />}>{t('product.uploadImages')}</Button>
-          </Upload>
-        </Form.Item>
-
-        <Form.Item style={{ textAlign: 'center' }}>
+        <Item style={{ textAlign: 'center' }}>
           <Button type="primary" htmlType="submit" size="large">
             {t('product.create')}
           </Button>
-        </Form.Item>
+        </Item>
       </Form>
     </div>
   );

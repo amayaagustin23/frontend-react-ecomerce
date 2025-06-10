@@ -3,17 +3,24 @@
   "auth": {
     "login": {
       "title": "Welcome 👋",
-      "subtitle": "Log in to continue",
+      "subtitle": "Sign in to continue",
       "email": "Email",
-      "emailPlaceholder": "example@mail.com",
+      "emailPlaceholder": "example@email.com",
       "password": "Password",
       "passwordPlaceholder": "••••••••",
       "forgotPassword": "Forgot your password?",
-      "button": "Log in",
+      "button": "Sign in",
       "noAccount": "Don't have an account?",
       "register": "Register",
-      "success": "Logged in successfully",
-      "error": "Login failed"
+      "success": "Successfully logged in",
+      "error": "Error logging in"
+    }
+  },
+  "users": {
+    "role": {
+      "ADMIN": "Administrator",
+      "CLIENT": "Client",
+      "SUPERADMIN": "Super Administrator"
     }
   },
   "layout": {
@@ -27,56 +34,52 @@
       "contact": "Contact",
       "account": "Account",
       "myProfile": "My Profile",
-      "logout": "Log out",
-      "login": "Log in"
+      "logout": "Logout",
+      "login": "Sign in"
     },
     "footer": {
       "text": "My Store ©{{year}} - All rights reserved"
     }
   },
-  "productDetail": {
-    "selectSize": "Select your size:",
-    "addToCart": "Add to cart",
-    "brand": "Brand",
-    "quantity": "Quantity",
-    "errorLoading": "Error loading product"
-  },
   "products": {
     "search": "Search",
     "searchPlaceholder": "Search by name...",
     "price": "Price",
+    "size": "Size",
+    "gender": "Gender",
     "categories": "Categories",
     "brands": "Brands",
     "variants": "Variants",
+    "colors": "Colors",
+    "sizes": "Sizes",
+    "genders": "Genders",
     "empty": "No products found",
     "title": "Products",
-    "orderBy": "Sort by",
+    "orderBy": "Order by",
     "itemsPerPage": "Show",
+    "filter": "Filters",
+    "titlePanel": "Product Listing",
+    "create": "Create product",
     "sort": {
       "newest": "Newest",
       "lowToHigh": "Price: Low to High",
       "highToLow": "Price: High to Low",
       "nameAsc": "Name: A-Z",
       "nameDesc": "Name: Z-A"
-    }
-  },
-  "categories": {
-    "messages": {
-      "fetchError": "Error loading categories",
-      "getOneError": "Failed to retrieve category",
-      "createSuccess": "Category created successfully",
-      "createError": "Error creating category",
-      "updateSuccess": "Category updated successfully",
-      "updateError": "Error updating category",
-      "deleteSuccess": "Category deleted successfully",
-      "deleteError": "Error deleting category"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Are you sure you want to delete this item?",
+        "ok": "Yes",
+        "cancel": "No"
+      }
     }
   },
   "home": {
     "banner1": {
-      "alt": "Banner of electronic products and services",
-      "products": "View products",
-      "services": "View services"
+      "alt": "Electronics and services banner",
+      "products": "See products",
+      "services": "See services"
     },
     "banner2": {
       "message": "Buy in interest-free installments with free shipping nationwide 🚚"
@@ -85,20 +88,433 @@
   "contact": {
     "title": "Agustín Amaya",
     "subtitle": "Full Stack Developer",
-    "intro": "Developer with 4 years of experience in frontend and backend, specialized in NestJS and ReactJS. Passionate about creating efficient and scalable solutions, focused on best practices, adaptability, and teamwork. I've led technical training as a Backend instructor, integrating platforms such as AWS, Firebase, Mercado Pago, and WhatsApp.",
+    "intro": "Developer with 4 years of experience in frontend and backend, specializing in NestJS and ReactJS. I am passionate about creating efficient and scalable solutions, focusing on good practices, adaptation to change, and collaborative work. I have led technical training as a Backend instructor, integrating platforms such as AWS, Firebase, Mercado Pago, and WhatsApp.",
     "email": "Email",
     "phone": "Phone",
     "location": "Location",
     "github": "GitHub",
     "linkedin": "LinkedIn",
     "cv": "Download CV (PDF)",
-    "contactMe": "Contact me"
+    "contactMe": "Contact Me"
   },
   "cart": {
-    "title": "Your cart",
-    "empty": "Your cart is empty",
+    "greeting": "Hello, Agustín!",
+    "size": "Size",
+    "color": "Color",
     "remove": "Remove",
+    "productCount": "{{count}} products",
+    "invalidCoupon": "Invalid coupon",
+    "couponApplied": "Coupon applied",
+    "orderInfo": "Your cart",
+    "shippingDetails": "Address and shipping",
+    "confirm": "Confirm order",
+    "title": "Your cart",
+    "totalProducts": "Total products: {{count}}",
+    "notReserved": "Products are not reserved until the purchase is completed.",
+    "alertTitle": "Attention!",
+    "alertDescription": "Stock may change before completing the purchase.",
+    "empty": "Your cart is empty.",
+    "summary": "Order summary",
+    "summaryFinal": "Final summary",
     "total": "Total",
-    "checkout": "Checkout"
+    "totalToPay": "Total to pay",
+    "delivery": "Shipping",
+    "free": "Free",
+    "enterCoupon": "Enter a promo code",
+    "usePromoCode": "Use a promo code",
+    "discount": "Discount applied: {{code}}",
+    "withDiscount": "With {{percent}}% discount",
+    "enterValidPostalCode": "Enter a valid postal code",
+    "shippingCalculated": "Shipping cost calculated",
+    "shippingError": "Error calculating shipping",
+    "missingData": "Missing data to confirm the order",
+    "orderSuccess": "Order confirmed successfully",
+    "orderError": "An error occurred while confirming the order",
+    "checkout": "Choose address and calculate shipping",
+    "confirmOrder": "Confirm order",
+    "subtotal": "Subtotal",
+    "shippingCost": "Shipping cost",
+    "estimatedDelivery": "Estimated delivery",
+    "selectedAddress": "Selected address",
+    "selectAddress": "Select an address",
+    "addAddress": "Add address",
+    "calculateShipping": "Calculate shipping",
+    "calculateShippingBtn": "Calculate shipping",
+    "postalCodeExample": "Ex: 4000",
+    "noAddress": "Please select an address",
+    "summaryTitle": "Order summary",
+    "discountApplied": "({{value}}%) coupon applied",
+    "removeCoupon": "Remove coupon"
+  },
+  "tabs": {
+    "coupons": "Coupons",
+    "orders": "Orders",
+    "profile": "My Profile"
+  },
+  "coupons": {
+    "title": "Your coupons",
+    "available": "Redeem points for coupons",
+    "yours": "Redeemed coupons",
+    "redeem": "Redeem",
+    "expiration": "Valid until",
+    "success": "🎉 Coupon redeemed successfully!",
+    "error": "❌ Could not redeem the coupon",
+    "notEnoughPoints": "You don't have enough points",
+    "createTitle": "Create coupon",
+    "editTitle": "Coupon details",
+    "description": "Description",
+    "value": "Value",
+    "price": "Price in points",
+    "type": "Type",
+    "code": "Code",
+    "status": "Status",
+    "expiresAt": "Expiration date",
+    "types": {
+      "DISCOUNT": "Discount",
+      "EXCHANGE_POINT": "Exchange for points"
+    },
+    "statuses": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    }
+  },
+  "orders": {
+    "title": "Order history",
+    "orderNumber": "Order number",
+    "titlePanel": "Orders",
+    "customer": "Customer",
+    "email": "Email",
+    "status": "Status",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "products": "Products",
+    "quantity": "Quantity",
+    "variant.size": "size",
+    "variant.color": "color",
+    "variant.gender": "gender",
+    "empty": "N/A"
+  },
+  "profile": {
+    "title": "Personal information",
+    "description": "Here you can view and manage your profile.",
+    "name": "Name",
+    "dni": "CUIT/DNI",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "addresses": "Addresses",
+    "defaultAddress": "Default address",
+    "hello": "Hello",
+    "points": "Points:"
+  },
+  "orderDetail": {
+    "title": "Order details",
+    "orderId": "Order #{{id}}",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "shipping": "Shipping cost",
+    "products": "Products",
+    "category": "Category",
+    "brand": "Brand",
+    "color": "Color",
+    "size": "Size",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal"
+  },
+  "common": {
+    "back": "Back",
+    "actions": {
+      "save": "Save"
+    }
+  },
+  "orderStatus": {
+    "PENDING": "Pending",
+    "PAID": "Paid",
+    "CANCELLED": "Cancelled",
+    "DELIVERED": "Delivered"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode",
+    "toggle": "Toggle theme"
+  },
+  "messages": {
+    "success": {
+      "couponCart": "Coupon successfully applied to the cart",
+      "addToCart": "Product added to cart"
+    },
+    "error": {
+      "couponCart": "Could not apply the coupon",
+      "fetchCart": "Could not get the cart",
+      "addToCart": "Could not add the product to the cart",
+      "updateQuantity": "Could not update quantity",
+      "removeItem": "Could not remove product from cart"
+    }
+  },
+  "register": {
+    "title": "Register",
+    "credentials": "Credentials",
+    "person": "Personal data",
+    "address": "Address",
+    "errorTitle": "Error during registration"
+  },
+  "fields": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "phone": "Phone",
+    "cuitOrDni": "CUIT or DNI",
+    "street": "Street",
+    "city": "City",
+    "province": "Province",
+    "postalCode": "Postal Code",
+    "lat": "Latitude",
+    "lng": "Longitude"
+  },
+  "errors": {
+    "required": "This field is required",
+    "email": "Must be a valid email",
+    "passwordLength": "Must be at least 8 characters long",
+    "passwordFormat": "Must have an uppercase letter, a lowercase letter, and a number",
+    "unknownError": "An unexpected error occurred"
+  },
+  "actions": {
+    "register": "Register",
+    "edit": "Edit",
+    "delete": "Delete",
+    "addAddress": "Add address",
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "exportPDF": "Export PDF",
+    "totalSales": "Total Sales",
+    "totalProfit": "Total Profit",
+    "totalRevenue": "Total Revenue",
+    "averageOrderValue": "Average Order Value",
+    "customerLifetimeValue": "Customer Lifetime Value",
+    "users": "Users",
+    "productsTitle": "Products",
+    "ordersPerDay": "Orders Per Day",
+    "cartStatus": "Cart Status",
+    "paymentStatus": "Payment Status",
+    "topProducts": "Top Selling Products",
+    "topProfitableProducts": "Top Profitable Products",
+    "topCoupons": "Top Redeemed Coupons",
+    "products": {
+      "name": "Product",
+      "price": "Price",
+      "totalSold": "Total Sold",
+      "profit": "Profit"
+    },
+    "coupons": {
+      "code": "Code",
+      "description": "Description",
+      "total": "Total Redeemed"
+    }
+  },
+  "cartStatus": {
+    "ACTIVE": "Active",
+    "EXPIRED": "Expired",
+    "ORDERED": "Ordered",
+    "CANCELLED": "Cancelled",
+    "PENDING_PAYMENT": "Pending Payment"
+  },
+  "paymentStatus": {
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "PENDING": "Pending",
+    "PAID": "Paid",
+    "CANCELLED": "Cancelled",
+    "DELIVERED": "Delivered"
+  },
+  "adminMenu": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "users": "Users",
+    "categories": "Categories",
+    "brands": "Brands",
+    "orders": "Orders",
+    "coupons": "Coupons",
+    "logout": "Logout"
+  },
+  "product": {
+    "size": "Size",
+    "stock": "Stock",
+    "createTitle": "Create product",
+    "name": "Name",
+    "nameRequired": "Product name is required",
+    "price": "Price",
+    "priceRequired": "Price is required",
+    "priceList": "List price",
+    "priceListRequired": "List price is required",
+    "description": "Description",
+    "descriptionRequired": "Description is required",
+    "isService": "Is it a service?",
+    "isActive": "Is it active?",
+    "hasDelivery": "Has delivery?",
+    "category": "Category or Subcategory",
+    "brand": "Brand",
+    "selectCategory": "Select category or subcategory",
+    "selectBrand": "Select brand",
+    "categoryPlaceholder": "Select category or subcategory",
+    "brandPlaceholder": "Select brand",
+    "categoryRequired": "Category is required",
+    "brandRequired": "Brand is required",
+    "variants": "Variants",
+    "colorRequired": "Color required",
+    "sizeRequired": "Size required",
+    "stockRequired": "Stock required",
+    "selectColor": "Select color",
+    "selectSize": "Select size",
+    "selectGender": "Select gender",
+    "colorPlaceholder": "Color",
+    "sizePlaceholder": "Size",
+    "stockPlaceholder": "Stock",
+    "gender": "Gender",
+    "addVariant": "Add variant",
+    "deleteVariant": "Delete variant",
+    "variantImages": "Variant images",
+    "images": "Images",
+    "uploadImages": "Upload images",
+    "uploadVariantImages": "Upload",
+    "create": "Create product",
+    "createSuccess": "Product created successfully",
+    "createError": "Error creating product",
+    "updateSuccess": "Product updated successfully",
+    "updateError": "Error updating product",
+    "selectCategoryError": "You must select a category or subcategory",
+    "errorLoading": "Error loading product",
+    "detailTitle": "Product details",
+    "edit": "Edit",
+    "cancelEdit": "Cancel edit",
+    "save": "Save changes",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "noVariants": "No variants registered",
+    "noImages": "No images available",
+    "maxImagesReached": "Maximum number of images reached"
+  },
+  "categories": {
+    "messages": {
+      "fetchError": "Error loading categories",
+      "getOneError": "Could not get the category",
+      "createSuccess": "Category created successfully",
+      "createError": "Error creating category",
+      "updateSuccess": "Category updated successfully",
+      "updateError": "Error updating category",
+      "deleteSuccess": "Category deleted successfully",
+      "deleteError": "Error deleting category"
+    },
+    "create": {
+      "title": "Create category"
+    },
+    "edit": {
+      "title": "Edit category"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "placeholders": {
+      "name": "Enter name",
+      "description": "Enter description",
+      "subcategoryName": "Subcategory name",
+      "subcategoryDescription": "Subcategory description"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "descriptionRequired": "Description is required",
+      "subcategoryNameRequired": "Subcategory name is required",
+      "subcategoryDescriptionRequired": "Subcategory description is required"
+    },
+    "subcategories": {
+      "title": "Subcategories"
+    },
+    "actions": {
+      "addSubcategory": "Add subcategory",
+      "create": "Create category"
+    }
+  },
+  "table": {
+    "columns": {
+      "name": "Name",
+      "price": "Price",
+      "stock": "Stock",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
+      "role": "Role",
+      "email": "Email",
+      "phone": "Phone",
+      "code": "Code",
+      "status": "Status",
+      "total": "Total",
+      "expiresAt": "Valid until",
+      "value": "Discount",
+      "description": "Description",
+      "brand.name": "Brand",
+      "category.name": "Category"
+    }
+  },
+  "brands": {
+    "createTitle": "Create Brand",
+    "name": "Brand name",
+    "namePlaceholder": "Enter name",
+    "nameRequired": "Name is required",
+    "save": "Save",
+    "createdSuccess": "Brand created successfully",
+    "createdError": "Error creating brand",
+    "editTitle": "Edit Brand",
+    "updatedSuccess": "Brand updated successfully",
+    "updatedError": "Error updating brand",
+    "loadError": "Could not load brand",
+    "edit": "Edit"
+  },
+  "form": {
+    "required": "This field is required",
+    "submit": "Create"
+  },
+  "productDetail": {
+    "selectColor": "Select color:",
+    "selectSize": "Select your size:",
+    "addToCart": "Add to cart",
+    "brand": "Brand",
+    "quantity": "Quantity",
+    "errorLoading": "Error loading product",
+    "title": "User Details",
+    "loading": "Loading user...",
+    "notFound": "User not found.",
+    "accountInfo": "Account Information",
+    "personalInfo": "Personal Information",
+    "defaultAddress": "Default Address",
+    "orders": "User Orders",
+    "email": "Email",
+    "role": "Role",
+    "points": "Points",
+    "active": "Active",
+    "yes": "Yes",
+    "no": "No",
+    "name": "Name",
+    "phone": "Phone",
+    "dni": "CUIT or DNI",
+    "street": "Street",
+    "city": "City",
+    "province": "Province",
+    "postalCode": "Postal Code",
+    "orderId": "Order",
+    "status": "Status",
+    "total": "Total",
+    "paymentMethod": "Payment Method",
+    "noPayment": "No Payment",
+    "products": "Products",
+    "category": "Category",
+    "finalPrice": "Final Price",
+    "color": "Color",
+    "size": "Size",
+    "noOrders": "No orders registered."
   }
 }

@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Card } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { Product } from '@/types/Product';
+import { DetailedProduct } from '@/types/Product';
 import styles from './ProductCard.module.scss';
 import { useAuth } from '@/context/Auth/AuthContext';
 
 type Props = {
-  product: Product;
+  product: DetailedProduct;
   onClick?: () => void;
 };
 
 const ProductCard: React.FC<Props> = ({ product, onClick }) => {
   const { addFavoriteProduct, deleteFavoriteProduct, isLogin } = useAuth();
-  const mainImage = product.images[0]?.url || 'https://via.placeholder.com/500';
+  const mainImage = product.variants
+    ?.flatMap((v) => v.images || [])
+    .sort((a, b) => a.order - b.order)[0]?.url;
   const colorCount = product.variants.length;
 
   const [isFavorite, setIsFavorite] = useState(!!product.isFavorite);

@@ -146,8 +146,7 @@ const CartPage: React.FC = () => {
                       <Col span={12}>
                         <Text strong>{item.product.name}</Text>
                         <div>
-                          {t('cart.size')}: {item.variant?.size} / {t('cart.color')}:{' '}
-                          {item.variant?.color}
+                          {t('cart.size')}: {item.variant?.size?.name}
                         </div>
                       </Col>
                       <Col span={3}>
@@ -241,7 +240,11 @@ const CartPage: React.FC = () => {
           </Row>
         </TabPane>
 
-        <TabPane tab={t('cart.shippingDetails')} key="2">
+        <TabPane
+          tab={t('cart.shippingDetails')}
+          key="2"
+          disabled={!cart || cart.items.length === 0}
+        >
           <Row gutter={[24, 24]}>
             <Col xs={24} md={16}>
               <div className={styles.addressHeader}>
@@ -337,8 +340,8 @@ const CartPage: React.FC = () => {
                       <Col span={12}>
                         <Text strong>{item.product.name}</Text>
                         <div>
-                          {t('cart.size')}: {item.variant?.size} / {t('cart.color')}:{' '}
-                          {item.variant?.color}
+                          {t('cart.size')}: {item.variant?.size?.name} / {t('cart.color')}:{' '}
+                          {item.variant?.color?.name}
                         </div>
                       </Col>
                       <Col span={3}>

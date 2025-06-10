@@ -156,3 +156,10 @@
     }
   }
 }
+.colorButton {
+  transition: border 0.2s;
+}
+
+.colorButton.selected {
+  border: 2px solid black !important;
+}

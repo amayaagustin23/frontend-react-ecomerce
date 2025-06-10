@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { Card, Typography, Button, Spin } from 'antd';
 import { useProduct } from '@/context/Product/ProductContext';
-import { Product } from '@/types/Product';
+import { DetailedProduct, Product } from '@/types/Product';
 import { useNavigate } from 'react-router-dom';
 import CustomTable from '@/components/CustomTable';
 import { PlusOutlined } from '@ant-design/icons';
@@ -29,17 +29,17 @@ const ProductsPanelPage = () => {
   );
 
   const handleToggleActive = useCallback(
-    (product: Product, active: boolean) => {
+    (product: DetailedProduct, active: boolean) => {
       toggleProductActive(product.id, active);
     },
     [toggleProductActive]
   );
 
-  const handleView = (product: Product) => {
+  const handleView = (product: DetailedProduct) => {
     navigate(PATH_PANEL_PRODUCT.getDetailPath(product.id));
   };
 
-  const handleEdit = (product: Product) => {
+  const handleEdit = (product: DetailedProduct) => {
     navigate(`${PATH_PANEL_PRODUCT.getDetailPath(product.id)}?edit=true`);
   };
 
@@ -58,9 +58,9 @@ const ProductsPanelPage = () => {
         {loading ? (
           <Spin size="large" />
         ) : (
-          <CustomTable<Product>
+          <CustomTable<DetailedProduct>
             data={products}
-            columnsKeys={['images', 'name', 'price', 'brand.name', 'category.name', 'isActive']}
+            columnsKeys={['name', 'price', 'brand.name', 'category.name', 'isActive']}
             onView={handleView}
             onEdit={handleEdit}
             onToggleActive={handleToggleActive}

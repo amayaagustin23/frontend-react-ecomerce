@@ -1,4 +1,4 @@
-import { Product, Variant } from './Product';
+import { DetailedProduct, DetailedVariant } from './Product';
 
 export type CartItem = {
   id: string;
@@ -8,8 +8,8 @@ export type CartItem = {
   unitPrice: number;
   discount: number;
   finalPrice: number;
-  product: Product;
-  variant: Variant;
+  product: DetailedProduct;
+  variant: DetailedVariant;
 };
 
 export type Coupon = {
